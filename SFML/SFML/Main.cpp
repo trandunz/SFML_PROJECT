@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
+#include <iostream>
 #include "Player.h"
 
 namespace Utils
@@ -14,6 +15,9 @@ sf::RenderWindow* m_rRenderWindow;
 sf::CircleShape Brush;
 bool redraw;
 
+Player* pPlayer;
+
+void Start();
 void Update();
 
 int main()
@@ -25,26 +29,34 @@ int main()
     settings.antialiasingLevel = 8;
 
     m_rRenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
-    Brush = sf::CircleShape(1.0f);
+	sf::CircleShape* Brush = new sf::CircleShape(1.0f);
     clClock = sf::Clock();
-    Brush.setFillColor(sf::Color::White);
-    Brush.setOrigin(sf::Vector2f(0.0f, 0.0f));
-    Brush.setPosition(200.0f, 200.0f);
-
-    Player* pPlayer = new Player(m_rRenderWindow);
-    Update();
-
+	
+	/*Start();*/
+    pPlayer = new Player(m_rRenderWindow);
+	
     m_rRenderWindow = nullptr;
+	Brush = nullptr;
+	pPlayer = nullptr;
 
 
     return 0;
+}
+
+void Start()
+{
+	Brush.setFillColor(sf::Color::White);
+	Brush.setRadius(30.0f);
+	Brush.setOrigin(sf::Vector2f(0.0f, 0.0f));
+	Brush.setPosition(10.0f, 10.0f);
+	Update();
 }
 
 void Update()
 {
     while (m_rRenderWindow->isOpen())
     {
-
+		std::cout << "Brush Drawn" << std::endl;
         if (clClock.getElapsedTime().asSeconds() >= 1.0f / m_fFPS)
         {
             redraw = true; //We're ready to redraw everything
@@ -66,8 +78,17 @@ void Update()
         if (redraw)
         {
             redraw = false;
-            m_rRenderWindow->draw(Brush);
-            m_rRenderWindow->display();
+			m_rRenderWindow->clear();
+			/*m_rRenderWindow->draw(pPlayer->m_oPlayerBody);*/
+			m_rRenderWindow->draw(Brush);
+			std::cout << "Brush Drawn" << std::endl;
+			m_rRenderWindow->display();
         }
     }
+}
+
+void Render(sf::RenderWindow* _renderWindow)
+{
+	_renderWindow->clear();
+	_renderWindow->display();
 }
