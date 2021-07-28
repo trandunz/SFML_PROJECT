@@ -1,6 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
 
+namespace Utils
+{
+    int WINDOWHEIGHT = 400;
+    int WINDOWWIDTH = 400;
+}
+
+
 int main()
 {
     HWND hwnd = GetConsoleWindow();
@@ -9,7 +16,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
     
 
     sf::CircleShape circle(100.f); // circle
@@ -38,4 +45,9 @@ int main()
     }
 
     return 0;
+}
+ 
+void Render()
+{
+
 }
