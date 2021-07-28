@@ -1,7 +1,7 @@
-﻿  Player.cpp
+﻿  Main.cpp
   Generating code
-  4 of 34 functions (11.8%) were compiled, the rest were copied from previous compilation.
+  0 of 36 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Release\SFML.exe

@@ -1,5 +1,6 @@
 #include <SFML/System/Vector2.hpp>
 #include "Player.h"
+#include <iostream>
 
 Player::Player(sf::RenderWindow* _renderWindow)
 {
@@ -13,16 +14,10 @@ Player::~Player()
 	m_rRenderWindow = nullptr;
 }
 
-void Player::Render()
-{
-	m_rRenderWindow->draw(m_oPlayerBody);
-}
-
 void Player::Start()
 {
     m_oPlayerBody.setFillColor(sf::Color::White);
     m_oPlayerBody.setOrigin(sf::Vector2f(0.0f, 0.0f));
-    redraw = true;
     Update();
 }
 
@@ -30,10 +25,12 @@ void Player::Update()
 {
     while (m_rRenderWindow->isOpen())
     {
+        
         if (clClock.getElapsedTime().asSeconds() >= 1.0f / m_fFPS)
         {
             redraw = true; //We're ready to redraw everything
             m_oPlayerBody.move(Movement());
+            PlayerView();
             clClock.restart();
         }
         else //Sleep until next 1/60th of a second comes around
@@ -46,13 +43,19 @@ void Player::Update()
         while (m_rRenderWindow->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
+
                 m_rRenderWindow->close();
+                
+            }
+                
+            
         }
 
         if (redraw)
         {
             redraw = false;
-            m_rRenderWindow->clear();
+            //m_rRenderWindow->clear();
             m_rRenderWindow->draw(m_oPlayerBody);
             m_rRenderWindow->display();
         }
@@ -73,15 +76,22 @@ sf::Vector2f Player::Movement()
     {
         return(sf::Vector2f(1.0f, 0.0f));
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) //Move Left
     {
         return(sf::Vector2f(-1.0f, 1.0f));
+    }
+    else
+    {
+        return(sf::Vector2f(0.0f, 0.0f));
     }
 }
 
 sf::View Player::PlayerView()
 {
-    sf::View PlayerView(m_oPlayerBody.getPosition(), sf::Vector2f(500.f, 500.f));
+    sf::View PlayerView(m_oPlayerBody.getPosition(), sf::Vector2f(1000.f, 1000.f));
+    std::cout << m_oPlayerBody.getPosition().x << std::endl;
+    std::cout << m_oPlayerBody.getPosition().y << std::endl;
     m_rRenderWindow->setView(PlayerView);
     return PlayerView;
 }

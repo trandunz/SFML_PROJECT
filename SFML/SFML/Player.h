@@ -5,7 +5,6 @@ class Player
 public:
 	Player(sf::RenderWindow* _renderWindow);
 	~Player();
-	void Render();
 	void Start();
 	void Update();
 	sf::Vector2f Movement();
