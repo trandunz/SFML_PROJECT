@@ -13,9 +13,14 @@ public:
 	~CEnemy();
 
 	void Start();
-	void Movement(sf::Vector2f _spawnPosition);
+	void Update();
+
+	sf::Vector2f Movement(sf::Vector2f _spawnPosition);
+	void LookAt(sf::Sprite _Entity);
 
 	void Render();
+
+	sf::Sprite m_vTarget;
 
 private:
 	sf::Sprite m_oBody;

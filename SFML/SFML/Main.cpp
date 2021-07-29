@@ -12,6 +12,7 @@ namespace Utils
 
 float m_fFPS = 60.0f;
 sf::Clock clClock;
+float DeltaTime;
 sf::RenderWindow* m_rRenderWindow;
 sf::Window* m_wWindow;
 sf::RectangleShape Brush;
@@ -37,6 +38,7 @@ int main()
     m_rRenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
     Brush = sf::RectangleShape(sf::Vector2f(400, 5));
     clClock = sf::Clock();
+    DeltaTime = 0.0f;
     Brush.setFillColor(sf::Color::White);
     Brush.setOrigin(sf::Vector2f(200.0f, 5.0f));
     Brush.setPosition(0.0f, 200.0f);
@@ -78,10 +80,19 @@ void Update()
     while (m_rRenderWindow->isOpen())
     {
         pPlayer->Update();
+        
+        pZombie->Update();
+        pZombie->m_vTarget = pPlayer->GetSprite();
+        pWereWolf->Update();
+        pWereWolf->m_vTarget = pPlayer->GetSprite();
+        pVampire->Update();
+        pVampire->m_vTarget = pPlayer->GetSprite();
         if (clClock.getElapsedTime().asSeconds() >= 1.0f / m_fFPS)
         {
             redraw = true;
+            DeltaTime = clClock.getElapsedTime().asSeconds();
             clClock.restart();
+            DeltaTime = 0.0f;
         }
         else //Sleep until next 1/60th of a second comes around
         {

@@ -120,3 +120,8 @@ sf::View CPlayer::PlayerView()
     std::cout << m_oBody.getPosition().y << std::endl;
     return PlayerView;
 }
+
+sf::Sprite CPlayer::GetSprite()
+{
+    return m_oBody;
+}
