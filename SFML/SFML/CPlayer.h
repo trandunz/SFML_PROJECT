@@ -15,6 +15,7 @@ public:
 	void LookAtMouse();
 
 	sf::View PlayerView();
+	sf::Sprite GetSprite();
 
 private:
 	sf::Sprite m_oBody;

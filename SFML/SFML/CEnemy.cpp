@@ -42,7 +42,7 @@ void CEnemy::Start()
 	case WEREWOLF:
 	{
 		m_sName = ("WEREWOLF");
-		m_fMoveSpeed = 3.0f;
+		m_fMoveSpeed = 1.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/WareWolf.png"))
 		{
@@ -57,7 +57,7 @@ void CEnemy::Start()
 	case ZOMBIE:
 	{
 		m_sName = ("ZOMBIE");
-		m_fMoveSpeed = 3.0f;
+		m_fMoveSpeed = 1.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Zombie.png"))
 		{
@@ -72,7 +72,7 @@ void CEnemy::Start()
 	case VAMPIRE:
 	{
 		m_sName = ("VAMPIRE");
-		m_fMoveSpeed = 3.0f;
+		m_fMoveSpeed = 1.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Vampire.png"))
 		{
@@ -87,7 +87,7 @@ void CEnemy::Start()
 	case HUMAN:
 	{
 		m_sName = ("HUMAN");
-		m_fMoveSpeed = 3.0f;
+		m_fMoveSpeed = 1.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Player.png"))
 		{
@@ -102,7 +102,7 @@ void CEnemy::Start()
 	default:
 	{
 		m_sName = ("DEFAULT");
-		m_fMoveSpeed = 3.0f;
+		m_fMoveSpeed = 1.0f;
 		m_fAttackDamage = 5.0f;
 		return;
 	}
@@ -110,9 +110,34 @@ void CEnemy::Start()
 
 }
 
-void CEnemy::Movement(sf::Vector2f _spawnPosition)
+void CEnemy::Update()
 {
-	m_oBody.setPosition(_spawnPosition);
+	m_oBody.move(Movement(sf::Vector2f(0.0f,0.0f)));
+}
+
+sf::Vector2f CEnemy::Movement(sf::Vector2f _spawnPosition)
+{
+	m_oBody.move(_spawnPosition);
+	/*return(sf::Vector2f(m_fMoveSpeed * cos(m_oBody.getRotation()), m_fMoveSpeed * sin(m_oBody.getRotation())));*/
+	return(sf::Vector2f(m_vTarget.getPosition().x - m_oBody.getPosition().x, m_vTarget.getPosition().y - m_oBody.getPosition().y));
+}
+
+void CEnemy::LookAt(sf::Sprite _Entity)
+{
+	sf::Vector2f curPos = m_oBody.getPosition();
+	sf::Vector2f position = _Entity.getPosition();
+
+	// now we have both the sprite position and the cursor
+	// position lets do the calculation so our sprite will
+	// face the position of the mouse
+	const float PI = 3.1415926f;
+
+	float dx = curPos.x - position.x;
+	float dy = curPos.y - position.y;
+
+	float rotation = (atan2(dy, dx)) * 180 / PI;
+
+	m_oBody.setRotation(rotation);
 }
 
 void CEnemy::Render()
