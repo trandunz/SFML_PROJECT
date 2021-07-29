@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
-#include <iostream>
-#include "Player.h"
+#include "CPlayer.h"
+#include "CEnemy.h"
+#include "CEntity.h"
 
 namespace Utils
 {
@@ -12,12 +13,17 @@ namespace Utils
 float m_fFPS = 60.0f;
 sf::Clock clClock;
 sf::RenderWindow* m_rRenderWindow;
-sf::CircleShape Brush;
+sf::Window* m_wWindow;
+sf::RectangleShape Brush;
+CPlayer* pPlayer;
+CEnemy* pZombie;
+CEnemy* pVampire;
+CEnemy* pWereWolf;
+
 bool redraw;
 
-Player* pPlayer;
-
-void Start();
+void Update();
+void Render();
 void Update();
 
 int main()
@@ -29,37 +35,52 @@ int main()
     settings.antialiasingLevel = 8;
 
     m_rRenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
-	sf::CircleShape* Brush = new sf::CircleShape(1.0f);
+    Brush = sf::RectangleShape(sf::Vector2f(400, 5));
     clClock = sf::Clock();
-	
-	/*Start();*/
-    pPlayer = new Player(m_rRenderWindow);
-	
+    Brush.setFillColor(sf::Color::White);
+    Brush.setOrigin(sf::Vector2f(200.0f, 5.0f));
+    Brush.setPosition(0.0f, 200.0f);
+
+    pPlayer = new CPlayer(m_rRenderWindow);
+    pZombie = new CEnemy(m_rRenderWindow, CEntity::ENTITY_TYPES::ZOMBIE);
+    pVampire = new CEnemy(m_rRenderWindow, CEntity::ENTITY_TYPES::VAMPIRE);
+    pWereWolf = new CEnemy(m_rRenderWindow, CEntity::ENTITY_TYPES::WEREWOLF);
+
+    pZombie->Movement(sf::Vector2f(100.0f, 100.0f));
+    pWereWolf->Movement(sf::Vector2f(-100.0f, 100.0f));
+    pVampire->Movement(sf::Vector2f(100.0f, -100.0f));
+
+    Update();
+
     m_rRenderWindow = nullptr;
-	Brush = nullptr;
-	pPlayer = nullptr;
+    pPlayer = nullptr;
+    pZombie = nullptr;
+    pVampire = nullptr;
+    pWereWolf = nullptr;
+    delete m_rRenderWindow;
+    delete m_wWindow;
+    delete pPlayer;
+    delete pZombie;
+    delete pVampire;
+    delete pWereWolf;
 
-
-    return 0;
+    return (0);
 }
 
-void Start()
+void Render()
 {
-	Brush.setFillColor(sf::Color::White);
-	Brush.setRadius(30.0f);
-	Brush.setOrigin(sf::Vector2f(0.0f, 0.0f));
-	Brush.setPosition(10.0f, 10.0f);
-	Update();
+    m_rRenderWindow->draw(Brush);
+    m_rRenderWindow->display();
 }
 
 void Update()
 {
     while (m_rRenderWindow->isOpen())
     {
-		std::cout << "Brush Drawn" << std::endl;
+        pPlayer->Update();
         if (clClock.getElapsedTime().asSeconds() >= 1.0f / m_fFPS)
         {
-            redraw = true; //We're ready to redraw everything
+            redraw = true;
             clClock.restart();
         }
         else //Sleep until next 1/60th of a second comes around
@@ -72,23 +93,22 @@ void Update()
         while (m_rRenderWindow->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
+
                 m_rRenderWindow->close();
+            }
         }
 
         if (redraw)
         {
             redraw = false;
-			m_rRenderWindow->clear();
-			/*m_rRenderWindow->draw(pPlayer->m_oPlayerBody);*/
-			m_rRenderWindow->draw(Brush);
-			std::cout << "Brush Drawn" << std::endl;
-			m_rRenderWindow->display();
+            m_rRenderWindow->clear();
+            pPlayer->Render();
+            pZombie->Render();
+            pWereWolf->Render();
+            pVampire->Render();
+            Render();
         }
     }
-}
-
-void Render(sf::RenderWindow* _renderWindow)
-{
-	_renderWindow->clear();
-	_renderWindow->display();
+    
 }
