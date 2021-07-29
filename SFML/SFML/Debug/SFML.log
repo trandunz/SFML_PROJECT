@@ -1,9 +1,5 @@
-﻿  CEnemy.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEnemy.h(2,9): warning C4081: expected 'identifier'; found '<'
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
-  Main.cpp
+﻿  Main.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEnemy.h(2,9): warning C4081: expected 'identifier'; found '<'
-  Generating Code...
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Debug\SFML.exe
