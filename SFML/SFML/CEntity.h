@@ -24,6 +24,10 @@ public:
 	virtual void Start();
 	virtual void Update();
 	virtual void Render();
+	virtual bool CheckCollision(sf::Sprite _object);
+
+	sf::Time GetDeltaTime();
+	void SetDeltaTime(sf::Time _deltaTime);
 
 	virtual void Attack();
 	/*sf::Vector2f Movement();*/
@@ -34,6 +38,10 @@ public:
 	sf::CircleShape m_oBody;
 
 protected:
+	sf::Vector2f m_fVelocity;
+	const int BaseMoveSpeed = 50;
+	sf::Vector2f Position;
+	sf::Time DeltaTime;
 	sf::RenderWindow* m_rRenderWindow;
 	float m_fMoveSpeed;
 	float m_fHealth;

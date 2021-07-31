@@ -1,5 +1,6 @@
 #include "CEnemy.h"
 #include <iostream>
+#include "CMath.h"
 
 CEnemy::CEnemy()
 {
@@ -16,6 +17,15 @@ CEnemy::CEnemy(sf::RenderWindow* _renderWindow, ENTITY_TYPES _TYPE)
 {
 	m_eEntityType = _TYPE;
 	m_rRenderWindow = _renderWindow;
+	
+	CEnemy::Start();
+}
+
+CEnemy::CEnemy(sf::RenderWindow* _renderWindow, ENTITY_TYPES _TYPE, sf::Vector2f _spawnPosition)
+{
+	m_eEntityType = _TYPE;
+	m_rRenderWindow = _renderWindow;
+	m_oBody.setPosition(_spawnPosition);
 	CEnemy::Start();
 }
 
@@ -42,7 +52,7 @@ void CEnemy::Start()
 	case WEREWOLF:
 	{
 		m_sName = ("WEREWOLF");
-		m_fMoveSpeed = 1.0f;
+		m_fMoveSpeed = 15.0f + BaseMoveSpeed;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/WareWolf.png"))
 		{
@@ -57,7 +67,7 @@ void CEnemy::Start()
 	case ZOMBIE:
 	{
 		m_sName = ("ZOMBIE");
-		m_fMoveSpeed = 1.0f;
+		m_fMoveSpeed = BaseMoveSpeed - 15.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Zombie.png"))
 		{
@@ -72,7 +82,7 @@ void CEnemy::Start()
 	case VAMPIRE:
 	{
 		m_sName = ("VAMPIRE");
-		m_fMoveSpeed = 1.0f;
+		m_fMoveSpeed = BaseMoveSpeed - 20.0f;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Vampire.png"))
 		{
@@ -87,7 +97,7 @@ void CEnemy::Start()
 	case HUMAN:
 	{
 		m_sName = ("HUMAN");
-		m_fMoveSpeed = 1.0f;
+		m_fMoveSpeed = 25.0f + BaseMoveSpeed;
 		m_fAttackDamage = 5.0f;
 		if (m_tTexture.loadFromFile("Images/Player.png"))
 		{
@@ -102,7 +112,7 @@ void CEnemy::Start()
 	default:
 	{
 		m_sName = ("DEFAULT");
-		m_fMoveSpeed = 1.0f;
+		m_fMoveSpeed = 25.0f + BaseMoveSpeed;
 		m_fAttackDamage = 5.0f;
 		return;
 	}
@@ -112,14 +122,17 @@ void CEnemy::Start()
 
 void CEnemy::Update()
 {
-	m_oBody.move(Movement(sf::Vector2f(0.0f,0.0f)));
+	Position = sf::Vector2f(m_oBody.getPosition().x, m_oBody.getPosition().y);
+	m_oBody.move(Movement(sf::Vector2f(0.0f, 0.0f)) * m_fMoveSpeed * GetDeltaTime().asSeconds());
+	
 }
 
 sf::Vector2f CEnemy::Movement(sf::Vector2f _spawnPosition)
 {
+	Position = sf::Vector2f(m_oBody.getPosition().x, m_oBody.getPosition().y);
 	m_oBody.move(_spawnPosition);
 	/*return(sf::Vector2f(m_fMoveSpeed * cos(m_oBody.getRotation()), m_fMoveSpeed * sin(m_oBody.getRotation())));*/
-	return(sf::Vector2f(m_vTarget.getPosition().x - m_oBody.getPosition().x, m_vTarget.getPosition().y - m_oBody.getPosition().y));
+	return(CMath::Normalize(sf::Vector2f(m_vTarget.getPosition().x - m_oBody.getPosition().x, m_vTarget.getPosition().y - m_oBody.getPosition().y)));
 }
 
 void CEnemy::LookAt(sf::Sprite _Entity)
@@ -143,6 +156,42 @@ void CEnemy::LookAt(sf::Sprite _Entity)
 void CEnemy::Render()
 {
 	m_rRenderWindow->draw(m_oBody);
+}
+
+bool CEnemy::CheckCollision(CPlayer* _object)
+{
+	if (m_oBody.getGlobalBounds().intersects(_object->GetSprite().getGlobalBounds()))
+    {
+        // A collision happened.
+        m_oBody.setPosition(Position);
+		/*_object->TakeDamage(m_fAttackDamage);*/
+        return true;
+    } 
+    else
+    {
+        
+        return false;
+    }
+}
+
+bool CEnemy::CheckCollision(sf::Sprite _object)
+{
+	if (m_oBody.getGlobalBounds().intersects(_object.getGlobalBounds()))
+	{
+		// A collision happened.
+		m_oBody.setPosition(Position);
+		return true;
+	}
+	else
+	{
+
+		return false;
+	}
+}
+
+sf::Sprite CEnemy::GetSprite()
+{
+	return m_oBody;
 }
 
 
