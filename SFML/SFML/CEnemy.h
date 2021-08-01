@@ -22,8 +22,8 @@ public:
 
 	void Render();
 
-	bool CheckCollision(CPlayer* _object);
-	bool CheckCollision(sf::Sprite _object);
+	void CheckCollision(CPlayer* _object);
+	void CheckCollision(sf::Sprite _object);
 
 	sf::Sprite GetSprite();
 

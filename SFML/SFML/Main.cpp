@@ -6,8 +6,8 @@
 
 namespace Utils
 {
-    int WINDOWHEIGHT = 800;
-    int WINDOWWIDTH = 800;
+    int WINDOWHEIGHT = 1000;
+    int WINDOWWIDTH = 1000;
 }
 
 float m_fFPS = 60.0f;
@@ -27,6 +27,7 @@ sf::Sprite Terrain;
 sf::Vector2f TerrainExtents = sf::Vector2f(1000.0f, 1000.0f);
 
 bool redraw;
+bool RestrictMouseCursor;
 
 void Update();
 void Render();
@@ -53,8 +54,11 @@ int main()
     TerrainTexture.setSmooth(true);
     Terrain.setTextureRect(sf::IntRect(sf::Vector2i(0.0f, 0.0f), (sf::Vector2i)TerrainExtents));
     Terrain.setOrigin(Terrain.getGlobalBounds().width / 2, Terrain.getGlobalBounds().height / 2);
-    
+
     m_rRenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
+    RestrictMouseCursor = true;
+    m_rRenderWindow->setMouseCursorGrabbed(RestrictMouseCursor);
+    
     m_rRenderWindow->setFramerateLimit(60.0f);
     Brush = sf::RectangleShape(sf::Vector2f(1000, 5));
     clClock = sf::Clock();
@@ -123,19 +127,15 @@ void Update()
             sleep(sleepTime);
         }
        
-        if (pPlayer->HealthCheck() && pPlayer != nullptr)
-        {
-            pPlayer->SetDeltaTime(DeltaTime);
-            pPlayer->CheckCollision(Brush);
-            pPlayer->CheckCollision(pVampire->GetSprite());
-            pPlayer->CheckCollision(pZombie->GetSprite());
-            pPlayer->CheckCollision(pWereWolf->GetSprite());
-            pPlayer->Update();
-        }
-        else
-        {
-            delete pPlayer;
-        }
+            
+            
+        pPlayer->SetDeltaTime(DeltaTime);
+        pPlayer->Update();
+
+        pPlayer->CheckCollision(Brush);
+        pPlayer->CheckCollision(pVampire->GetSprite());
+        pPlayer->CheckCollision(pZombie->GetSprite());
+        pPlayer->CheckCollision(pWereWolf->GetSprite());
 
         pZombie->SetDeltaTime(DeltaTime);
         pWereWolf->SetDeltaTime(DeltaTime);
@@ -143,15 +143,15 @@ void Update()
         
 
         
+        
         pZombie->Update();
         pWereWolf->Update();
         pVampire->Update();
-
         
 
-        pVampire->CheckCollision(pPlayer);
-        pZombie->CheckCollision(pPlayer);
-        pWereWolf->CheckCollision(pPlayer);
+        pVampire->CheckCollision(pPlayer->GetSprite());
+        pZombie->CheckCollision(pPlayer->GetSprite());
+        pWereWolf->CheckCollision(pPlayer->GetSprite());
 
         pVampire->CheckCollision(pZombie->GetSprite());
         pZombie->CheckCollision(pVampire->GetSprite());
@@ -164,6 +164,8 @@ void Update()
         pVampire->m_vTarget = pPlayer->GetSprite();
         pZombie->m_vTarget = pPlayer->GetSprite();
         pWereWolf->m_vTarget = pPlayer->GetSprite();
+
+       
 
         sf::Event event;
         while (m_rRenderWindow->pollEvent(event))
@@ -182,6 +184,12 @@ void Update()
             Render();
             
             
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        {
+            RestrictMouseCursor = !RestrictMouseCursor;
+            m_rRenderWindow->setMouseCursorGrabbed(RestrictMouseCursor);
         }
     }
     

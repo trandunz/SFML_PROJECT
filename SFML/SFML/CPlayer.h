@@ -12,17 +12,22 @@ public:
 	void Start();
 	void Update();
 	void Render();
-	bool CheckCollision(sf::RectangleShape _object);
-	bool CheckCollision(sf::Sprite _object);
+	void CheckCollision(sf::RectangleShape _object);
+	void CheckCollision(sf::Sprite _object);
 	void Movement();
 	void LookAtMouse();
 
 	bool HealthCheck();
+	void SetMousePosition(sf::Vector2f _position);
+	sf::Vector2f GetMousePosition();
 
 	sf::View PlayerView();
 	sf::Sprite GetSprite();
 
 private:
+	CItem* m_CurrentItem;
+	CItem* m_CurrentShield;
+	sf::Vector2f m_vMousePosition;
 	sf::Sprite m_oBody;
 };
 

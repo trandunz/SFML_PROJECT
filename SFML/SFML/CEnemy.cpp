@@ -62,7 +62,7 @@ void CEnemy::Start()
 		m_oBody.setTexture(m_tTexture);
 		m_oBody.setOrigin(m_oBody.getGlobalBounds().width / 2, m_oBody.getGlobalBounds().height / 2);
 		m_oBody.setScale(0.5f, 0.5f);
-		return;
+		break;
 	}
 	case ZOMBIE:
 	{
@@ -77,7 +77,7 @@ void CEnemy::Start()
 		m_oBody.setTexture(m_tTexture);
 		m_oBody.setOrigin(m_oBody.getGlobalBounds().width / 2, m_oBody.getGlobalBounds().height / 2);
 		m_oBody.setScale(0.5f, 0.5f);
-		return;
+		break;
 	}
 	case VAMPIRE:
 	{
@@ -92,7 +92,7 @@ void CEnemy::Start()
 		m_oBody.setTexture(m_tTexture);
 		m_oBody.setOrigin(m_oBody.getGlobalBounds().width / 2, m_oBody.getGlobalBounds().height / 2);
 		m_oBody.setScale(0.5f, 0.5f);
-		return;
+		break;
 	}
 	case HUMAN:
 	{
@@ -107,23 +107,24 @@ void CEnemy::Start()
 		m_oBody.setTexture(m_tTexture);
 		m_oBody.setOrigin(m_oBody.getGlobalBounds().width / 2, m_oBody.getGlobalBounds().height / 2);
 		m_oBody.setScale(0.5f, 0.5f);
-		return;
+		break;
 	}
 	default:
 	{
 		m_sName = ("DEFAULT");
 		m_fMoveSpeed = 25.0f + BaseMoveSpeed;
 		m_fAttackDamage = 5.0f;
-		return;
+		break;
 	}
 	}
-
+	m_fCurrentMoveSpeed = m_fMoveSpeed;
 }
 
 void CEnemy::Update()
 {
-	Position = sf::Vector2f(m_oBody.getPosition().x, m_oBody.getPosition().y);
-	m_oBody.move(Movement(sf::Vector2f(0.0f, 0.0f)) * m_fMoveSpeed * GetDeltaTime().asSeconds());
+	TempPosition = Position;
+	Movement(sf::Vector2f(0.0f, 0.0f));
+	m_oBody.move(m_fVelocity * m_fCurrentMoveSpeed * GetDeltaTime().asSeconds());
 	
 }
 
@@ -131,8 +132,94 @@ sf::Vector2f CEnemy::Movement(sf::Vector2f _spawnPosition)
 {
 	Position = sf::Vector2f(m_oBody.getPosition().x, m_oBody.getPosition().y);
 	m_oBody.move(_spawnPosition);
-	/*return(sf::Vector2f(m_fMoveSpeed * cos(m_oBody.getRotation()), m_fMoveSpeed * sin(m_oBody.getRotation())));*/
-	return(CMath::Normalize(sf::Vector2f(m_vTarget.getPosition().x - m_oBody.getPosition().x, m_vTarget.getPosition().y - m_oBody.getPosition().y)));
+	m_fVelocity = CMath::Normalize(sf::Vector2f(m_vTarget.getPosition().x - m_oBody.getPosition().x, m_vTarget.getPosition().y - m_oBody.getPosition().y));
+	if (m_fVelocity.y > 0.5)
+	{
+		// moving left
+		if (m_eEntityType == ZOMBIE)
+		{
+			m_tTexture.loadFromFile("Images/Zombie.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == VAMPIRE)
+		{
+			m_tTexture.loadFromFile("Images/Vampire.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == WEREWOLF)
+		{
+			m_tTexture.loadFromFile("Images/WareWolf.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+
+	}
+	if (m_fVelocity.y < -0.5)
+	{
+		// moving left
+		if (m_eEntityType == ZOMBIE)
+		{
+			m_tTexture.loadFromFile("Images/ZombieBack.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == VAMPIRE)
+		{
+			m_tTexture.loadFromFile("Images/VampireBack.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == WEREWOLF)
+		{
+			m_tTexture.loadFromFile("Images/WareWolfBack.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+
+	}
+	
+	if (m_fVelocity.x < -0.5)
+	{
+		// moving left
+		if (m_eEntityType == ZOMBIE)
+		{
+			m_tTexture.loadFromFile("Images/ZombieSideProfile.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == VAMPIRE)
+		{
+			m_tTexture.loadFromFile("Images/VampireSideProfile.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == WEREWOLF)
+		{
+			m_tTexture.loadFromFile("Images/WareWolfSideProfile.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		
+	}
+	if (m_fVelocity.x > 0.5)
+	{
+		// moving left
+		if (m_eEntityType == ZOMBIE)
+		{
+			m_tTexture.loadFromFile("Images/ZombieSideProfile2.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == VAMPIRE)
+		{
+			m_tTexture.loadFromFile("Images/VampireSideProfile2.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+		else if (m_eEntityType == WEREWOLF)
+		{
+			m_tTexture.loadFromFile("Images/WareWolfSideProfile2.png");
+			m_oBody.setTexture(m_tTexture);
+		}
+
+	}
+	
+
+	/*std::cout << m_fVelocity.x << std::endl;
+	std::cout << m_fVelocity.y << std::endl;*/
+
+	return(m_fVelocity);
 }
 
 void CEnemy::LookAt(sf::Sprite _Entity)
@@ -158,35 +245,48 @@ void CEnemy::Render()
 	m_rRenderWindow->draw(m_oBody);
 }
 
-bool CEnemy::CheckCollision(CPlayer* _object)
+void CEnemy::CheckCollision(CPlayer* _object)
 {
 	if (m_oBody.getGlobalBounds().intersects(_object->GetSprite().getGlobalBounds()))
-    {
-        // A collision happened.
-        m_oBody.setPosition(Position);
-		/*_object->TakeDamage(m_fAttackDamage);*/
-        return true;
-    } 
-    else
-    {
-        
-        return false;
-    }
-}
-
-bool CEnemy::CheckCollision(sf::Sprite _object)
-{
-	if (m_oBody.getGlobalBounds().intersects(_object.getGlobalBounds()))
 	{
-		// A collision happened.
-		m_oBody.setPosition(Position);
-		return true;
+		m_oBody.setPosition(TempPosition);
+	}
+	/*sf::FloatRect overlap;
+	if (m_oBody.getGlobalBounds().intersects(_object->GetSprite().getGlobalBounds(), overlap))
+	{
+		m_fCurrentMoveSpeed = 0.0f;
+		auto collisionNormal = m_oBody.getPosition() - _object->GetSprite().getPosition();
+		auto manifold = getManifold(overlap, collisionNormal);
+		resolveCollision(manifold);
 	}
 	else
 	{
+		m_fCurrentMoveSpeed = m_fMoveSpeed;
+	}*/
+}
 
-		return false;
+void CEnemy::CheckCollision(sf::Sprite _object)
+{
+	if(m_oBody.getGlobalBounds().intersects(_object.getGlobalBounds()))
+	{
+		m_oBody.setPosition(TempPosition);
 	}
+	/*sf::FloatRect overlap;
+	if (m_oBody.getGlobalBounds().intersects(_object.getGlobalBounds(), overlap))
+	{
+		m_fCurrentMoveSpeed = 0.0f;
+		
+		auto collisionNormal = m_oBody.getPosition() - _object.getPosition();
+		
+		auto manifold = getManifold(overlap, collisionNormal);
+		m_oBody.setPosition(Position);
+		resolveCollision(manifold);
+		
+	}
+	else
+	{
+		m_fCurrentMoveSpeed = m_fMoveSpeed;
+	}*/
 }
 
 sf::Sprite CEnemy::GetSprite()
