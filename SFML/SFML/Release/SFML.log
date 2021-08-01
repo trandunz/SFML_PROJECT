@@ -1,17 +1,38 @@
-﻿  CEnemy.cpp
+﻿  CCollider.cpp
+  CEnemy.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEnemy.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.h(2,9): warning C4081: expected 'identifier'; found '<'
   CEntity.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
+  CItem.cpp
+  CMath.cpp
   Main.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEnemy.h(2,9): warning C4081: expected 'identifier'; found '<'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(55,59): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(55,53): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(62,40): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   CPlayer.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.h(2,9): warning C4081: expected 'identifier'; found '<'
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CEntity.h(2,9): warning C4081: expected 'identifier'; found '<'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(79,89): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(230,151): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(244,152): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(258,155): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(271,152): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPlayer.cpp(284,152): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 114 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 153 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Release\SFML.exe
