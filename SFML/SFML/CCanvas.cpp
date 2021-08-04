@@ -36,7 +36,20 @@ void CCanvas::Render()
 	m_RenderWindow->draw(m_Canvas);
 }
 
-void CCanvas::Zoom()
+void CCanvas::ZoomIn()
 {
-	m_Canvas.scale(-1.0f, 1.0f);
+	if (m_Canvas.getScale().x >= 1 && m_Canvas.getScale().y >= 1)
+	{
+		m_Canvas.setScale(sf::Vector2f(m_Canvas.getScale().x + 1.0f, m_Canvas.getScale().y + 1.0f));
+	}
+	
+}
+
+void CCanvas::ZoomOut()
+{
+	if (m_Canvas.getScale().x > 1 && m_Canvas.getScale().y > 1)
+	{
+		m_Canvas.setScale(sf::Vector2f(m_Canvas.getScale().x - 1.0f, m_Canvas.getScale().y - 1.0f));
+	}
+	
 }

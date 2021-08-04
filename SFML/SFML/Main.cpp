@@ -9,6 +9,7 @@ namespace Utils
 }
 
 void CentreCanvas();
+sf::View SetViewToCanvas();
 void Start();
 void Update();
 void Render();
@@ -45,6 +46,7 @@ void Update()
 {
 	while (m_RenderWindow->isOpen())
 	{
+		CentreCanvas();
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event))
 		{
@@ -56,11 +58,20 @@ void Update()
 			{
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
-					m_Canvas->Zoom();
-					std::cout << "wheel type: vertical" << std::endl;
+					if (event.mouseWheelScroll.delta >= 1)
+					{\
+						std::cout << "zoom In" << std::endl;
+						m_Canvas->ZoomIn();
+					}
+					else if (event.mouseWheelScroll.delta <= -1)
+					{
+						std::cout << "zoom out" << std::endl;
+						m_Canvas->ZoomOut();
+					}
+
+					
+					
 				}
-				std::cout << "wheel movement: " << event.mouseWheelScroll.delta << std::endl;
-				std::cout << "mouse y: " << event.mouseWheelScroll.y << std::endl;
 			}
 				
 		}
@@ -80,9 +91,11 @@ void Render()
 
 void CentreCanvas()
 {
-	
-	sf::View view1;
-	view1.setSize(1200.f, 800.f);
-	view1.setCenter(m_Canvas->m_Canvas.getPosition());
-	m_RenderWindow->setView(view1);
+	m_RenderWindow->setView(SetViewToCanvas());
+}
+
+sf::View SetViewToCanvas()
+{
+	sf::View CanvasView(m_Canvas->m_Canvas.getPosition(), sf::Vector2f(500.f, 500.f));
+	return CanvasView;
 }

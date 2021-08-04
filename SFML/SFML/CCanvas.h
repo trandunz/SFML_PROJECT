@@ -16,7 +16,8 @@ public:
 	void Update();
 	void Render();
 
-	void Zoom();
+	void ZoomIn();
+	void ZoomOut();
 
 private:
 	sf::RenderWindow* m_RenderWindow;
