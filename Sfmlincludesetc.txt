@@ -1,0 +1,6 @@
+WorkingDirectory $(SolutionDir)
+$(ProjectDir)include;%(AdditionalIncludeDirectories)
+SFML_DYNAMIC;
+$(ProjectDir)lib;%(AdditionalLibraryDirectories)
+opengl32.lib;winmm.lib;gdi32.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)
+opengl32.lib;winmm.lib;gdi32.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies)
