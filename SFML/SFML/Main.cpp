@@ -13,6 +13,7 @@ sf::View SetViewToCanvas();
 void Start();
 void Update();
 void Render();
+void scaleToFit();
 
 sf::RenderWindow* m_RenderWindow;
 CCanvas* m_Canvas;
@@ -27,7 +28,7 @@ int main()
 
     m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
 	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(100.0f,100.0f));
-	Update();
+	Start();
 
 	delete m_Canvas;
 	delete m_RenderWindow;
@@ -46,7 +47,6 @@ void Update()
 {
 	while (m_RenderWindow->isOpen())
 	{
-		CentreCanvas();
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event))
 		{
@@ -54,12 +54,18 @@ void Update()
 			{
 				m_RenderWindow->close();
 			}
+			else if (event.type == sf::Event::Resized)
+			{
+				m_RenderWindow->setView(sf::View(sf::FloatRect(0.f, 0.f, m_RenderWindow->getSize().x, m_RenderWindow->getSize().y)));
+				sf::Vector2f worldPos = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_Canvas->m_Canvas.getPosition()));
+				CentreCanvas();
+			}
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
 					if (event.mouseWheelScroll.delta >= 1)
-					{\
+					{
 						std::cout << "zoom In" << std::endl;
 						m_Canvas->ZoomIn();
 					}
@@ -69,16 +75,15 @@ void Update()
 						m_Canvas->ZoomOut();
 					}
 
-					
-					
+
+
 				}
 			}
-				
-		}
 
-		m_Canvas->Update();
-		Render();
-		
+
+			m_Canvas->Update();
+			Render();
+		}
 	}
 }
 
@@ -91,7 +96,7 @@ void Render()
 
 void CentreCanvas()
 {
-	m_RenderWindow->setView(SetViewToCanvas());
+	m_Canvas->m_Canvas.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);
 }
 
 sf::View SetViewToCanvas()
