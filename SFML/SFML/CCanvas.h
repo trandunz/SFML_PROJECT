@@ -6,20 +6,23 @@ class CCanvas
 public:
 	sf::Vector2f m_Size;
 	sf::RectangleShape m_Canvas;
-
+	sf::Sprite m_BackGround;
+	sf::Texture m_BGTexture;
+	
+	CCanvas();
 	CCanvas(sf::RenderWindow* _window, sf::Vector2f _size);
-	~CCanvas();
+	virtual ~CCanvas();
 	void SetRenderWindow(sf::RenderWindow*);
 	sf::RenderWindow* GetRenderWindow();
 
 	void Start();
 	void Update();
-	void Render();
+	virtual void Render();
 
 	void ZoomIn();
 	void ZoomOut();
 
-private:
+protected:
 	sf::RenderWindow* m_RenderWindow;
 };
 

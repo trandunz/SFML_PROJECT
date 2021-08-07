@@ -21,9 +21,15 @@
     <ClCompile Include="CCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CBrush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCanvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
