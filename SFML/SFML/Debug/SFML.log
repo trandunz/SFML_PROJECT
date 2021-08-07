@@ -1,12 +1,2 @@
-﻿  CBrush.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(51,82): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(51,49): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
+﻿  Main.cpp
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Debug\SFML.exe

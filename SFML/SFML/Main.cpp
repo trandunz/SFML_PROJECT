@@ -6,11 +6,12 @@
 
 namespace Utils
 {
-    int WINDOWHEIGHT = 400;
-    int WINDOWWIDTH = 400;
+    int WINDOWHEIGHT = 800;
+    int WINDOWWIDTH = 800;
 }
 
 void CentreCanvas();
+void CenterBrush();
 sf::View SetViewToCanvas();
 void Start();
 void Update();
@@ -48,7 +49,9 @@ int main()
 
 void Start()
 {
+	SetViewToCanvas();
 	CentreCanvas();
+	Render();
 }
  
 void Update()
@@ -74,19 +77,19 @@ void Update()
 			// Resizing
 			else if (event.type == sf::Event::Resized)
 			{
-				m_RenderWindow->setView(sf::View(sf::FloatRect(0.f, 0.f, m_RenderWindow->getSize().x, m_RenderWindow->getSize().y)));
+				
 				sf::Vector2f worldPos = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_Canvas->m_Canvas.getPosition()));
 				sf::Vector2f worldPosB = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_Canvas->m_BackGround.getPosition()));
 				
-				CentreCanvas();
 				Render();
 			}
 
 			// Left Mouse
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				m_Brush->PaintBrush();
+				
 				Render();
+				m_Brush->PaintBrush();
 			}
 
 			// Canvas Zoom
@@ -135,8 +138,14 @@ void Render()
 
 void CentreCanvas()
 {
-	m_Canvas->m_Canvas.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);
-	m_Canvas->m_BackGround.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);
+	/*m_Canvas->m_Canvas.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);
+	m_Canvas->m_BackGround.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);*/
+	CenterBrush();
+}
+
+void CenterBrush()
+{
+	m_Brush->FitToCanvas();
 }
 
 void FillBackGround()
@@ -146,7 +155,8 @@ void FillBackGround()
 
 sf::View SetViewToCanvas()
 {
-	sf::View CanvasView(m_Canvas->m_Canvas.getPosition(), sf::Vector2f(500.f, 500.f));
+	sf::View CanvasView(m_Canvas->m_Canvas.getPosition(), sf::Vector2f(0.0f, 0.0f));
+	CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
 	return CanvasView;
 }
 

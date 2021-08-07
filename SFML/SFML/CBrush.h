@@ -11,12 +11,14 @@ public:
 	void Render();
 	void Update();
 	void PaintBrush();
+	void SetMousePosition(sf::Vector2f Position);
 
 	void FitToCanvas();
 
 	void Undo();
 
 private:
+	sf::Vector2f m_vMousePosition;
 	CCanvas* m_Canvas;
 	sf::RenderWindow* m_RenderWindow;
 };

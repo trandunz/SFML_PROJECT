@@ -12,9 +12,11 @@ CCanvas::CCanvas(sf::RenderWindow* _window, sf::Vector2f _size)
 	m_BackGround.setTexture(m_BGTexture);
 	m_BackGround.setOrigin(m_BackGround.getGlobalBounds().width / 2, m_BackGround.getGlobalBounds().height / 2);
 	m_BackGround.setScale(_size.x / m_BackGround.getScale().x, _size.y / m_BackGround.getScale().y);
+	m_BackGround.setPosition(0.0f, 0.0f);
 	m_Canvas.setSize(_size);
 	m_Canvas.setOrigin(m_Canvas.getGlobalBounds().width / 2, m_Canvas.getGlobalBounds().height / 2);
 	m_Canvas.setFillColor(sf::Color::White);
+	m_Canvas.setPosition(0.0f, 0.0f);
 }
 
 CCanvas::~CCanvas()
@@ -38,6 +40,8 @@ void CCanvas::Start()
 
 void CCanvas::Update()
 {
+	std::cout << m_Canvas.getPosition().x << std::endl;
+	std::cout << m_Canvas.getPosition().y << std::endl;
 }
 
 void CCanvas::Render()
@@ -57,6 +61,7 @@ void CCanvas::ZoomIn()
 		}
 		else
 		{
+			
 			m_Canvas.setScale(sf::Vector2f(m_Canvas.getScale().x + 1.0f, m_Canvas.getScale().y + 1.0f));
 		}
 		

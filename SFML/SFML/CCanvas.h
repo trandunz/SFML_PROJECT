@@ -11,7 +11,7 @@ public:
 	
 	CCanvas();
 	CCanvas(sf::RenderWindow* _window, sf::Vector2f _size);
-	virtual ~CCanvas();
+	~CCanvas();
 	void SetRenderWindow(sf::RenderWindow*);
 	sf::RenderWindow* GetRenderWindow();
 
