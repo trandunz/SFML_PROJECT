@@ -13,8 +13,6 @@ public:
 	void PaintBrush();
 	void SetMousePosition(sf::Vector2f Position);
 
-	void FitToCanvas();
-
 	void Undo();
 
 private:

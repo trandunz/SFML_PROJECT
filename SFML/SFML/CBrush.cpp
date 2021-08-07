@@ -27,17 +27,16 @@ void CBrush::Render()
 
 void CBrush::Update()
 {
-	/*FitToCanvas();*/
 }
 
 void CBrush::PaintBrush()
 {
 	sf::Vector2i pixelPos = sf::Mouse::getPosition((*m_RenderWindow));
 	SetMousePosition(m_RenderWindow->mapPixelToCoords(pixelPos));
-	m_vMousePosition -= sf::Vector2f(m_RenderWindow->getSize().x/2, m_RenderWindow->getSize().y/2);
-	
+	std::cout << m_vMousePosition.x << std::endl;
+	std::cout << m_vMousePosition.y << std::endl;
 
-	if (m_Canvas->m_Canvas.getGlobalBounds().contains(m_vMousePosition))
+	if (m_Canvas->m_Canvas.getGlobalBounds().contains(sf::Vector2f(m_vMousePosition.x, m_vMousePosition.y)))
 	{
 		int r = 255;
 		int g = 0;
@@ -45,17 +44,13 @@ void CBrush::PaintBrush()
 
 		sf::CircleShape stroke(2);
 		stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-		stroke.setPosition(m_Canvas->m_Canvas.getPosition());
 		stroke.setFillColor(sf::Color(r, g, b));
-		/*stroke.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);*/
+		stroke.setPosition(m_vMousePosition);
 		
 		/*std::cout << stroke.getPosition().x << std::endl;
 		std::cout << stroke.getPosition().y << std::endl;*/
 		PaintedBrushList.push_front(stroke);
 	}
-	
-
-	
 }
 
 void CBrush::SetMousePosition(sf::Vector2f Position)
@@ -63,20 +58,11 @@ void CBrush::SetMousePosition(sf::Vector2f Position)
 	m_vMousePosition = Position;
 }
 
-void CBrush::FitToCanvas()
-{
-	for (sf::CircleShape& stroke : PaintedBrushList)
-	{
-		/*stroke.setScale(sf::Vector2f(m_Canvas->m_Canvas.getScale().x / stroke.getScale().x, m_Canvas->m_Canvas.getScale().y / stroke.getScale().y));*/
-		stroke.setPosition(m_RenderWindow->getSize().x / 2, m_RenderWindow->getSize().y / 2);
-	}
-	
-}
-
 void CBrush::Undo()
 {
-	while (PaintedBrushList.size() > 0)
+	if (PaintedBrushList.size() > 0)
 	{
 		PaintedBrushList.pop_front();
 	}
+	
 }

@@ -19,9 +19,6 @@ public:
 	void Update();
 	virtual void Render();
 
-	void ZoomIn();
-	void ZoomOut();
-
 protected:
 	sf::RenderWindow* m_RenderWindow;
 };

@@ -40,8 +40,8 @@ void CCanvas::Start()
 
 void CCanvas::Update()
 {
-	std::cout << m_Canvas.getPosition().x << std::endl;
-	std::cout << m_Canvas.getPosition().y << std::endl;
+	/*std::cout << m_Canvas.getPosition().x << std::endl;
+	std::cout << m_Canvas.getPosition().y << std::endl;*/
 }
 
 void CCanvas::Render()
@@ -50,39 +50,3 @@ void CCanvas::Render()
 	m_RenderWindow->draw(m_Canvas);
 	
 }
-
-void CCanvas::ZoomIn()
-{
-	if (m_Canvas.getScale().x >= 1 && m_Canvas.getScale().y >= 1)
-	{
-		if (m_Canvas.getGlobalBounds().width > m_RenderWindow->getSize().x || m_Canvas.getGlobalBounds().height > m_RenderWindow->getSize().y)
-		{
-
-		}
-		else
-		{
-			
-			m_Canvas.setScale(sf::Vector2f(m_Canvas.getScale().x + 1.0f, m_Canvas.getScale().y + 1.0f));
-		}
-		
-	}
-
-}
-
-void CCanvas::ZoomOut()
-{
-	if (m_Canvas.getScale().x > 1 && m_Canvas.getScale().y > 1)
-	{
-		if (m_Canvas.getScale().x > m_RenderWindow->getSize().x || m_Canvas.getScale().y > m_RenderWindow->getSize().y)
-		{
-
-		}
-		else
-		{
-			m_Canvas.setScale(sf::Vector2f(m_Canvas.getScale().x - 1.0f, m_Canvas.getScale().y - 1.0f));
-		}
-		
-	}
-	
-}
-
