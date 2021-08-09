@@ -7,8 +7,8 @@
 
 namespace Utils
 {
-    int WINDOWHEIGHT = 1080;
-    int WINDOWWIDTH = 1920;
+    int WINDOWHEIGHT = 720;
+    int WINDOWWIDTH = 1280;
 }
 sf::View SetViewToCanvas();
 void Start();
@@ -60,7 +60,7 @@ void Start()
 	m_Brush->m_BushSize = 4;
 	m_Brush->m_SideCount = 12;
 	m_Brush->m_Rotation = 0.0f;
-	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
+	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
 	m_ButtonTest->SetPosition((m_RenderWindow->getViewport(m_RenderWindow->getView()).width/2) - m_ButtonTest->Sprite.getGlobalBounds().width/2, (m_RenderWindow->getViewport(m_RenderWindow->getView()).height / 2) - m_ButtonTest->Sprite.getGlobalBounds().height/2);
 	Render();
 }
