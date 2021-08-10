@@ -90,7 +90,7 @@ void Update()
 			}
 
 			// Resizing
-			else if (event.type == sf::Event::Resized)
+			if (event.type == sf::Event::Resized)
 			{
 				m_ZoomFactor = 10.0f;
 				CanvasView = sf::View((sf::FloatRect(0.0f, 0.0f, event.size.width / 2, event.size.height / 2)));
