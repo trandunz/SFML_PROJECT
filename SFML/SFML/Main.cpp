@@ -44,6 +44,8 @@ int main()
 
 	Start();
 	Update();
+
+
 	delete m_ButtonTest;
 	delete m_Canvas;
 	delete m_RenderWindow;
@@ -60,7 +62,7 @@ void Start()
 	m_Brush->m_BushSize = 4;
 	m_Brush->m_SideCount = 12;
 	m_Brush->m_Rotation = 0.0f;
-	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
+	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
 	m_ButtonTest->SetPosition((m_RenderWindow->getViewport(m_RenderWindow->getView()).width/2) - m_ButtonTest->Sprite.getGlobalBounds().width/2, (m_RenderWindow->getViewport(m_RenderWindow->getView()).height / 2) - m_ButtonTest->Sprite.getGlobalBounds().height/2);
 	Render();
 }
@@ -127,7 +129,7 @@ void Update()
 						CanvasView.zoom(1 - 0.1);
 						CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
 						m_RenderWindow->setView(CanvasView);
-						//m_ButtonTest->Sprite.setScale(sf::Vector2f(m_ButtonTest->Sprite.getScale().x - m_ButtonTest->Sprite.getScale().x, m_ButtonTest->Sprite.getScale().y - m_ButtonTest->Sprite.getScale().x));
+						/*m_Canvas->m_Canvas.setScale(m_Canvas->m_Canvas.getScale() / )*/
 						m_ZoomFactor++;
 					}
 					else if (event.mouseWheelScroll.delta <= -1 && m_ZoomFactor > 0)
