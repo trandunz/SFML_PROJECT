@@ -14,7 +14,7 @@ public:
 	void Start();
 	void Update();
 	void Render();
-	CButtons* m_ButtonList[1];
+	CButtons* m_ButtonList[5];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
 	sf::RenderWindow* m_UIWindow;

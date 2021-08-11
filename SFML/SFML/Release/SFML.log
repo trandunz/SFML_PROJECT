@@ -1,72 +1,59 @@
-﻿  CBrush.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(50,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(54,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(60,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(64,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(70,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(75,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(81,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(85,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(95,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CBrush.cpp(99,18): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  CButtons.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CButtons.cpp(169,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CButtons.cpp(174,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-  CPopOutMenu.cpp
+﻿  CPopOutMenu.cpp
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(20,23): warning C4154: deletion of an array expression; conversion to pointer supplied
 C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(36,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(41,73): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(50,73): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(41,45): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(50,45): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-  Main.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(93,94): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(93,71): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(119,30): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(128,30): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(183,105): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(51,75): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-          and
-          [
-              T=float
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(183,76): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(51,46): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-          and
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(52,75): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
           [
-              T=float
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(52,46): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(53,81): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(53,48): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(54,75): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(54,46): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
           ]
   Generating code
-  128 of 198 functions (64.6%) were compiled, the rest were copied from previous compilation.
-    6 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+  2 of 198 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Release\SFML.exe

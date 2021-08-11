@@ -12,7 +12,7 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 
 CPopOutMenu::~CPopOutMenu()
 {
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		delete m_ButtonList[i];
 		m_ButtonList[i] = nullptr;
@@ -37,9 +37,26 @@ void CPopOutMenu::Start()
 	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
 
 	CButtons* Brush = new CButtons(m_UIWindow);
+	CButtons* Square = new CButtons(m_UIWindow);
+	CButtons* Circle = new CButtons(m_UIWindow);
+	CButtons* Triangle = new CButtons(m_UIWindow);
+	CButtons* Custom = new CButtons(m_UIWindow);
+
 	Brush->SetLabel("Brush");
-	Brush->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y/2);
+	Square->SetLabel("Square");
+	Circle->SetLabel("Circle");
+	Triangle->SetLabel("Triangle");
+	Custom->SetLabel("Custom");
+	Brush->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y/10);
+	Square->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 4);
+	Circle->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2);
+	Triangle->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2 + m_UIWindow->getSize().y / 4);
+	Custom->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y - m_UIWindow->getSize().y / 10);
 	m_ButtonList[0] = Brush;
+	m_ButtonList[1] = Square;
+	m_ButtonList[2] = Circle;
+	m_ButtonList[3] = Triangle;
+	m_ButtonList[4] = Custom;
 }
 
 void CPopOutMenu::Update()
@@ -55,9 +72,25 @@ void CPopOutMenu::Update()
 			{
 				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
 			}
+			if (m_ButtonList[1]->bIsinBounds(m_ButtonList[1]->GetMousePosition()))
+			{
+				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
+			}
+			if (m_ButtonList[2]->bIsinBounds(m_ButtonList[2]->GetMousePosition()))
+			{
+				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CIRCLE;
+			}
+			if (m_ButtonList[3]->bIsinBounds(m_ButtonList[3]->GetMousePosition()))
+			{
+				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::TRIANGLE;
+			}
+			if (m_ButtonList[4]->bIsinBounds(m_ButtonList[4]->GetMousePosition()))
+			{
+				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
+			}
 		}
 		//// Object Updates
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			m_ButtonList[i]->Update();
 		}
@@ -69,7 +102,7 @@ void CPopOutMenu::Update()
 void CPopOutMenu::Render()
 {
 	m_UIWindow->clear();
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		m_ButtonList[i]->Render();
 	}
