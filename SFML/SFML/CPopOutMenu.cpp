@@ -8,11 +8,14 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	m_RenderWindow = _RenderWindow;
 	m_UIWindow = new sf::RenderWindow(sf::VideoMode(320, 720), "Tools", (sf::Style::Titlebar));
 	m_UIWindow->setFramerateLimit((unsigned)120);
+	
+	InitColourDialogue();
 }
 
 CPopOutMenu::~CPopOutMenu()
 {
-	for (int i = 0; i < 5; i++)
+	// CleanUp
+	for (int i = 0; i < 6; i++)
 	{
 		delete m_ButtonList[i];
 		m_ButtonList[i] = nullptr;
@@ -42,12 +45,14 @@ void CPopOutMenu::Start()
 	CButtons* Triangle = new CButtons(m_UIWindow);
 	CButtons* Custom = new CButtons(m_UIWindow);
 
+	CButtons* Colour = new CButtons(m_UIWindow);
+
 	Brush->SetLabel("Brush");
 	Square->SetLabel("Square");
 	Circle->SetLabel("Circle");
 	Triangle->SetLabel("Triangle");
 	Custom->SetLabel("Custom");
-	Brush->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y/10);
+	Brush->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4, m_UIWindow->getSize().y/10);
 	Square->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 4);
 	Circle->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2);
 	Triangle->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2 + m_UIWindow->getSize().y / 4);
@@ -57,6 +62,10 @@ void CPopOutMenu::Start()
 	m_ButtonList[2] = Circle;
 	m_ButtonList[3] = Triangle;
 	m_ButtonList[4] = Custom;
+
+	Colour->SetLabel("Colour");
+	Colour->SetPosition(m_UIWindow->getSize().x / 4, m_UIWindow->getSize().y / 10);
+	m_ButtonList[5] = Colour;
 }
 
 void CPopOutMenu::Update()
@@ -88,9 +97,19 @@ void CPopOutMenu::Update()
 			{
 				m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
 			}
+			if (m_ButtonList[5]->bIsinBounds(m_ButtonList[5]->GetMousePosition()))
+			{
+				OpenColourDialogue();
+			}
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+		{
+			OpenColourDialogue();
+		}
+
 		//// Object Updates
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			m_ButtonList[i]->Update();
 		}
@@ -102,10 +121,37 @@ void CPopOutMenu::Update()
 void CPopOutMenu::Render()
 {
 	m_UIWindow->clear();
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		m_ButtonList[i]->Render();
 	}
 	
 	m_UIWindow->display();
+}
+
+void CPopOutMenu::InitColourDialogue()
+{
+	// Initialize CHOOSECOLOR
+	hwnd = m_UIWindow->getSystemHandle();
+	ZeroMemory(&cc, sizeof(cc));
+	cc.lStructSize = sizeof(cc);
+	cc.hwndOwner = hwnd;
+	cc.lpCustColors = (LPDWORD)acrCustClr;
+	cc.rgbResult = rgbCurrent;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+}
+
+void CPopOutMenu::OpenColourDialogue()
+{
+	if (ChooseColor(&cc) == TRUE)
+	{
+		cr = cc.rgbResult;
+		sf::Color tempColour;
+		tempColour.r = GetRValue(cr);
+		tempColour.g = GetGValue(cr);
+		tempColour.b = GetBValue(cr);
+		m_Brush->SetActiveColour(tempColour);
+	}
+	
+	/*m_bColourIsOpen = !m_bColourIsOpen;*/
 }

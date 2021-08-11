@@ -49,41 +49,41 @@ void CBrush::PaintBrush()
 		{
 			sf::CircleShape stroke(m_BushSize);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-			stroke.setFillColor(sf::Color(r, g, b));
+			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
 			stroke.rotate(m_Rotation);
-			PaintedBrushList.push_front(stroke);
+			PaintedBrushList.push_back(stroke);
 			break;
 		}
 		case CBrush::TRIANGLE:
 		{
 			sf::CircleShape stroke(m_BushSize, 3);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-			stroke.setFillColor(sf::Color(r, g, b));
+			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
 			stroke.rotate(m_Rotation);
-			PaintedBrushList.push_front(stroke);
+			PaintedBrushList.push_back(stroke);
 			break;
 		}
 		case CBrush::SQUARE:
 		{
 			sf::CircleShape stroke(m_BushSize, 4);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-			stroke.setFillColor(sf::Color(r, g, b));
+			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
 			m_Rotation = 45;
 			stroke.rotate(m_Rotation);
-			PaintedBrushList.push_front(stroke);
+			PaintedBrushList.push_back(stroke);
 			break;
 		}
 		case CBrush::CUSTOM:
 		{
 			sf::CircleShape stroke(m_BushSize, m_SideCount);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-			stroke.setFillColor(sf::Color(r, g, b));
+			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
 			stroke.rotate(m_Rotation);
-			PaintedBrushList.push_front(stroke);
+			PaintedBrushList.push_back(stroke);
 			break;
 		}
 		case CBrush::SPRITE:
@@ -94,10 +94,10 @@ void CBrush::PaintBrush()
 		{
 			sf::CircleShape stroke(m_BushSize);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
-			stroke.setFillColor(sf::Color(r, g, b));
+			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
 			stroke.rotate(m_Rotation);
-			PaintedBrushList.push_front(stroke);
+			PaintedBrushList.push_back(stroke);
 			break;
 		}
 		}
@@ -125,11 +125,16 @@ sf::Vector2f CBrush::GetMousePosition()
 	return m_vMousePosition;
 }
 
+void CBrush::SetActiveColour(sf::Color _Color)
+{
+	m_Colour = _Color;
+}
+
 void CBrush::Undo()
 {
 	if (PaintedBrushList.size() > 0)
 	{
-		PaintedBrushList.pop_front();
+		PaintedBrushList.pop_back();
 	}
 	
 }

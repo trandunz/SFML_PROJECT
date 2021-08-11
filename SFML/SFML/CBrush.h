@@ -26,11 +26,15 @@ public:
 	void SetMousePosition(sf::Vector2f Position);
 	sf::Vector2f GetMousePosition();
 
+	void SetActiveColour(sf::Color _Color);
+
 	void Undo();
 
 	int m_BushSize;
 	int m_Rotation;
 	int m_SideCount;
+
+	sf::Color m_Colour;
 
 private:
 	sf::RenderWindow* m_RenderWindow;

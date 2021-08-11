@@ -69,9 +69,6 @@ void Update()
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event))
 		{
-			
-			/*m_ButtonTest->bIsinBounds(m_ButtonTest->GetMousePosition());*/
-
 			// Undo Brush
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
