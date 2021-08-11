@@ -17,8 +17,6 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 	Sprite.setScale(0.5f, 1.0f);*/
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 	Sprite.setOrigin(sf::Vector2f(Sprite.getGlobalBounds().width / 2, Sprite.getGlobalBounds().height / 2));
-	m_tLabel.setPosition(0.0f, 0.0f);
-	Sprite.setPosition(0.0f, 0.0f);
 	SetLabel(m_Label);
 	
 	m_bIsHovering = false;
@@ -40,6 +38,7 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 
 CButtons::~CButtons()
 {
+	delete m_RenderWindow;
 	m_RenderWindow = nullptr;
 }
 

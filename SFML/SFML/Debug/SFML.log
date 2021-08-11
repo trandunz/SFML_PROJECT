@@ -1,28 +1,41 @@
-﻿  Main.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(78,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(80,83): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(80,54): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(112,94): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+﻿  CButtons.cpp
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CButtons.cpp(169,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(112,71): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CButtons.cpp(174,33): warning C4244: 'return': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(138,30): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(147,30): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,105): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+  CPopOutMenu.cpp
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(20,23): warning C4154: deletion of an array expression; conversion to pointer supplied
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(36,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(41,73): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(41,45): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Main.cpp
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(93,94): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(93,71): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(119,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(128,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(183,105): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=unsigned int
@@ -31,7 +44,7 @@ C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,105): warnin
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,76): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(183,76): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=unsigned int
@@ -40,4 +53,5 @@ C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,76): warning
           [
               T=float
           ]
+  Generating Code...
   SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Debug\SFML.exe

@@ -148,12 +148,14 @@
     <ClCompile Include="CBrush.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CCanvas.cpp" />
+    <ClCompile Include="CPopOutMenu.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBrush.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CCanvas.h" />
+    <ClInclude Include="CPopOutMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
