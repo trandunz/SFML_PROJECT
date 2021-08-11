@@ -13,6 +13,9 @@ void Render();
 
 sf::RenderWindow* m_RenderWindow;
 
+sf::CircleShape circle(100.f); // circle
+sf::RectangleShape square(sf::Vector2f(100, 100)); // square
+
 int main()
 {
 	//WINDOW HANDLE
@@ -26,19 +29,18 @@ int main()
 	//OBJECT CREATION
 	m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
     
-    sf::CircleShape circle(100.f); // circle
-    sf::RectangleShape square(sf::Vector2f(100, 100)); // square
+    
 
     circle.setFillColor(sf::Color::Green);
     circle.setPointCount(100);
     square.setPosition(250, 250);
     circle.setPosition(50, 50);
 
-	//
+	//MAIN STUFF
 	Start();
 	Update();
 
-	// CLEAN UP
+	//CLEAN UP
 	delete m_RenderWindow;
 	m_RenderWindow = nullptr;
 
@@ -75,8 +77,8 @@ void Render()
 	m_RenderWindow->clear();
 
 	// Draw Objects
-	/*m_RenderWindow->draw(circle);
-	m_RenderWindow->draw(square);*/
+	m_RenderWindow->draw(circle);
+	m_RenderWindow->draw(square);
 
 	m_RenderWindow->display();
 }
