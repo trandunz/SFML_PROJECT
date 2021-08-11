@@ -9,18 +9,26 @@ namespace Utils
 {
     int WINDOWHEIGHT = 720;
     int WINDOWWIDTH = 1280;
+
+	int TOOLSHEIGHT = 720;
+	int TOOLDWIDTH = 320;
 }
 sf::View SetViewToCanvas();
 void Start();
 void Update();
 void Render();
+void RenderUI();
 sf::Vector2f GetMousePosition();
 
 sf::RenderWindow* m_RenderWindow;
+sf::RenderWindow* m_UIWindow;
 sf::View CanvasView;
 CCanvas* m_Canvas;
 CBrush* m_Brush;
-CButtons* m_ButtonTest;
+
+CButtons* m_SquareButton;
+//CButtons* m_CircleButton;
+//CButtons* m_TriangleButton;
 
 float m_ZoomFactor;
 
@@ -32,26 +40,32 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "IwPaint.exe", sf::Style::Default, settings);
+    m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "IwPaint.exe", (sf::Style::Default), settings);
+	m_UIWindow = new sf::RenderWindow(sf::VideoMode(Utils::TOOLDWIDTH, Utils::TOOLSHEIGHT), "Tools", (sf::Style::Titlebar), settings);
 	m_RenderWindow->setFramerateLimit((unsigned)120);
 	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(100.0f,100.0f));
 	m_Brush = new CBrush(m_RenderWindow, m_Canvas);
 	m_ZoomFactor = 10;
 
-	m_ButtonTest = new CButtons(m_RenderWindow);
-	m_ButtonTest->SetLabel("Test");
+	m_SquareButton = new CButtons(m_UIWindow);
+	m_SquareButton->SetLabel("Square");
+	//m_CircleButton = new CButtons(m_UIWindow);
+	//m_SquareButton->SetLabel("Circle");
+	//m_TriangleButton = new CButtons(m_UIWindow);
+	//m_TriangleButton->SetLabel("Triangle");
 
 
 	Start();
 	Update();
 
-
-	delete m_ButtonTest;
+	delete m_SquareButton;
 	delete m_Canvas;
 	delete m_RenderWindow;
-	m_ButtonTest = nullptr;
+	delete m_UIWindow;
+	m_SquareButton = nullptr;
 	m_Canvas = nullptr;
 	m_RenderWindow = nullptr;
+	m_UIWindow = nullptr;
 	return 0;
 }
 
@@ -63,7 +77,7 @@ void Start()
 	m_Brush->m_SideCount = 12;
 	m_Brush->m_Rotation = 0.0f;
 	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
-	m_ButtonTest->SetPosition((m_RenderWindow->getViewport(m_RenderWindow->getView()).width/2) - m_ButtonTest->Sprite.getGlobalBounds().width/2, (m_RenderWindow->getViewport(m_RenderWindow->getView()).height / 2) - m_ButtonTest->Sprite.getGlobalBounds().height/2);
+	m_SquareButton->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2);
 	Render();
 }
  
@@ -75,8 +89,7 @@ void Update()
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event))
 		{
-			m_ButtonTest->bIsinBounds(GetMousePosition());
-			Render();
+			/*m_ButtonTest->bIsinBounds(m_ButtonTest->GetMousePosition());*/
 
 			// Undo Brush
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
@@ -89,6 +102,7 @@ void Update()
 			if (event.type == sf::Event::Closed)
 			{
 				m_RenderWindow->close();
+				m_UIWindow->close();
 			}
 
 			// Resizing
@@ -96,14 +110,11 @@ void Update()
 			{
 				m_ZoomFactor = 10.0f;
 				CanvasView = sf::View((sf::FloatRect(0.0f, 0.0f, event.size.width / 2, event.size.height / 2)));
-				m_ButtonTest->SetPosition((m_RenderWindow->getViewport(m_RenderWindow->getView()).width / 4) - m_ButtonTest->Sprite.getGlobalBounds().width / 2, (m_RenderWindow->getViewport(m_RenderWindow->getView()).height / 4) - m_ButtonTest->Sprite.getGlobalBounds().height / 2);
 				sf::Vector2f worldPos = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_Canvas->m_Canvas.getPosition()));
 				sf::Vector2f worldPosB = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_Canvas->m_BackGround.getPosition()));
-				sf::Vector2i worldPosD = m_RenderWindow->mapCoordsToPixel(m_ButtonTest->Sprite.getPosition(), CanvasView);
-				sf::Vector2i worldPosE = m_RenderWindow->mapCoordsToPixel(m_ButtonTest->m_tLabel.getPosition(), CanvasView);
 				CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
 				m_RenderWindow->setView(CanvasView);
-				/*m_ButtonTest->SetPosition(m_RenderWindow->getView().getSize().x / 2, m_RenderWindow->getView().getSize().y / 2);*/
+				
 				Render();
 			}
 
@@ -121,8 +132,6 @@ void Update()
 
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
-					sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_ButtonTest->Sprite.getPosition()), CanvasView);
-					sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_ButtonTest->m_tLabel.getPosition()), CanvasView);
 					if (event.mouseWheelScroll.delta >= 1 )
 					{
 						std::cout << "zoom In" << std::endl;
@@ -142,9 +151,8 @@ void Update()
 						m_ZoomFactor--;
 					}
 					
-					m_ButtonTest->SetPosition((CanvasView.getSize().x/2) - m_ButtonTest->Sprite.getGlobalBounds().width / 2, (CanvasView.getSize().y / 2) - m_ButtonTest->Sprite.getGlobalBounds().height / 2);
-					
 					Render();
+					
 
 				}
 				
@@ -154,10 +162,28 @@ void Update()
 			m_Canvas->Update();
 			m_Brush->Update();
 			
+			
 
 			//Render
 			
 		}
+		while (m_UIWindow->pollEvent(event))
+		{
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				if (m_SquareButton->bIsinBounds(m_SquareButton->GetMousePosition()))
+				{
+					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
+				}
+				
+			}
+			// Object Updates
+			m_SquareButton->Update();
+			//Render
+			
+			RenderUI();
+		}
+		
 	}
 }
 
@@ -168,9 +194,16 @@ void Render()
 	// Object Renders
 	m_Canvas->Render();
 	m_Brush->Render();
-	m_ButtonTest->Render();
+
 
 	m_RenderWindow->display();
+}
+
+void RenderUI()
+{
+	m_UIWindow->clear();
+	m_SquareButton->Render();
+	m_UIWindow->display();
 }
 
 sf::Vector2f GetMousePosition()

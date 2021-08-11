@@ -119,8 +119,8 @@ void CBrush::SetMousePosition(sf::Vector2f Position)
 
 sf::Vector2f CBrush::GetMousePosition()
 {
-	std::cout << m_vMousePosition.x << std::endl;
-	std::cout << m_vMousePosition.y << std::endl;
+	/*std::cout << m_vMousePosition.x << std::endl;
+	std::cout << m_vMousePosition.y << std::endl;*/
 
 	return m_vMousePosition;
 }

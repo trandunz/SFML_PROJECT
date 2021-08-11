@@ -13,10 +13,14 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 	
 	Sprite.setTexture(m_IdleTexture);
 	
-	
+	/*m_tLabel.setScale(0.5f, 1.0f);
+	Sprite.setScale(0.5f, 1.0f);*/
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 	Sprite.setOrigin(sf::Vector2f(Sprite.getGlobalBounds().width / 2, Sprite.getGlobalBounds().height / 2));
+	m_tLabel.setPosition(0.0f, 0.0f);
+	Sprite.setPosition(0.0f, 0.0f);
 	SetLabel(m_Label);
+	
 	m_bIsHovering = false;
 	m_bIsPressed = false;
 	m_bIsClicked = false;
@@ -45,12 +49,28 @@ void CButtons::Start()
 
 void CButtons::Update()
 {
+	sf::Vector2i pixelPos = sf::Mouse::getPosition((*m_RenderWindow));
+	SetMousePosition(m_RenderWindow->mapPixelToCoords(pixelPos));
+	bIsinBounds(m_vMousePosition);
 }
 
 void CButtons::Render()
 {
 	m_RenderWindow->draw(Sprite);
 	m_RenderWindow->draw(m_tLabel);
+}
+
+void CButtons::SetMousePosition(sf::Vector2f Position)
+{
+	m_vMousePosition = Position;
+}
+
+sf::Vector2f CButtons::GetMousePosition()
+{
+	/*std::cout << m_vMousePosition.x << std::endl;
+	std::cout << m_vMousePosition.y << std::endl;*/
+
+	return m_vMousePosition;
 }
 
 void CButtons::SetPosition(float newX, float newY)
@@ -105,7 +125,7 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 			SetState("Hover");
 		}
 		m_bIsHovering = true;
-		std::cout << "MousedOverButton" << std::endl;
+		/*std::cout << "MousedOverButton" << std::endl;*/
 		return true;
 	}
 	else

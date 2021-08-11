@@ -1,1 +1,43 @@
-﻿
+﻿  Main.cpp
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(78,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(80,83): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(80,54): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(112,94): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(112,71): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(138,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(147,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,105): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\Main.cpp(221,76): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  SFML.vcxproj -> C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\Debug\SFML.exe

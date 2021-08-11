@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 using namespace std;
 
@@ -23,6 +22,9 @@ public:
 	void Update();
 	void Render();
 
+	void SetMousePosition(sf::Vector2f Position);
+	sf::Vector2f GetMousePosition();
+
 	void SetPosition(float newX, float newY);
 
 	void SetLabel(string x);
@@ -41,6 +43,8 @@ private:
 	sf::Texture m_HoverTexture;
 	sf::Texture m_ClickTexture;
 	sf::Font m_Font;
+
+	sf::Vector2f m_vMousePosition;
 
 	float X = 0.0f;
 	float X2 = 0;

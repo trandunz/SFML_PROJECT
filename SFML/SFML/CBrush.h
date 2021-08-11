@@ -1,5 +1,6 @@
 #pragma once
 #include "CCanvas.h"
+#include <iostream>
 #include <list>
 class CBrush
 {
