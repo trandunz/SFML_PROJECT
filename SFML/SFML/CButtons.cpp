@@ -139,31 +139,6 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 	}
 }
 
-bool CButtons::bIsPressed(int x)
-{
-	if (m_bIsHovering == true && m_bIsPressed == false && x == 1) {
-		Sprite.setTexture(m_ClickTexture);
-		SetLabel(m_OnClickLabel);
-		m_bIsPressed = true;
-		return true;
-	}
-	else if (m_bIsHovering == true && x == 2) {
-		Sprite.setTexture(m_HoverTexture);
-		SetLabel(m_HoverLabel);
-		m_bIsPressed = false;
-		return true;
-	}
-	else if (m_bIsHovering == false && m_bIsPressed == true && x == 2) {
-		Sprite.setTexture(m_IdleTexture);
-		SetLabel(m_Label);
-		m_bIsPressed = false;
-		return false;
-	}
-	else {
-		return false;
-	}
-}
-
 int CButtons::GetHeight()
 {
 	return Sprite.getGlobalBounds().height;

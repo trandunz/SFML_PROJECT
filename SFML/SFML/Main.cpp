@@ -99,8 +99,12 @@ void Update()
 			// Left Mouse
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				m_PopOutMenu->m_Brush->PaintBrush();
-				Render();
+				if (m_PopOutMenu->m_bBrushMenu)
+				{
+					m_PopOutMenu->m_Brush->PaintBrush();
+					Render();
+				}
+				
 				
 			}
 

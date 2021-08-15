@@ -31,7 +31,6 @@ public:
 	void SetState(string type);
 
 	bool bIsinBounds(sf::Vector2f _vMousePosition);
-	bool bIsPressed(int x = 1);
 
 	int GetHeight();
 	int GetWidth();

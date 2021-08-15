@@ -6,6 +6,7 @@
 #include <Wingdi.h>
 #include "CButtons.h"
 #include "CBrush.h"
+#include "CInputField.h"
 
 class CPopOutMenu
 {
@@ -20,13 +21,17 @@ public:
 	void InitColourDialogue();
 	void OpenColourDialogue();
 
-	CButtons* m_ButtonList[6];
+	CButtons* m_ButtonList[7];
+	CInputField* m_InputList[1];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
 	sf::RenderWindow* m_UIWindow;
 	
 	bool m_bColourIsOpen = false;
+	bool m_bBrushMenu;
 private:
+	
+
 	sf::RenderWindow* m_RenderWindow;
 
 	CHOOSECOLOR cc;                 // common dialog box structure 
@@ -35,5 +40,7 @@ private:
 	HBRUSH hbrush;                  // brush handle
 	DWORD rgbCurrent;        // initial color selection
 	COLORREF cr;
+
+	sf::RectangleShape m_BackGround;
 };
 
