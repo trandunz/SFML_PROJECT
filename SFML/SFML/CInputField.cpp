@@ -3,9 +3,9 @@
 CInputField::CInputField(sf::RenderWindow* _RenderWindow)
 {
     m_RenderWindow = _RenderWindow;
-    m_IdleTexture.loadFromFile("Images/ButtonIdle.png");
+    m_IdleTexture.loadFromFile("Images/ButtonHovering.png");
     m_HoverTexture.loadFromFile("Images/ButtonHovering.png");
-    m_Font.loadFromFile("Fonts/COMIC.TTF");
+    m_Font.loadFromFile("Fonts/times.TTF");
     m_tLabel.setFont(m_Font);
     m_tLabel.setCharacterSize(24);
     m_tLabel.setFillColor(sf::Color::Black);
@@ -107,6 +107,7 @@ void CInputField::SetLabel(std::string _label)
         m_HoverLabel = _label;
     }
     m_tLabel.setString(_label);
+    m_tLabel.setCharacterSize(20);
     m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 }
 

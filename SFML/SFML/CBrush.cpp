@@ -5,9 +5,9 @@ CBrush::CBrush(sf::RenderWindow* _renderWindow, CCanvas* _canvas)
 	m_Canvas = _canvas;
 	m_RenderWindow = _renderWindow;
 	m_Rotation = 0;
-	m_BushSize = 4;
+	m_BushSize = 1;
 	m_SideCount = 8;
-	m_BrushType = BRUSHTYPE::CIRCLE;
+	m_BrushType = BRUSHTYPE::DEFAULT;
 }
 
 CBrush::~CBrush()
@@ -15,6 +15,7 @@ CBrush::~CBrush()
 	while (PaintedBrushList.size() > 0)
 	{
 		PaintedBrushList.pop_front();
+		std::cout << "PopedFront" << std::endl;
 	}
 	m_Canvas = nullptr;
 	m_RenderWindow = nullptr;
@@ -39,13 +40,9 @@ void CBrush::PaintBrush()
 {
 	if (m_Canvas->m_Canvas.getGlobalBounds().contains(sf::Vector2f(m_vMousePosition.x, m_vMousePosition.y)))
 	{
-		int r = 255;
-		int g = 0;
-		int b = 255;
-
 		switch (m_BrushType)
 		{
-		case CBrush::CIRCLE:
+		case CIRCLE:
 		{
 			sf::CircleShape stroke(m_BushSize);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
@@ -55,7 +52,7 @@ void CBrush::PaintBrush()
 			PaintedBrushList.push_back(stroke);
 			break;
 		}
-		case CBrush::TRIANGLE:
+		case TRIANGLE:
 		{
 			sf::CircleShape stroke(m_BushSize, 3);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
@@ -65,7 +62,7 @@ void CBrush::PaintBrush()
 			PaintedBrushList.push_back(stroke);
 			break;
 		}
-		case CBrush::SQUARE:
+		case SQUARE:
 		{
 			sf::CircleShape stroke(m_BushSize, 4);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
@@ -76,7 +73,7 @@ void CBrush::PaintBrush()
 			PaintedBrushList.push_back(stroke);
 			break;
 		}
-		case CBrush::CUSTOM:
+		case CUSTOM:
 		{
 			sf::CircleShape stroke(m_BushSize, m_SideCount);
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
@@ -86,7 +83,7 @@ void CBrush::PaintBrush()
 			PaintedBrushList.push_back(stroke);
 			break;
 		}
-		case CBrush::SPRITE:
+		case SPRITE:
 		{
 			break;
 		}	
@@ -137,4 +134,14 @@ void CBrush::Undo()
 		PaintedBrushList.pop_back();
 	}
 	
+}
+
+sf::Color CBrush::setPixelColor(int x, int y, sf::Color color)
+{
+	{
+		// Set pixel to color
+		m_Canvas->m_CanvasImage->setPixel(x, y, color);
+
+		return color;
+	}
 }

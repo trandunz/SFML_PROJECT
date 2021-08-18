@@ -26,13 +26,16 @@ sf::View CanvasView;
 
 float m_ZoomFactor;
 
+bool dragging = false;
+sf::Vector2f startPos;
+
 int main()
 {
     HWND hwnd = GetConsoleWindow();
     ShowWindow(hwnd, SW_SHOW);
 
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
+    settings.antialiasingLevel = 10;
 
     m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "IwPaint.exe", (sf::Style::Default), settings);
 	m_RenderWindow->setFramerateLimit((unsigned)120);
@@ -48,7 +51,8 @@ int main()
 
 	Start();
 	Update();
-
+	delete m_PopOutMenu;
+	m_PopOutMenu = nullptr;
 	delete m_RenderWindow;
 	m_RenderWindow = nullptr;
 	return 0;
@@ -79,8 +83,11 @@ void Update()
 			// Close
 			if (event.type == sf::Event::Closed)
 			{
-				m_RenderWindow->close();
 				m_PopOutMenu->m_UIWindow->close();
+				m_RenderWindow->close();
+				
+				break;
+				
 			}
 
 			// Resizing
@@ -106,6 +113,35 @@ void Update()
 				}
 				
 				
+			}
+
+			// mIDDLE mOUSE
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+			{
+				
+				if (m_PopOutMenu->m_bBrushMenu)
+				{
+					if (!dragging)
+					{
+						startPos = CanvasView.getCenter();
+						std::cout << startPos.x << "----"  << startPos.y << std::endl;
+						dragging = true;
+					}
+					else
+					{
+						dragging = false;
+					}
+					if (dragging)
+					{
+						CanvasView.setCenter(GetMousePosition().x - startPos.x, GetMousePosition().y - startPos.y);
+						std::cout << "DRAGGING" << std::endl;
+					}
+					Render();
+				}
+			}
+			else
+			{
+				dragging = false;
 			}
 
 			// Canvas Zoom
@@ -152,8 +188,12 @@ void Update()
 
 			
 		}
-		m_PopOutMenu->Update();
-		m_PopOutMenu->Render();
+		if (m_PopOutMenu != nullptr)
+		{
+			m_PopOutMenu->Update();
+			m_PopOutMenu->Render();
+		}
+		
 	}
 }
 

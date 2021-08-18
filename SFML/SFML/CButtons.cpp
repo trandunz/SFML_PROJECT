@@ -6,12 +6,15 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 	m_IdleTexture.loadFromFile("Images/ButtonIdle.png");
 	m_HoverTexture.loadFromFile("Images/ButtonHovering.png");
 	m_ClickTexture.loadFromFile("Images/ButtonClick.png");
-	m_Font.loadFromFile("Fonts/COMIC.TTF");
+	m_Font.loadFromFile("Fonts/times.TTF");
+	m_IdleTexture.setSmooth(true);
+	m_HoverTexture.setSmooth(true);
+	m_ClickTexture.setSmooth(true);
 	m_tLabel.setFont(m_Font);
 	m_tLabel.setCharacterSize(24);
 	m_tLabel.setFillColor(sf::Color::Black);
 	
-	Sprite.setTexture(m_IdleTexture);
+	Sprite.setTexture(m_IdleTexture, 1);
 	
 	/*m_tLabel.setScale(0.5f, 1.0f);
 	Sprite.setScale(0.5f, 1.0f);*/
@@ -38,7 +41,6 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 
 CButtons::~CButtons()
 {
-	delete m_RenderWindow;
 	m_RenderWindow = nullptr;
 }
 
@@ -56,6 +58,11 @@ void CButtons::Update()
 void CButtons::Render()
 {
 	m_RenderWindow->draw(Sprite);
+	m_RenderWindow->draw(m_tLabel);
+}
+
+void CButtons::RenderOnlyLabel()
+{
 	m_RenderWindow->draw(m_tLabel);
 }
 
@@ -98,19 +105,21 @@ void CButtons::SetLabel(string x)
 	m_tLabel.setString(x);
 	if (m_tLabel.getGlobalBounds().height <= 18) { m_Adjustment = 0; }
 	if (m_tLabel.getGlobalBounds().height >= 23) { m_Adjustment = 5; }
+	m_tLabel.setCharacterSize(20);
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
+
 }
 
 void CButtons::SetState(string type)
 {
 	if (type == "Idle") {
-		Sprite.setTexture(m_IdleTexture);
+		Sprite.setTexture(m_IdleTexture, 1);
 	}
 	else if (type == "Hover") {
-		Sprite.setTexture(m_HoverTexture);
+		Sprite.setTexture(m_HoverTexture, 1);
 	}
 	else if (type == "Click") {
-		Sprite.setTexture(m_ClickTexture);
+		Sprite.setTexture(m_ClickTexture, 1);
 	}
 }
 
@@ -118,8 +127,9 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 {
 	if (Sprite.getGlobalBounds().contains(sf::Vector2f(_vMousePosition.x, _vMousePosition.y)))
 	{
-		if (m_bIsPressed != true) {
-			Sprite.setTexture(m_HoverTexture);
+		if (m_bIsPressed == false) 
+		{
+			Sprite.setTexture(m_HoverTexture, 1);
 			SetLabel(m_HoverLabel);
 			SetState("Hover");
 		}
@@ -137,6 +147,16 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 		m_bIsHovering = false;
 		return false;
 	}
+}
+
+void CButtons::SetHoverTex(sf::Texture _newTexture)
+{
+	m_HoverTexture = _newTexture;
+}
+
+void CButtons::SetIdleTex(sf::Texture _newTexture)
+{
+	m_IdleTexture = _newTexture;
 }
 
 int CButtons::GetHeight()

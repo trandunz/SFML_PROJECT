@@ -11,7 +11,8 @@ public:
 		TRIANGLE,
 		SQUARE,
 		CUSTOM,
-		SPRITE
+		SPRITE,
+		DEFAULT
 	};
 
 	BRUSHTYPE m_BrushType;
@@ -29,6 +30,9 @@ public:
 	void SetActiveColour(sf::Color _Color);
 
 	void Undo();
+
+	sf::Color setPixelColor(int x, int y, sf::Color color);
+	
 
 	int m_BushSize;
 	int m_Rotation;

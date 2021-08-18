@@ -6,6 +6,14 @@ using namespace std;
 class CButtons
 {
 public:
+
+	enum STATE
+	{
+		Idle,
+		Hover,
+		Click,
+	};
+
 	bool m_bIsHovering;
 	bool m_bIsPressed;
 	bool m_bIsClicked;
@@ -22,15 +30,22 @@ public:
 	void Update();
 	void Render();
 
+	void RenderOnlyLabel();
+
 	void SetMousePosition(sf::Vector2f Position);
 	sf::Vector2f GetMousePosition();
 
 	void SetPosition(float newX, float newY);
 
 	void SetLabel(string x);
+
+	 
 	void SetState(string type);
 
 	bool bIsinBounds(sf::Vector2f _vMousePosition);
+
+	void SetHoverTex(sf::Texture _newTexture);
+	void SetIdleTex(sf::Texture _newTexture);
 
 	int GetHeight();
 	int GetWidth();
