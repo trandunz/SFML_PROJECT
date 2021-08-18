@@ -94,7 +94,7 @@ void Update()
 			if (event.type == sf::Event::Resized)
 			{
 				m_ZoomFactor = 10.0f;
-				CanvasView = sf::View((sf::FloatRect(0.0f, 0.0f, event.size.width / 2, event.size.height / 2)));
+				CanvasView = sf::View((sf::FloatRect(0.0f, 0.0f, event.size.width / 2.0f, event.size.height / 2.0f)));
 				sf::Vector2f worldPos = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PopOutMenu->m_Canvas->m_Canvas.getPosition()));
 				sf::Vector2f worldPosB = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PopOutMenu->m_Canvas->m_BackGround.getPosition()));
 				CanvasView.setCenter(m_PopOutMenu->m_Canvas->m_Canvas.getPosition());
@@ -153,7 +153,7 @@ void Update()
 					if (event.mouseWheelScroll.delta >= 1 )
 					{
 						std::cout << "zoom In" << std::endl;
-						CanvasView.zoom(1 - 0.1);
+						CanvasView.zoom(1.0f - 0.1f);
 						CanvasView.setCenter(m_PopOutMenu->m_Canvas->m_Canvas.getPosition());
 						m_RenderWindow->setView(CanvasView);
 						/*m_Canvas->m_Canvas.setScale(m_Canvas->m_Canvas.getScale() / )*/
@@ -162,7 +162,7 @@ void Update()
 					else if (event.mouseWheelScroll.delta <= -1 && m_ZoomFactor > 0)
 					{
 						std::cout << "zoom out" << std::endl;
-						CanvasView.zoom(1 + 0.1);
+						CanvasView.zoom(1.0f + 0.1f);
 						CanvasView.setCenter(m_PopOutMenu->m_Canvas->m_Canvas.getPosition());
 						m_RenderWindow->setView(CanvasView);
 						//m_ButtonTest->Sprite.setScale(sf::Vector2f(m_ButtonTest->Sprite.getScale().x + m_ButtonTest->Sprite.getScale().x, m_ButtonTest->Sprite.getScale().y + m_ButtonTest->Sprite.getScale().x));

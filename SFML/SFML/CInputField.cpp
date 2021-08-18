@@ -22,7 +22,6 @@ CInputField::CInputField(sf::RenderWindow* _RenderWindow)
 
 CInputField::~CInputField()
 {
-    delete m_RenderWindow;
     m_RenderWindow = nullptr;
 }
 

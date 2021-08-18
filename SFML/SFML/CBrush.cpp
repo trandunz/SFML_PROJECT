@@ -15,7 +15,7 @@ CBrush::~CBrush()
 	while (PaintedBrushList.size() > 0)
 	{
 		PaintedBrushList.pop_front();
-		std::cout << "PopedFront" << std::endl;
+		/*std::cout << "PopedFront" << std::endl;*/
 	}
 	m_Canvas = nullptr;
 	m_RenderWindow = nullptr;

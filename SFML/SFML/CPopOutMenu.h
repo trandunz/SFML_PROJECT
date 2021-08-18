@@ -32,7 +32,8 @@ public:
 
 	void Save();
 
-	CButtons* m_BrushButtonList[10];
+	CButtons* m_BrushButtonList[11];
+	CButtons* m_ShapeButtonList[11];
 	CButtons* m_CanvasButtonList[9];
 	CInputField* m_InputList[2];
 	CCanvas* m_Canvas;
@@ -41,6 +42,7 @@ public:
 	
 	bool m_bColourIsOpen = false;
 	bool m_bBrushMenu;
+	bool m_bSaveMenu;
 	bool m_bCustomBrush;
 private:
 	
