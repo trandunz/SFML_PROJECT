@@ -158,6 +158,8 @@
     <ClInclude Include="CCanvas.h" />
     <ClInclude Include="CInputField.h" />
     <ClInclude Include="CPopOutMenu.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

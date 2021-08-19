@@ -46,6 +46,16 @@ public:
 
 	void SetHoverTex(sf::Texture _newTexture);
 	void SetIdleTex(sf::Texture _newTexture);
+	void SetClickTex(sf::Texture _newTexture);
+
+	sf::Texture GetHoverText()
+	{
+		return m_HoverTexture;
+	}
+	sf::Texture GetClickText()
+	{
+		return m_ClickTexture;
+	}
 
 	int GetHeight();
 	int GetWidth();
@@ -64,8 +74,6 @@ private:
 	float X2 = 0;
 	float Y = 0;
 	float Y2 = 0;
-
-	int m_Adjustment = 0;
 
 };
 

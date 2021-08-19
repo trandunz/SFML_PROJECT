@@ -48,6 +48,7 @@ void CBrush::PaintBrush()
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
 			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
+			m_Rotation = 0;
 			stroke.rotate(m_Rotation);
 			PaintedBrushList.push_back(stroke);
 			break;
@@ -58,6 +59,7 @@ void CBrush::PaintBrush()
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
 			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
+			m_Rotation = 0;
 			stroke.rotate(m_Rotation);
 			PaintedBrushList.push_back(stroke);
 			break;
@@ -79,6 +81,7 @@ void CBrush::PaintBrush()
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
 			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
+			m_Rotation = 0;
 			stroke.rotate(m_Rotation);
 			PaintedBrushList.push_back(stroke);
 			break;
@@ -93,6 +96,7 @@ void CBrush::PaintBrush()
 			stroke.setOrigin(stroke.getGlobalBounds().width / 2, stroke.getGlobalBounds().height / 2);
 			stroke.setFillColor(m_Colour);
 			stroke.setPosition(m_vMousePosition);
+			m_Rotation = 0;
 			stroke.rotate(m_Rotation);
 			PaintedBrushList.push_back(stroke);
 			break;

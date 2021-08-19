@@ -23,6 +23,7 @@ public:
 
 	void CreateBrushButtons();
 	void CustomBrushButtons();
+	void CustomShapeButtons();
 
 	void InputButtonUpdate(sf::Event _event, int _index);
 
@@ -35,15 +36,17 @@ public:
 	CButtons* m_BrushButtonList[11];
 	CButtons* m_ShapeButtonList[11];
 	CButtons* m_CanvasButtonList[9];
-	CInputField* m_InputList[2];
+	CInputField* m_InputList[4];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
 	sf::RenderWindow* m_UIWindow;
 	
 	bool m_bColourIsOpen = false;
 	bool m_bBrushMenu;
+	bool m_bShapeMenu;
 	bool m_bSaveMenu;
 	bool m_bCustomBrush;
+	bool m_bShapeFillColour;
 private:
 	
 
@@ -60,5 +63,6 @@ private:
 	sf::RectangleShape m_BrushBackGround;
 	sf::RectangleShape m_CustomBrushBG;
 	sf::CircleShape m_bCustBrushPreview;
+	sf::CircleShape m_bCustShapePreview;
 };
 

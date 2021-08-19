@@ -28,15 +28,6 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 	m_Label = "Default";
 	m_OnClickLabel = m_Label;
 	m_HoverLabel = m_Label;
-
-	if (m_tLabel.getGlobalBounds().height <= 18)
-	{ 
-		m_Adjustment = 0;
-	}
-	else if (m_tLabel.getGlobalBounds().height >= 23)
-	{ 
-		m_Adjustment = 5;
-	}
 }
 
 CButtons::~CButtons()
@@ -103,8 +94,6 @@ void CButtons::SetLabel(string x)
 		m_HoverLabel = x;
 	}
 	m_tLabel.setString(x);
-	if (m_tLabel.getGlobalBounds().height <= 18) { m_Adjustment = 0; }
-	if (m_tLabel.getGlobalBounds().height >= 23) { m_Adjustment = 5; }
 	m_tLabel.setCharacterSize(20);
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 
@@ -133,17 +122,30 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 			SetLabel(m_HoverLabel);
 			SetState("Hover");
 		}
+		if (m_bIsPressed == true)
+		{
+			Sprite.setTexture(m_ClickTexture, 1);
+			SetLabel(m_Label);
+			SetState("Click");
+		}
 		m_bIsHovering = true;
 		/*std::cout << "MousedOverButton" << std::endl;*/
 		return true;
 	}
 	else
 	{
-		if (m_bIsPressed != true) {
-			Sprite.setTexture(m_IdleTexture);
+		if (m_bIsPressed) 
+		{
+			SetState("Click");
 			SetLabel(m_Label);
 		}
-		SetState("Idle");
+		else if (!m_bIsPressed)
+		{
+			Sprite.setTexture(m_IdleTexture, 1);
+			SetLabel(m_Label);
+			SetState("Idle");
+		}
+		
 		m_bIsHovering = false;
 		return false;
 	}
@@ -157,6 +159,11 @@ void CButtons::SetHoverTex(sf::Texture _newTexture)
 void CButtons::SetIdleTex(sf::Texture _newTexture)
 {
 	m_IdleTexture = _newTexture;
+}
+
+void CButtons::SetClickTex(sf::Texture _newTexture)
+{
+	m_ClickTexture = _newTexture;
 }
 
 int CButtons::GetHeight()
