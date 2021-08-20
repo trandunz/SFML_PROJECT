@@ -150,6 +150,7 @@
     <ClCompile Include="CCanvas.cpp" />
     <ClCompile Include="CInputField.cpp" />
     <ClCompile Include="CPopOutMenu.cpp" />
+    <ClCompile Include="CShapes.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="CCanvas.h" />
     <ClInclude Include="CInputField.h" />
     <ClInclude Include="CPopOutMenu.h" />
+    <ClInclude Include="CShapes.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
   </ItemGroup>

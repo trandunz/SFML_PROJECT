@@ -6,6 +6,7 @@
 #include <Wingdi.h>
 #include "CButtons.h"
 #include "CBrush.h"
+#include "CShapes.h"
 #include "CInputField.h"
 
 class CPopOutMenu
@@ -39,6 +40,7 @@ public:
 	CInputField* m_InputList[4];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
+	CShapes* m_Shape;
 	sf::RenderWindow* m_UIWindow;
 	
 	bool m_bColourIsOpen = false;

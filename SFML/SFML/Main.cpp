@@ -76,7 +76,15 @@ void Update()
 			// Undo Brush
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
-				m_PopOutMenu->m_Brush->Undo();
+				if (m_PopOutMenu->m_bBrushMenu)
+				{
+					m_PopOutMenu->m_Brush->Undo();
+				}
+				else if (m_PopOutMenu->m_bShapeMenu)
+				{
+					m_PopOutMenu->m_Shape->Undo();
+				}
+				
 				Render();
 			}
 
@@ -109,6 +117,11 @@ void Update()
 				if (m_PopOutMenu->m_bBrushMenu)
 				{
 					m_PopOutMenu->m_Brush->PaintBrush();
+					Render();
+				}
+				if (m_PopOutMenu->m_bShapeMenu)
+				{
+					m_PopOutMenu->m_Shape->PaintShape();
 					Render();
 				}
 				
@@ -180,6 +193,7 @@ void Update()
 			
 			m_PopOutMenu->m_Canvas->Update();
 			m_PopOutMenu->m_Brush->Update();
+			m_PopOutMenu->m_Shape->Update();
 			
 			
 
@@ -204,6 +218,7 @@ void Render()
 	// Object Renders
 	m_PopOutMenu->m_Canvas->Render();
 	m_PopOutMenu->m_Brush->Render();
+	m_PopOutMenu->m_Shape->Render();
 
 
 	m_RenderWindow->display();
