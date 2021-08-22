@@ -19,6 +19,8 @@ public:
 	void Update();
 	void Render();
 
+	void InputButtonHoverUpdates(sf::Event _event);
+
 	void InitColourDialogue();
 	void OpenColourDialogue();
 
@@ -34,6 +36,8 @@ public:
 
 	void Save();
 
+	void ShapesMenuFillCheck();
+
 	CButtons* m_BrushButtonList[11];
 	CButtons* m_ShapeButtonList[11];
 	CButtons* m_CanvasButtonList[9];
@@ -42,6 +46,7 @@ public:
 	CBrush* m_Brush;
 	CShapes* m_Shape;
 	sf::RenderWindow* m_UIWindow;
+	sf::Color tempColour;
 	
 	bool m_bColourIsOpen = false;
 	bool m_bBrushMenu;

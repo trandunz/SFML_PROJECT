@@ -15,7 +15,6 @@ sf::View SetViewToCanvas();
 void Start();
 void Update();
 void Render();
-void RenderUI();
 sf::Vector2f GetMousePosition();
 
 sf::RenderWindow* m_RenderWindow;
@@ -28,6 +27,8 @@ float m_ZoomFactor;
 
 bool dragging = false;
 sf::Vector2f startPos;
+
+bool m_bDoOnce;
 
 int main()
 {
@@ -48,7 +49,7 @@ int main()
 	//m_TriangleButton = new CButtons(m_UIWindow);
 	//m_TriangleButton->SetLabel("Triangle");
 
-
+	m_bDoOnce = true;
 	Start();
 	Update();
 	delete m_PopOutMenu;
@@ -111,6 +112,12 @@ void Update()
 				Render();
 			}
 
+			if (event.type == sf::Event::MouseButtonPressed && m_PopOutMenu->m_bShapeMenu)
+			{
+				m_PopOutMenu->m_Shape->m_bCreatePreviewShape = true;
+				
+			}
+
 			// Left Mouse
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
@@ -126,6 +133,13 @@ void Update()
 				}
 				
 				
+			}
+
+			if (event.type == sf::Event::MouseButtonReleased && m_PopOutMenu->m_bShapeMenu)
+			{
+				m_PopOutMenu->m_Shape->LetGoOfShape();
+				Render();
+				Update();
 			}
 
 			// mIDDLE mOUSE
@@ -217,8 +231,9 @@ void Render()
 
 	// Object Renders
 	m_PopOutMenu->m_Canvas->Render();
-	m_PopOutMenu->m_Brush->Render();
 	m_PopOutMenu->m_Shape->Render();
+	m_PopOutMenu->m_Brush->Render();
+	
 
 
 	m_RenderWindow->display();

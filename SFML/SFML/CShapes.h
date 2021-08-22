@@ -1,6 +1,7 @@
 #pragma once
 #include "CCanvas.h"
 #include <list>
+#include <math.h> 
 class CShapes
 {
 public:
@@ -24,6 +25,7 @@ public:
 	void Render();
 	void Update();
 	void PaintShape();
+	void LetGoOfShape();
 	void SetMousePosition(sf::Vector2f Position);
 	sf::Vector2f GetMousePosition();
 
@@ -32,18 +34,24 @@ public:
 	void Undo();
 
 	sf::CircleShape* m_Stroke;
+	sf::CircleShape m_PreviewStroke;
 
-	int m_BushSize;
+	int m_ShapeSize;
 	int m_Rotation;
 	int m_SideCount;
+	int m_OutlineThickness;
 
 	bool m_bCreateShape;
+	bool m_bCreatePreviewShape;
 
 	sf::Color m_Colour;
+	sf::Color m_OutlineColour;
 
 private:
 	sf::RenderWindow* m_RenderWindow;
 	sf::Vector2f m_vMousePosition;
 	CCanvas* m_Canvas;
+
+	sf::Vector2f m_vMouseStart;
 };
 
