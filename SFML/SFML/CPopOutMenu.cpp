@@ -232,10 +232,10 @@ void CPopOutMenu::Update()
 				}
 				if (m_ShapeButtonList[4]->bIsinBounds(m_BrushButtonList[4]->GetMousePosition()))
 				{ 
-					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::SQUARE;
-					m_Shape->m_SideCount = 4;
+					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::LINE;
+					/*m_Shape->m_SideCount = 4;
 					m_Shape->m_Rotation = 45;
-					InputButtonUpdate(UIEvent, 3);
+					InputButtonUpdate(UIEvent, 3);*/
 					m_bCustomBrush = false;
 				}
 				if (m_ShapeButtonList[5]->bIsinBounds(m_BrushButtonList[5]->GetMousePosition()))

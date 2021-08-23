@@ -7,6 +7,7 @@ class CShapes
 public:
 	enum SHAPETYPE
 	{
+		LINE,
 		CIRCLE,
 		TRIANGLE,
 		SQUARE,
@@ -20,6 +21,7 @@ public:
 	CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas);
 	~CShapes();
 	std::list<sf::CircleShape> PaintedShapeList;
+	std::list<sf::Vertex> PaintedLineList;
 	
 
 	void Render();

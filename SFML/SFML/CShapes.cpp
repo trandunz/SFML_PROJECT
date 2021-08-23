@@ -16,13 +16,18 @@ CShapes::CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas)
 
 CShapes::~CShapes()
 {
-	std::list<sf::CircleShape>::iterator it = PaintedShapeList.begin();
+	std::list<sf::CircleShape>::iterator ShapeIter = PaintedShapeList.begin();
 	while (PaintedShapeList.size() > 0)
 	{
-		PaintedShapeList.erase(it);
-		std::advance(it, 1);
+		PaintedShapeList.erase(ShapeIter);
+		std::advance(ShapeIter, 1);
 		/*PaintedShapeList.pop_front();*/
 		/*std::cout << "PopedFront" << std::endl;*/
+	}
+	while (PaintedShapeList.size() > 0)
+	{
+		PaintedLineList.pop_front();
+
 	}
 	m_Stroke = nullptr;
 	m_Canvas = nullptr;
@@ -44,6 +49,7 @@ void CShapes::Render()
 		m_RenderWindow->draw(stroke);
 		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
 	}
+	/*m_RenderWindow->draw(PaintedLineList.p);*/
 	m_RenderWindow->draw(m_PreviewStroke);
 }
 
@@ -92,6 +98,13 @@ void CShapes::LetGoOfShape()
 {
 	switch (m_ShapeType)
 	{
+	case LINE:
+	{
+		/*sf::Vertex line[2] = { {{m_vMouseStart.x,m_vMouseStart.y}, m_OutlineColour}, {{m_vMousePosition.x,  m_vMousePosition.y}, m_OutlineColour} };
+
+		PaintedLineList.push_back(line);*/
+		break;
+	}
 	case CIRCLE:
 	{
 		m_Stroke = nullptr;
@@ -200,5 +213,9 @@ void CShapes::Undo()
 		std::list<sf::CircleShape>::iterator it = PaintedShapeList.begin();
 		PaintedShapeList.erase(it);
 
+	}
+	if (PaintedLineList.size() > 0)
+	{
+		PaintedShapeList.pop_front();
 	}
 }
