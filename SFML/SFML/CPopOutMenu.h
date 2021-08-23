@@ -54,9 +54,8 @@ public:
 	bool m_bSaveMenu;
 	bool m_bCustomBrush;
 	bool m_bShapeFillColour;
-private:
-	
 
+private:
 	sf::RenderWindow* m_RenderWindow;
 
 	CHOOSECOLOR cc;                 // common dialog box structure 

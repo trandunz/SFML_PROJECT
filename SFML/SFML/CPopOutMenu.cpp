@@ -1,43 +1,59 @@
+// Non-Local Includes
+
+// Local Includes
 #include "CPopOutMenu.h"
 
+/// <summary>
+/// PopOutMenu Constructor. Takes in an sf::RenderWindow* (Intended To Be The Main Render Window With Canvas e.t.c).
+/// </summary>
 CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 {
+	// UI Essentials Creation
 	m_BackGround = sf::RectangleShape(sf::Vector2f(320, 720));
-	m_BrushBackGround = sf::RectangleShape(sf::Vector2f(300, 640));
-	m_CustomBrushBG = sf::RectangleShape(sf::Vector2f(280, 305));
-	m_bCustBrushPreview = sf::CircleShape(80);
-	m_bCustShapePreview = sf::CircleShape(70);
+	m_BrushBackGround = sf::RectangleShape(sf::Vector2f(300, 640)); // Brush Menu BG
+	m_CustomBrushBG = sf::RectangleShape(sf::Vector2f(280, 305)); // Custom Brush BG
+	m_bCustBrushPreview = sf::CircleShape(80);	// Custom Brush Preview
+	m_bCustShapePreview = sf::CircleShape(70); // Custom Shape Preview
 
 	m_BrushBackGround.setFillColor(sf::Color(204, 204, 204)); // Grey
 	m_CustomBrushBG.setFillColor(sf::Color(190, 190, 190)); // Darker Grey
 	m_bCustBrushPreview.setFillColor(sf::Color(209, 28, 255)); // Purple
 	m_bCustShapePreview.setFillColor(sf::Color(209, 28, 255)); // Purple
-	m_bCustShapePreview.setOutlineColor(sf::Color(209, 28, 255));
+	m_bCustShapePreview.setOutlineColor(sf::Color(209, 28, 255)); // Purple
 
+	// Set Origin's to center
 	m_CustomBrushBG.setOrigin(m_CustomBrushBG.getGlobalBounds().width / 2, m_CustomBrushBG.getGlobalBounds().height / 2);
 	m_bCustBrushPreview.setOrigin(m_bCustBrushPreview.getGlobalBounds().width / 2, m_bCustBrushPreview.getGlobalBounds().height / 2);
 	m_bCustShapePreview.setOrigin(m_bCustShapePreview.getGlobalBounds().width / 2, m_bCustShapePreview.getGlobalBounds().height / 2);
 
+	// Positioning
 	m_BrushBackGround.setPosition(m_BrushBackGround.getSize().x / 30, m_BrushBackGround.getSize().y / 9);
 	m_CustomBrushBG.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.175);
 	m_bCustBrushPreview.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.075);
 	m_bCustShapePreview.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.075);
 
+	// Menu Initialization
 	m_BrushButtonList[0] = {};
 	m_ShapeButtonList[0] = {};
 	m_InputList[0] = {};
 	m_Canvas = nullptr;
 	m_Brush = nullptr;
 	m_RenderWindow = _RenderWindow;
+
+	// Render Window Creation
 	m_UIWindow = new sf::RenderWindow(sf::VideoMode(320, 720), "Tools", (sf::Style::Titlebar));
 	m_UIWindow->setFramerateLimit((unsigned)120);
 	
+	// Colour Dialogue Initialization
 	InitColourDialogue();
 }
 
+/// <summary>
+/// PopOutMenu Destructor
+/// </summary>
 CPopOutMenu::~CPopOutMenu()
 {
-	// CleanUp
+	// CleanUp Brush Buttons
 	for (int i = 0; i < 11; i++)
 	{
 		delete m_BrushButtonList[i];
@@ -45,7 +61,7 @@ CPopOutMenu::~CPopOutMenu()
 		/*std::cout << "PopedFront" << std::endl;*/
 	}
 
-	// CleanUp
+	// CleanUp Shape Buttons
 	for (int i = 0; i < 11; i++)
 	{
 		delete m_ShapeButtonList[i];
@@ -53,12 +69,15 @@ CPopOutMenu::~CPopOutMenu()
 		/*std::cout << "PopedFront" << std::endl;*/
 	}
 
-	for (int i = 0; i < 2; i++)
+	// CleanUp InputLists
+	for (int i = 0; i < 4; i++)
 	{
 		delete m_InputList[i];
 		m_InputList[i] = nullptr;
 		/*std::cout << "PopedFront" << std::endl;*/
 	}
+
+	// Object and Pointer CleanUp
 	delete m_Canvas;
 	delete m_Brush;
 	delete m_Shape;
@@ -66,10 +85,12 @@ CPopOutMenu::~CPopOutMenu()
 	m_Brush = nullptr;
 	m_Shape = nullptr;
 	m_Canvas = nullptr;
-	
 	m_RenderWindow = nullptr;
 }
 
+/// <summary>
+/// Start Function For PopOutMenu (Intended To Be Called Before Update).
+/// </summary>
 void CPopOutMenu::Start()
 {
 	// Essentials Creation
@@ -109,6 +130,10 @@ void CPopOutMenu::Start()
 	Render();
 }
 
+/// <summary>
+/// Hover Update Check For all Input Fields. Takes in an sf::Event.
+/// </summary>
+/// <param name="_event"></param>
 void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
 {
 	if (m_bBrushMenu && m_InputList[0]->bIsinBounds(m_InputList[0]->GetMousePosition()))
@@ -130,6 +155,9 @@ void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
 	}
 }
 
+/// <summary>
+/// Update Loop For PopOutMenu.
+/// </summary>
 void CPopOutMenu::Update()
 {
 	sf::Event UIEvent;
@@ -429,7 +457,7 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 }
 
 /// <summary>
-/// Render Definition For PopOutMenu
+/// Render Definition For PopOutMenu.
 /// </summary>
 void CPopOutMenu::Render()
 {
@@ -464,10 +492,10 @@ void CPopOutMenu::Render()
 		// Custom Shape (Shared Bool With Custom Brush)
 		if (m_bCustomBrush)
 		{
-			m_UIWindow->draw(m_CustomBrushBG);
-			m_ShapeButtonList[9]->RenderOnlyLabel();
-			m_InputList[3]->Render();
-			m_UIWindow->draw(m_bCustShapePreview);
+			m_UIWindow->draw(m_CustomBrushBG);	// Custon Shape BG
+			m_ShapeButtonList[9]->RenderOnlyLabel();	// Custom Shape Sides Text Indicator
+			m_InputList[3]->Render();	// Custom Shape Side Input Field
+			m_UIWindow->draw(m_bCustShapePreview);	// Custom Shape Preview
 		}
 	}
 
@@ -477,21 +505,23 @@ void CPopOutMenu::Render()
 
 		m_ShapeButtonList[0]->Render(); // Fill bool button
 		m_ShapeButtonList[1]->Render();  // colour button
+
 		for (int i = 4; i < 8; i++)
 		{
 			m_ShapeButtonList[i]->Render();
 		}
 
-		m_InputList[2]->Render();
+		m_InputList[2]->Render(); // Outline Thickness Input Field
 
-		m_ShapeButtonList[8]->RenderOnlyLabel();
-		m_ShapeButtonList[10]->RenderOnlyLabel();
+		m_ShapeButtonList[8]->RenderOnlyLabel();	// Outline Thickness Text Indicator
+		m_ShapeButtonList[10]->RenderOnlyLabel();	// Fill Bool Text Indicator
 	}
 	
 	m_BrushButtonList[0]->Render(); // brush button
 	m_BrushButtonList[2]->Render(); // Canvas button
 	m_BrushButtonList[3]->Render(); // Shapes button
 	m_BrushButtonList[10]->Render(); // Save button
+
 	if (m_bBrushMenu)
 	{
 		
@@ -502,20 +532,18 @@ void CPopOutMenu::Render()
 			m_BrushButtonList[i]->Render();
 		}
 
-		m_InputList[0]->Render();
+		m_InputList[0]->Render(); // Brush Size Input Field
 
-		m_BrushButtonList[8]->RenderOnlyLabel();
+		m_BrushButtonList[8]->RenderOnlyLabel();	// Brush Size Text Indicator
 	}
-	
 
-	/*for (int i = 0; i < 1; i++)
-	{
-		
-	}*/
-	
+	// Display
 	m_UIWindow->display();
 }
 
+/// <summary>
+/// Initializes The PopUp Colour Dialogue Window.
+/// </summary>
 void CPopOutMenu::InitColourDialogue()
 {
 	// Initialize CHOOSECOLOR
@@ -528,6 +556,9 @@ void CPopOutMenu::InitColourDialogue()
 	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 }
 
+/// <summary>
+/// Opens The PopUp Colour Dialogue Window.
+/// </summary>
 void CPopOutMenu::OpenColourDialogue()
 {
 	if (ChooseColor(&cc) == TRUE)
@@ -543,7 +574,9 @@ void CPopOutMenu::OpenColourDialogue()
 	/*m_bColourIsOpen = !m_bColourIsOpen;*/
 }
 
-
+/// <summary>
+/// Brush Menu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CreateBrushButtons()
 {
 	CInputField* BrushSize = new CInputField(m_UIWindow);
@@ -582,6 +615,9 @@ void CPopOutMenu::CreateBrushButtons()
 	m_InputList[0] = BrushSize;
 }
 
+/// <summary>
+/// Custom Brush Menu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CustomBrushButtons()
 {
 	CButtons* SidesLabel = new CButtons(m_UIWindow);
@@ -594,6 +630,9 @@ void CPopOutMenu::CustomBrushButtons()
 	m_InputList[1] = SidesInput;
 }
 
+/// <summary>
+/// Custom Shape Menu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CustomShapeButtons()
 {
 	CButtons* SidesLabel = new CButtons(m_UIWindow);
@@ -610,6 +649,9 @@ void CPopOutMenu::CustomShapeButtons()
 	m_InputList[3] = SidesInputShape;
 }
 
+/// <summary>
+/// ShapeMenu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CreateShapeButtons()
 {
 	CInputField* OutLineThickness = new CInputField(m_UIWindow);
@@ -666,6 +708,9 @@ void CPopOutMenu::CreateShapeButtons()
 	m_InputList[2] = OutLineThickness;
 }
 
+/// <summary>
+/// Tab Menu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CreateTabMenuButtons()
 {
 
@@ -721,11 +766,17 @@ void CPopOutMenu::CreateTabMenuButtons()
 	m_BrushButtonList[10] = Save;
 }
 
+/// <summary>
+/// Saves The Current Artwork To A Specified File Location.
+/// </summary>
 void CPopOutMenu::Save()
 {
 	/*m_RenderWindow->capture();*/
 }
 
+/// <summary>
+/// Shapes Menu Bool Button Check.
+/// </summary>
 void CPopOutMenu::ShapesMenuFillCheck()
 {
 	if (m_bShapeFillColour)
