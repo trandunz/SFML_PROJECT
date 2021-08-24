@@ -9,7 +9,8 @@ CShapes::CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas)
 	m_ShapeSize = 0;
 	m_Stroke = nullptr;
 	m_bCreateShape = false;
-	m_PreviewStroke = sf::CircleShape(0);
+	m_PreviewStroke = sf::CircleShape();
+	m_PreviewLine = sf::VertexArray();
 	
 	m_ShapeType = SHAPETYPE::DEFAULT;
 }
@@ -36,21 +37,36 @@ CShapes::~CShapes()
 
 void CShapes::Render()
 {
-	/*std::list<sf::CircleShape>::iterator it = PaintedShapeList.begin();
-	while (it != PaintedShapeList.end())
+	/*std::list<sf::VertexArray>::iterator it = PaintedLineList.begin();
+	while (it != PaintedLineList.end())
 	{
-		m_RenderWindow->draw(*it);
-		std::advance(it, 1);
+		m_RenderWindow->draw(it);
+		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
+		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
+		it++;
 	}*/
 	
-	sf::Vector2f worldPosd = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewStroke.getPosition()));
 	for (sf::CircleShape& stroke : PaintedShapeList)
 	{
 		m_RenderWindow->draw(stroke);
 		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
 	}
-	/*m_RenderWindow->draw(PaintedLineList.p);*/
+
+	for (sf::VertexArray& line : PaintedLineList)
+	{
+		m_RenderWindow->draw(line);
+		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
+		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
+	}
+
+	sf::Vector2f worldPosd = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewStroke.getPosition()));
+	if (m_PreviewLine.getVertexCount() != 0)
+	{
+		sf::Vector2f worldPosVo = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewLine[0].position));
+		sf::Vector2f worldPosVt = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewLine[1].position));
+	}
 	m_RenderWindow->draw(m_PreviewStroke);
+	m_RenderWindow->draw(m_PreviewLine);
 }
 
 void CShapes::Update()
@@ -72,26 +88,30 @@ void CShapes::PaintShape()
 			m_bCreatePreviewShape = false;
 		}
 
-		/*m_Stroke->setOrigin(m_vMouseStart);*/
-		float x = (m_vMousePosition.x - m_vMouseStart.x);
-		 
-		float y = (m_vMouseStart.y - m_vMousePosition.y) * (m_vMouseStart.y - m_vMousePosition.y);
-		m_ShapeSize = x;
-		m_PreviewStroke.setFillColor(m_Colour);
-		m_PreviewStroke.setPointCount(m_SideCount);
-		m_PreviewStroke.setRotation(m_Rotation);
-		m_PreviewStroke.setRadius(m_ShapeSize);
-		m_PreviewStroke.setOutlineThickness(m_OutlineThickness);
-		m_PreviewStroke.setOutlineColor(m_OutlineColour);
+		if (m_ShapeType != LINE)
+		{
+			float x = (m_vMousePosition.x - m_vMouseStart.x);
+			float y = (m_vMouseStart.y - m_vMousePosition.y) * (m_vMouseStart.y - m_vMousePosition.y);
+			m_ShapeSize = x;
+			m_PreviewStroke.setFillColor(m_Colour);
+			m_PreviewStroke.setPointCount(m_SideCount);
+			m_PreviewStroke.setRotation(m_Rotation);
+			m_PreviewStroke.setRadius(m_ShapeSize);
+			m_PreviewStroke.setOutlineThickness(m_OutlineThickness);
+			m_PreviewStroke.setOutlineColor(m_OutlineColour);
+		}
+		else
+		{
+			m_PreviewLine = sf::VertexArray(sf::Lines, 2);
+			m_PreviewLine[0].position = sf::Vector2f(m_vMouseStart.x, m_vMouseStart.y);
+			m_PreviewLine[0].color = m_OutlineColour;
+			m_PreviewLine[1].position = sf::Vector2f(m_vMousePosition.x, m_vMousePosition.y);
+			m_PreviewLine[1].color = m_OutlineColour;
+		}
+		
 		Render();
 		/*std::cout << m_Stroke->getRadius() << std::endl;*/
 	}
-
-		
-
-
-	
-
 }
 
 void CShapes::LetGoOfShape()
@@ -100,9 +120,14 @@ void CShapes::LetGoOfShape()
 	{
 	case LINE:
 	{
-		/*sf::Vertex line[2] = { {{m_vMouseStart.x,m_vMouseStart.y}, m_OutlineColour}, {{m_vMousePosition.x,  m_vMousePosition.y}, m_OutlineColour} };
+		sf::VertexArray line(sf::Lines, 2);
+		line[0].position = sf::Vector2f(m_vMouseStart.x, m_vMouseStart.y);
+		line[0].color = m_OutlineColour;
+		line [1].position = sf::Vector2f(m_PreviewLine[1].position.x, m_PreviewLine[1].position.y);
+		line[1].color = m_OutlineColour;
+		
 
-		PaintedLineList.push_back(line);*/
+		PaintedLineList.push_back(line);
 		break;
 	}
 	case CIRCLE:
@@ -184,7 +209,8 @@ void CShapes::LetGoOfShape()
 	m_bCreateShape = false;
 	m_Stroke = nullptr;
 	std::cout << "  Let Go" << std::endl;
-	m_PreviewStroke = sf::CircleShape(0);
+	m_PreviewStroke = sf::CircleShape();
+	m_PreviewLine = sf::VertexArray();
 	Render();
 	Update();
 }
@@ -210,12 +236,15 @@ void CShapes::Undo()
 {
 	if (PaintedShapeList.size() > 0)
 	{
-		std::list<sf::CircleShape>::iterator it = PaintedShapeList.begin();
+		std::list<sf::CircleShape>::iterator it = PaintedShapeList.end();
+		it--;
 		PaintedShapeList.erase(it);
 
 	}
 	if (PaintedLineList.size() > 0)
 	{
-		PaintedShapeList.pop_front();
+		std::list<sf::VertexArray>::iterator it = PaintedLineList.end();
+		it--;
+		PaintedLineList.erase(it);
 	}
 }

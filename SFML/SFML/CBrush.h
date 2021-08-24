@@ -31,7 +31,7 @@ public:
 
 	void Undo();
 
-	sf::Color setPixelColor(int x, int y, sf::Color color);
+	/*sf::Color setPixelColor(int x, int y, sf::Color color);*/
 	
 
 	int m_BushSize;

@@ -62,10 +62,10 @@ CPopOutMenu::~CPopOutMenu()
 	}
 
 	// CleanUp Shape Buttons
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < 12; i++)
 	{
 		delete m_ShapeButtonList[i];
-		m_BrushButtonList[i] = nullptr;
+		m_ShapeButtonList[i] = nullptr;
 		/*std::cout << "PopedFront" << std::endl;*/
 	}
 
@@ -94,7 +94,7 @@ CPopOutMenu::~CPopOutMenu()
 void CPopOutMenu::Start()
 {
 	// Essentials Creation
-	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(100.0f, 100.0f));
+	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(1000.0f, 1000.0f));
 	m_Brush = new CBrush(m_RenderWindow, m_Canvas);
 	m_Shape = new CShapes(m_RenderWindow, m_Canvas);
 
@@ -232,12 +232,18 @@ void CPopOutMenu::Update()
 				}
 				if (m_ShapeButtonList[4]->bIsinBounds(m_BrushButtonList[4]->GetMousePosition()))
 				{ 
-					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::LINE;
-					/*m_Shape->m_SideCount = 4;
+					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::SQUARE;
+					m_Shape->m_SideCount = 4;
 					m_Shape->m_Rotation = 45;
-					InputButtonUpdate(UIEvent, 3);*/
+					InputButtonUpdate(UIEvent, 3);
 					m_bCustomBrush = false;
 				}
+				if (m_ShapeButtonList[11]->bIsinBounds(m_ShapeButtonList[11]->GetMousePosition()))
+				{
+					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::LINE;
+					m_bCustomBrush = false;
+				}
+				
 				if (m_ShapeButtonList[5]->bIsinBounds(m_BrushButtonList[5]->GetMousePosition()))
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::CIRCLE;
@@ -267,9 +273,10 @@ void CPopOutMenu::Update()
 
 			if (m_BrushButtonList[10]->bIsinBounds(m_BrushButtonList[10]->GetMousePosition()))
 			{
-				m_bSaveMenu = !m_bSaveMenu;
+				/*m_bSaveMenu = !m_bSaveMenu;
 				m_bShapeMenu = false;
-				m_bBrushMenu = false;
+				m_bBrushMenu = false;*/
+				Save();
 				std::cout << "Save Menu Pressed" << endl;
 			}
 		}
@@ -304,7 +311,7 @@ void CPopOutMenu::Update()
 		{
 			m_BrushButtonList[i]->Update();
 		}
-		for (int i = 0; i < 11; i++)
+		for (int i = 0; i < 12; i++)
 		{
 			if (m_ShapeButtonList[i] != nullptr)
 			{
@@ -510,6 +517,7 @@ void CPopOutMenu::Render()
 		{
 			m_ShapeButtonList[i]->Render();
 		}
+		m_ShapeButtonList[11]->Render(); // Line Button
 
 		m_InputList[2]->Render(); // Outline Thickness Input Field
 
@@ -668,6 +676,9 @@ void CPopOutMenu::CreateShapeButtons()
 	CButtons* Square = new CButtons(m_UIWindow);
 	Square->SetLabel("Square");
 	Square->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
+	CButtons* Line = new CButtons(m_UIWindow);
+	Line->SetLabel("Line");
+	Line->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 3);
 	CButtons* Circle = new CButtons(m_UIWindow);
 	Circle->SetLabel("Circle");
 	Circle->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 3);
@@ -699,12 +710,14 @@ void CPopOutMenu::CreateShapeButtons()
 	m_ShapeButtonList[1] = Colour;
 
 	m_ShapeButtonList[4] = Square;
+	
 	m_ShapeButtonList[5] = Circle;
 	m_ShapeButtonList[6] = Triangle;
 	m_ShapeButtonList[7] = Custom;
 
 	m_ShapeButtonList[8] = OutLineThicButton;
-
+	
+	m_ShapeButtonList[11] = Line;
 	m_InputList[2] = OutLineThickness;
 }
 
@@ -771,6 +784,38 @@ void CPopOutMenu::CreateTabMenuButtons()
 /// </summary>
 void CPopOutMenu::Save()
 {
+	sf::RenderTexture m_RenderTexture;
+	m_RenderTexture.create(m_Canvas->m_Size.x, m_Canvas->m_Size.y);
+
+	sf::View CanvasView = sf::View(sf::FloatRect(0.0f, 0.0f, m_Canvas->m_Size.x, m_Canvas->m_Size.y));
+	CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
+	m_RenderTexture.setView(CanvasView);
+
+	m_RenderTexture.draw(m_Canvas->m_Canvas);
+
+	for (sf::CircleShape& stroke : m_Shape->PaintedShapeList)
+	{
+		m_RenderTexture.draw(stroke);
+		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
+	}
+	for (sf::VertexArray& line : m_Shape->PaintedLineList)
+	{
+		m_RenderTexture.draw(line);
+		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
+		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
+	}
+	for (const sf::CircleShape& stroke : m_Brush->PaintedBrushList)
+	{
+		m_RenderTexture.draw(stroke);
+		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
+	}
+
+	m_RenderTexture.display();
+
+	if (m_RenderTexture.getTexture().copyToImage().saveToFile("Images/Test.png"))
+	{
+		std::cout << "TEST.png Saved" << std::endl;
+	}
 	/*m_RenderWindow->capture();*/
 }
 

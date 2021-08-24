@@ -140,12 +140,12 @@ void CBrush::Undo()
 	
 }
 
-sf::Color CBrush::setPixelColor(int x, int y, sf::Color color)
-{
-	{
-		// Set pixel to color
-		m_Canvas->m_CanvasImage->setPixel(x, y, color);
-
-		return color;
-	}
-}
+//sf::Color CBrush::setPixelColor(int x, int y, sf::Color color)
+//{
+//	{
+//		// Set pixel to color
+//		m_Canvas->m_CanvasImage->setPixel(x, y, color);
+//
+//		return color;
+//	}
+//}

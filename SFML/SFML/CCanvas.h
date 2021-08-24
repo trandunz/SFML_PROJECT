@@ -5,10 +5,10 @@ class CCanvas
 {
 public:
 	sf::Vector2f m_Size;
-	sf::Sprite m_Canvas;
-	sf::Image* m_CanvasImage;
+	sf::RectangleShape m_Canvas;
+	/*sf::Image* m_CanvasImage;*/
 	sf::Sprite m_BackGround;
-	sf::Texture* m_CanvTexture;
+	/*sf::Texture* m_CanvTexture;*/
 	sf::Texture m_BGTexture;
 	
 	CCanvas();

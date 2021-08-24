@@ -21,7 +21,8 @@ public:
 	CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas);
 	~CShapes();
 	std::list<sf::CircleShape> PaintedShapeList;
-	std::list<sf::Vertex> PaintedLineList;
+	sf::VertexArray LineVertexArray;
+	std::list<sf::VertexArray> PaintedLineList;
 	
 
 	void Render();
@@ -37,6 +38,7 @@ public:
 
 	sf::CircleShape* m_Stroke;
 	sf::CircleShape m_PreviewStroke;
+	sf::VertexArray m_PreviewLine;
 
 	int m_ShapeSize;
 	int m_Rotation;

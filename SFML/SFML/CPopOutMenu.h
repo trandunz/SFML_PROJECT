@@ -39,7 +39,7 @@ public:
 	void ShapesMenuFillCheck();
 
 	CButtons* m_BrushButtonList[11];
-	CButtons* m_ShapeButtonList[11];
+	CButtons* m_ShapeButtonList[12];
 	CButtons* m_CanvasButtonList[9];
 	CInputField* m_InputList[4];
 	CCanvas* m_Canvas;
