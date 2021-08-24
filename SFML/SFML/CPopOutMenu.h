@@ -1,9 +1,24 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CPopOutMenu.h
+// Description : CPopOutMenu Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 #pragma once
 #pragma warning (disable : 26812) // SILENCE MINION
 #include <SFML/gRAPHICS.HPP>
 #include <list>
 #include <Windows.h>
 #include <Wingdi.h>
+
 #include "CButtons.h"
 #include "CBrush.h"
 #include "CShapes.h"

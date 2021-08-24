@@ -1,7 +1,19 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CButtons.h
+// Description : CButtons Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 #pragma once
 #include <SFML/Graphics.hpp>
-
-using namespace std;
 
 class CButtons
 {
@@ -17,9 +29,9 @@ public:
 	bool m_bIsHovering;
 	bool m_bIsPressed;
 	bool m_bIsClicked;
-	string m_Label;
-	string m_OnClickLabel;
-	string m_HoverLabel;
+	std::string m_Label;
+	std::string m_OnClickLabel;
+	std::string m_HoverLabel;
 	sf::Sprite Sprite;
 	sf::Text m_tLabel;
 
@@ -37,10 +49,10 @@ public:
 
 	void SetPosition(float newX, float newY);
 
-	void SetLabel(string x);
+	void SetLabel(std::string x);
 
 	 
-	void SetState(string type);
+	void SetState(std::string type);
 
 	bool bIsinBounds(sf::Vector2f _vMousePosition);
 

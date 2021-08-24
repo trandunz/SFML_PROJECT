@@ -1,7 +1,23 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CShapes.h
+// Description : CShapes Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 #pragma once
-#include "CCanvas.h"
 #include <list>
-#include <math.h> 
+#include <math.h>
+
+#include "CCanvas.h"
+
 class CShapes
 {
 public:

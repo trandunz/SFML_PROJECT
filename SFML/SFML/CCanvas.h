@@ -1,6 +1,21 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CCanvas.h
+// Description : CCanvas Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
 class CCanvas
 {
 public:

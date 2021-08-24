@@ -1,3 +1,17 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CPopOutMenu.cpp
+// Description : CPopOutMenu Implementation file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 // Non-Local Includes
 
 // Local Includes
@@ -187,7 +201,7 @@ void CPopOutMenu::Update()
 				m_bBrushMenu = !m_bBrushMenu;
 				m_bShapeMenu = false;
 				m_bSaveMenu = false;
-				std::cout << "Brush Menu Pressed" << endl;
+				std::cout << "Brush Menu Pressed" << std::endl;
 			}
 			if (m_BrushButtonList[1]->bIsinBounds(m_BrushButtonList[1]->GetMousePosition()))
 			{
@@ -199,14 +213,14 @@ void CPopOutMenu::Update()
 				m_bShapeMenu = false;
 				m_bBrushMenu = false;
 				m_bSaveMenu = false;
-				std::cout << "Canvas Menu Pressed" << endl;
+				std::cout << "Canvas Menu Pressed" << std::endl;
 			}
 			if (m_BrushButtonList[3]->bIsinBounds(m_BrushButtonList[3]->GetMousePosition()))
 			{
 				m_bShapeMenu = !m_bShapeMenu;
 				m_bBrushMenu = false;
 				m_bSaveMenu = false;
-				std::cout << "Shape Menu Pressed" << endl;
+				std::cout << "Shape Menu Pressed" << std::endl;
 				InputButtonUpdate(UIEvent, 2);
 			}
 			if (m_BrushButtonList[10]->bIsinBounds(m_BrushButtonList[10]->GetMousePosition()))
@@ -215,7 +229,7 @@ void CPopOutMenu::Update()
 				m_bShapeMenu = false;
 				m_bBrushMenu = false;
 				/*Save();*/
-				std::cout << "Save Menu Pressed" << endl;
+				std::cout << "Save Menu Pressed" << std::endl;
 			}
 
 			if (m_bBrushMenu)
@@ -248,7 +262,7 @@ void CPopOutMenu::Update()
 				{
 					m_bShapeFillColour = !m_bShapeFillColour;
 					m_ShapeButtonList[0]->m_bIsPressed = !m_ShapeButtonList[0]->m_bIsPressed;
-					cout << "Fill Button Pressed" << endl;
+					std::cout << "Fill Button Pressed" << std::endl;
 
 					ShapesMenuFillCheck();
 				}
@@ -320,7 +334,7 @@ void CPopOutMenu::Update()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 		{
 			OpenColourDialogue();
-			std::cout << "Colour Menu ShortCut" << endl;
+			std::cout << "Colour Menu ShortCut" << std::endl;
 		}
 
 		// Shapes Menu Hotkey
@@ -328,7 +342,7 @@ void CPopOutMenu::Update()
 		{
 			m_bShapeMenu = !m_bShapeMenu;
 			m_bBrushMenu = false;
-			std::cout << "Shape Menu ShortCut" << endl;
+			std::cout << "Shape Menu ShortCut" << std::endl;
 		}
 
 		// Button Updates

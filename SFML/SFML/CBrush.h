@@ -1,7 +1,23 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CBrush.h
+// Description : CBrush Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
 #pragma once
-#include "CCanvas.h"
 #include <iostream>
 #include <list>
+
+#include "CCanvas.h"
+
 class CBrush
 {
 public:
@@ -30,9 +46,6 @@ public:
 	void SetActiveColour(sf::Color _Color);
 
 	void Undo();
-
-	/*sf::Color setPixelColor(int x, int y, sf::Color color);*/
-	
 
 	int m_BushSize;
 	int m_Rotation;
