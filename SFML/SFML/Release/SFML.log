@@ -1,166 +1,189 @@
 ﻿  CPopOutMenu.cpp
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(31,72): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(32,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(33,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(105,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(109,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(376,66): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(34,72): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(35,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(36,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(37,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(114,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(118,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(404,66): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(427,67): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(455,67): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(591,110): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(639,110): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(591,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(595,115): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(639,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(643,115): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(595,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(599,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(643,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(647,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(599,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(603,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(647,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(651,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(603,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(606,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(651,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(654,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(606,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(609,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(609,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(612,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(654,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(657,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(657,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(660,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(612,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(633,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(637,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(648,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(652,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(656,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(666,117): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(660,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(681,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(685,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(696,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(700,68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(704,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(714,117): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(666,60): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(670,118): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(714,60): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(718,118): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(670,61): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(674,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(718,61): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(722,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(674,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(678,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(722,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(726,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(678,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(681,105): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(726,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(729,105): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(681,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(684,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(729,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(732,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(684,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(687,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(687,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(690,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(732,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(735,109): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(735,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(738,107): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(690,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(694,110): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(694,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(707,145): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(738,50): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(742,110): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(742,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(755,145): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(707,90): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(740,77): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(755,90): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(789,77): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(740,47): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(789,47): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(751,75): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(800,75): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(751,46): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(800,46): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(762,74): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(811,74): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(762,45): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(811,45): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(773,79): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(822,79): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(773,48): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(822,48): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(788,61): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(835,105): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(835,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(839,105): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(839,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(843,81): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(843,52): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(856,61): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(788,41): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+C:\Users\trand\Documents\GITHUB\SFML_PROJECT\SFML\SFML\CPopOutMenu.cpp(856,41): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
           with
           [
               T=float
           ]
   Generating code
-  1 of 398 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  1 of 399 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

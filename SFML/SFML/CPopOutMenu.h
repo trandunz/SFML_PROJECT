@@ -17,6 +17,7 @@ public:
 
 	void Start();
 	void Update();
+	void InputButtonUpdate(sf::Event _event, int _index);
 	void Render();
 
 	void InputButtonHoverUpdates(sf::Event _event);
@@ -25,22 +26,22 @@ public:
 	void OpenColourDialogue();
 
 	void CreateBrushButtons();
+
 	void CustomBrushButtons();
 	void CustomShapeButtons();
 
-	void InputButtonUpdate(sf::Event _event, int _index);
-
 	void CreateShapeButtons();
-
 	void CreateTabMenuButtons();
+	void CreateSaveMenuButtons();
 
 	void Save();
 
 	void ShapesMenuFillCheck();
 
-	CButtons* m_BrushButtonList[11];
-	CButtons* m_ShapeButtonList[12];
-	CButtons* m_CanvasButtonList[9];
+	CButtons* m_BrushButtonList[11] = {};
+	CButtons* m_ShapeButtonList[12] = {};
+	CButtons* m_CanvasButtonList[9] = {};
+	CButtons* m_SaveMenuButtonList[3] = {};
 	CInputField* m_InputList[4];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
@@ -70,5 +71,6 @@ private:
 	sf::RectangleShape m_CustomBrushBG;
 	sf::CircleShape m_bCustBrushPreview;
 	sf::CircleShape m_bCustShapePreview;
+	sf::RectangleShape m_SaveMenuPreviewBG;
 };
 
