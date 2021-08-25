@@ -18,6 +18,9 @@
 #include <list>
 #include <Windows.h>
 #include <Wingdi.h>
+#include <ShObjIdl.h>
+#include <Shlwapi.h>
+#include <atlbase.h>
 
 #include "CButtons.h"
 #include "CBrush.h"
@@ -49,7 +52,11 @@ public:
 	void CreateTabMenuButtons();
 	void CreateSaveMenuButtons();
 
-	void Save();
+	void Save(std::string& _name);
+	void Load();
+
+	void OpenFileDialogue(sf::RectangleShape& _canvas);
+	void SaveFileDialogue();
 
 	void ShapesMenuFillCheck();
 
@@ -80,6 +87,13 @@ private:
 	HBRUSH hbrush;                  // brush handle
 	DWORD rgbCurrent;        // initial color selection
 	COLORREF cr;
+
+	OPENFILENAME ofn;       // common dialog box structure
+	char szFile[260];       // buffer for file name
+	HWND hwndFile;              // owner window
+	HANDLE hf;              // file handle
+	HRESULT hr;
+
 
 	sf::RectangleShape m_BackGround;
 	sf::RectangleShape m_BrushBackGround;

@@ -203,7 +203,7 @@ void CPopOutMenu::Update()
 				m_bSaveMenu = false;
 				std::cout << "Brush Menu Pressed" << std::endl;
 			}
-			if (m_BrushButtonList[1]->bIsinBounds(m_BrushButtonList[1]->GetMousePosition()))
+			if (m_BrushButtonList[1]->bIsinBounds(m_BrushButtonList[1]->GetMousePosition()) && (m_bBrushMenu || m_bShapeMenu))
 			{
 				OpenColourDialogue();
 				
@@ -311,11 +311,12 @@ void CPopOutMenu::Update()
 			{
 				if (m_SaveMenuButtonList[0]->bIsinBounds(m_SaveMenuButtonList[0]->GetMousePosition()))
 				{
-					Save();
+					SaveFileDialogue();
 				}
 				if (m_SaveMenuButtonList[1]->bIsinBounds(m_SaveMenuButtonList[1]->GetMousePosition()))
 				{
 					std::cout << "Load" << std::endl;
+					Load();
 				}
 			}
 		}
@@ -864,7 +865,7 @@ void CPopOutMenu::CreateSaveMenuButtons()
 /// <summary>
 /// Saves The Current Artwork To A Specified File Location.
 /// </summary>
-void CPopOutMenu::Save()
+void CPopOutMenu::Save(std::string& _fileName)
 {
 	sf::RenderTexture m_RenderTexture;
 	m_RenderTexture.create(m_Canvas->m_Size.x, m_Canvas->m_Size.y);
@@ -894,11 +895,139 @@ void CPopOutMenu::Save()
 
 	m_RenderTexture.display();
 
-	if (m_RenderTexture.getTexture().copyToImage().saveToFile("Images/Test.png"))
+	if (m_RenderTexture.getTexture().copyToImage().saveToFile(_fileName))
 	{
-		std::cout << "TEST.png Saved" << std::endl;
+		std::cout << _fileName << " +Saved!" << std::endl;
 	}
-	/*m_RenderWindow->capture();*/
+}
+
+void CPopOutMenu::Load()
+{
+	// Object and Pointer CleanUp
+	delete m_Brush;
+	delete m_Shape;
+	
+	m_Brush = new CBrush(m_RenderWindow, m_Canvas);
+	m_Shape = new CShapes(m_RenderWindow, m_Canvas);
+
+	// Essentials Initialization
+	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::DEFAULT;
+	m_Brush->m_BushSize = 1;
+	m_Brush->m_SideCount = 100;
+	m_Brush->m_Rotation = 0.0f;
+
+	m_Shape->m_ShapeType = m_Shape->SHAPETYPE::DEFAULT;
+	m_Shape->m_SideCount = 100;
+	m_Shape->m_Rotation = 0.0f;
+
+	OpenFileDialogue(m_Canvas->m_Canvas);
+	m_Canvas->Render();
+	Update();
+}
+
+void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
+{
+	IFileOpenDialog* pFileOpen;
+	hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+
+	if (SUCCEEDED(hr))
+	{
+		// Show the Open dialog box.
+		hr = pFileOpen->Show(NULL);
+
+		// Get the file name from the dialog box.
+		if (SUCCEEDED(hr))
+		{
+			IShellItem* pItem;
+			hr = pFileOpen->GetResult(&pItem);
+			if (SUCCEEDED(hr))
+			{
+				PWSTR pszFilePath;
+				hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+				// Display the file name to the user.
+				if (SUCCEEDED(hr))
+				{
+					USES_CONVERSION;
+
+					std::string temp;
+
+					temp = PathFindExtensionA(W2A(pszFilePath));
+
+					std::cout << temp << std::endl;
+
+					if (temp == ".png")
+					{
+						std::cout << "true" << std::endl;
+						sf::Texture* imageTex;
+						imageTex = new sf::Texture();
+
+						if (!imageTex->loadFromFile(W2A(pszFilePath)))
+							std::cout << "error" << std::endl;
+
+						imageTex->loadFromFile(W2A(pszFilePath));
+
+						_canvas.setFillColor((sf::Color::White));
+						_canvas.setTexture(imageTex, true);
+						_canvas.setSize(sf::Vector2f(imageTex->getSize().x, imageTex->getSize().y));
+						_canvas.setOrigin(_canvas.getGlobalBounds().width / 2, _canvas.getGlobalBounds().height / 2);
+						_canvas.setPosition(0.0f, 0.0f);
+					}
+
+					MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+					CoTaskMemFree(pszFilePath);
+				}
+				pItem->Release();
+			}
+		}
+		pFileOpen->Release();
+	}
+}
+
+void CPopOutMenu::SaveFileDialogue()
+{
+	IFileSaveDialog* pFileSave;
+	hr = CoCreateInstance(CLSID_FileSaveDialog, NULL, CLSCTX_ALL, IID_IFileSaveDialog, reinterpret_cast<void**>(&pFileSave));
+
+	if (SUCCEEDED(hr))
+	{
+		// Show the Open dialog box.
+		hr = pFileSave->Show(NULL);
+
+		// Get the file name from the dialog box.
+		if (SUCCEEDED(hr))
+		{
+			IShellItem* pItem;
+			hr = pFileSave->GetResult(&pItem);
+			if (SUCCEEDED(hr))
+			{
+				PWSTR pszFilePath;
+				hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+				// Display the file name to the user.
+				if (SUCCEEDED(hr))
+				{
+					USES_CONVERSION;
+
+					std::string* temp = new std::string();
+
+					*temp = PathFindFileNameA(W2A(pszFilePath));
+
+					std::cout << *temp << std::endl;
+
+					Save(*temp);
+
+					MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+
+					delete temp;
+					temp = nullptr;
+					CoTaskMemFree(pszFilePath);
+				}
+				pItem->Release();
+			}
+		}
+		pFileSave->Release();
+	}
 }
 
 /// <summary>

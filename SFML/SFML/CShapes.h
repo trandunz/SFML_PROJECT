@@ -13,6 +13,7 @@
 //
 
 #pragma once
+#pragma warning (disable : 26812) // SILENCE MINION
 #include <list>
 #include <math.h>
 
