@@ -14,7 +14,7 @@
 
 #pragma once
 #pragma warning (disable : 26812) // SILENCE MINION
-#include <SFML/gRAPHICS.HPP>
+#include <SFML/Graphics.hpp>
 #include <list>
 #include <Windows.h>
 #include <Wingdi.h>
@@ -51,9 +51,12 @@ public:
 	void CreateShapeButtons();
 	void CreateTabMenuButtons();
 	void CreateSaveMenuButtons();
+	void CreateCanvasMenuButtons();
 
 	void Save(std::string& _name);
 	void Load();
+
+	void CreateSnip();
 
 	void OpenFileDialogue(sf::RectangleShape& _canvas);
 	void SaveFileDialogue();
@@ -75,6 +78,7 @@ public:
 	bool m_bBrushMenu;
 	bool m_bShapeMenu;
 	bool m_bSaveMenu;
+	bool m_bCanvasMenu;
 	bool m_bCustomBrush;
 	bool m_bShapeFillColour;
 
@@ -93,6 +97,7 @@ private:
 	HWND hwndFile;              // owner window
 	HANDLE hf;              // file handle
 	HRESULT hr;
+	sf::Texture* imageTex;
 
 
 	sf::RectangleShape m_BackGround;
@@ -101,5 +106,9 @@ private:
 	sf::CircleShape m_bCustBrushPreview;
 	sf::CircleShape m_bCustShapePreview;
 	sf::RectangleShape m_SaveMenuPreviewBG;
+
+	sf::RectangleShape m_SaveMenuPreview;
+
+	sf::RenderTexture* m_Snip;
 };
 

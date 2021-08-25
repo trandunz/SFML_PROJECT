@@ -28,6 +28,7 @@ CShapes::CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas)
 
 	m_PreviewStroke = sf::CircleShape();
 	m_PreviewLine = sf::VertexArray();
+	m_PreviewStrokeBounds = sf::RectangleShape();
 	
 	m_ShapeType = SHAPETYPE::DEFAULT;
 }
@@ -76,7 +77,9 @@ void CShapes::Render()
 	}
 
 	sf::Vector2f worldPosd = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewStroke.getPosition()));
+	sf::Vector2f worldPose = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PreviewStrokeBounds.getPosition()));
 
+	m_RenderWindow->draw(m_PreviewStrokeBounds);
 	m_RenderWindow->draw(m_PreviewStroke);
 	m_RenderWindow->draw(m_PreviewLine);
 }
@@ -98,25 +101,41 @@ void CShapes::PaintShape()
 		{
 			m_vMouseStart = m_vMousePosition;
 
-			m_PreviewStroke = sf::CircleShape();
+			m_PreviewStroke = sf::CircleShape(1);
+			m_PreviewStrokeBounds = sf::RectangleShape();
+			m_PreviewStroke.setOrigin(m_PreviewStroke.getGlobalBounds().width / 2, m_PreviewStroke.getGlobalBounds().height / 2);
 			m_PreviewStroke.setPosition(m_vMouseStart);
+			m_PreviewStrokeBounds.setPosition(m_vMouseStart);
+
+			
 
 			m_bCreatePreviewShape = false;
 		}
 
 		if (m_ShapeType != LINE)
 		{
-			float x = (m_vMousePosition.x - m_vMouseStart.x);
-			float y = (m_vMouseStart.y - m_vMousePosition.y) * (m_vMouseStart.y - m_vMousePosition.y);
+			float x = (m_vMouseStart.x - m_vMousePosition.x);
+			float y = (m_vMouseStart.y - m_vMousePosition.y);
 
-			m_ShapeSize = x;
-
+			
+			m_PreviewStrokeBounds.setOutlineColor(sf::Color::Transparent);
+			m_PreviewStrokeBounds.setFillColor(sf::Color::Transparent);
+			/*m_PreviewStrokeBounds.setOrigin(sf::Vector2f(m_vMousePosition.x - m_vMouseStart.x, m_vMousePosition.y - m_vMouseStart.y));
+			m_PreviewStrokeBounds.setSize(sf::Vector2f(m_vMousePosition.x - m_vMouseStart.x, m_vMousePosition.y - m_vMouseStart.y));*/
+			SetRectangle(m_vMouseStart, m_vMousePosition, m_PreviewStrokeBounds);
+			
+			
+			
 			m_PreviewStroke.setFillColor(m_Colour);
 			m_PreviewStroke.setPointCount(m_SideCount);
-			m_PreviewStroke.setRotation(m_Rotation);
-			m_PreviewStroke.setRadius(m_ShapeSize);
+			
+			m_PreviewStroke.setRotation(0);
+			
+			/*m_PreviewStroke.setPosition(m_PreviewStrokeBounds.getPosition().x, m_PreviewStrokeBounds.getPosition().y);*/
+			m_PreviewStroke.setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 			m_PreviewStroke.setOutlineThickness(m_OutlineThickness);
 			m_PreviewStroke.setOutlineColor(m_OutlineColour);
+			m_PreviewStroke.setRotation(m_Rotation);
 		}
 		else
 		{
@@ -128,9 +147,34 @@ void CShapes::PaintShape()
 			m_PreviewLine[1].color = m_OutlineColour;
 		}
 		
+		m_ShapeSize = 1;
 		Render();
 
 		/*std::cout << m_Stroke->getRadius() << std::endl;*/
+	}
+}
+
+void CShapes::SetRectangle(sf::Vector2f& startPos, sf::Vector2f& mousePos, sf::RectangleShape& rec)
+{
+	if (mousePos.x < startPos.x && mousePos.y < startPos.y)//Mouse is left up of start, use mouse for x and y
+	{
+		rec.setPosition(mousePos.x, mousePos.y);
+		rec.setSize(sf::Vector2f(startPos.x - mousePos.x, startPos.y - mousePos.y));
+	}
+	else if (mousePos.x < startPos.x)//Rectagle is left down of start pos
+	{
+		rec.setPosition(mousePos.x, startPos.y);
+		rec.setSize(sf::Vector2f(startPos.x - mousePos.x, mousePos.y - startPos.y));
+	}
+	else if (mousePos.y < startPos.y)//Rectagle is right up of start pos
+	{
+		rec.setPosition(startPos.x, mousePos.y);
+		rec.setSize(sf::Vector2f(mousePos.x - startPos.x, startPos.y - mousePos.y));
+	}
+	else//Rectangle is right down, default state
+	{
+		rec.setPosition(startPos.x, startPos.y);
+		rec.setSize(sf::Vector2f(mousePos.x - startPos.x, mousePos.y - startPos.y));
 	}
 }
 
@@ -157,12 +201,15 @@ void CShapes::LetGoOfShape()
 		m_Stroke = new sf::CircleShape(m_ShapeSize);
 
 		m_Stroke->setFillColor(m_Colour);
-		m_Stroke->setPosition(m_PreviewStroke.getPosition());
+		m_Stroke->setOrigin(m_Stroke->getGlobalBounds().width/2, m_Stroke->getGlobalBounds().height / 2);
+		m_Stroke->setPosition(m_vMouseStart);
+		m_Stroke->setPointCount(100);
+		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 
 		m_Rotation = 0;
 
 		m_Stroke->setRotation(m_Rotation);
-		m_Stroke->setPointCount(100);
+		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);
@@ -174,12 +221,14 @@ void CShapes::LetGoOfShape()
 		m_Stroke = new sf::CircleShape(m_ShapeSize, 3);
 
 		m_Stroke->setFillColor(m_Colour);
-		m_Stroke->setPosition(m_PreviewStroke.getPosition());
-
+		m_Stroke->setOrigin(m_Stroke->getGlobalBounds().width / 2, m_Stroke->getGlobalBounds().height / 2);
+		m_Stroke->setPosition(m_vMouseStart);
+		m_Stroke->setPointCount(3);
+		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 		m_Rotation = 0;
 
 		m_Stroke->setRotation(m_Rotation);
-		m_Stroke->setPointCount(3);
+		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);
@@ -191,12 +240,15 @@ void CShapes::LetGoOfShape()
 		m_Stroke = new sf::CircleShape(m_ShapeSize, 4);
 
 		m_Stroke->setFillColor(m_Colour);
-		m_Stroke->setPosition(m_PreviewStroke.getPosition());
+		m_Stroke->setOrigin(m_Stroke->getGlobalBounds().width / 2, m_Stroke->getGlobalBounds().height / 2);
+		m_Stroke->setPosition(m_vMouseStart);
 		m_Stroke->setPointCount(4);
+		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
+		
 
-		m_Rotation = 45;
+		/*m_Rotation = 45;
 
-		m_Stroke->rotate(m_Rotation);
+		m_Stroke->rotate(m_Rotation);*/
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);
@@ -208,8 +260,11 @@ void CShapes::LetGoOfShape()
 		m_Stroke = new sf::CircleShape(m_ShapeSize, m_SideCount);
 
 		m_Stroke->setFillColor(m_Colour);
-		m_Stroke->setPosition(m_PreviewStroke.getPosition());
+		m_Stroke->setOrigin(m_Stroke->getGlobalBounds().width / 2, m_Stroke->getGlobalBounds().height / 2);
+		m_Stroke->setPosition(m_vMouseStart);
 		m_Stroke->setPointCount(m_SideCount);
+		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
+		
 
 		m_Rotation = 0;
 
@@ -229,12 +284,15 @@ void CShapes::LetGoOfShape()
 		m_Stroke = new sf::CircleShape(m_ShapeSize);
 
 		m_Stroke->setFillColor(m_Colour);
-		m_Stroke->setPosition(m_PreviewStroke.getPosition());
+		m_Stroke->setOrigin(m_Stroke->getGlobalBounds().width / 2, m_Stroke->getGlobalBounds().height / 2);
+		m_Stroke->setPosition(m_vMouseStart);
+		m_Stroke->setPointCount(100);
+		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 
 		m_Rotation = 0;
 
 		m_Stroke->setRotation(m_Rotation);
-		m_Stroke->setPointCount(100);
+		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);

@@ -45,6 +45,8 @@ public:
 	void Render();
 	void Update();
 	void PaintShape();
+	void SetRectangle(sf::Vector2f& startPos, sf::Vector2f& mousePos, sf::RectangleShape& rec);
+	
 	void LetGoOfShape();
 	void SetMousePosition(sf::Vector2f Position);
 	sf::Vector2f GetMousePosition();
@@ -54,6 +56,7 @@ public:
 	void Undo();
 
 	sf::CircleShape* m_Stroke;
+	sf::RectangleShape m_PreviewStrokeBounds;
 	sf::CircleShape m_PreviewStroke;
 	sf::VertexArray m_PreviewLine;
 
@@ -63,6 +66,7 @@ public:
 	int m_OutlineThickness;
 
 	bool m_bCreateShape;
+	bool m_bShapeIsRect;
 	bool m_bCreatePreviewShape;
 
 	sf::Color m_Colour;

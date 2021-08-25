@@ -18,7 +18,8 @@
 #include "CPopOutMenu.h"
 
 /// <summary>
-/// PopOutMenu Constructor. Takes in an sf::RenderWindow* (Intended To Be The Main Render Window With Canvas e.t.c).
+/// PopOutMenu Constructor.
+/// Takes in:	sf::RenderWindow* (Intended To Be The Main Render Window With Canvas e.t.c).
 /// </summary>
 CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 {
@@ -27,12 +28,14 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	m_BrushBackGround = sf::RectangleShape(sf::Vector2f(300, 640)); // Brush Menu BG
 	m_CustomBrushBG = sf::RectangleShape(sf::Vector2f(280, 305)); // Custom Brush BG
 	m_SaveMenuPreviewBG = sf::RectangleShape(sf::Vector2f(280, 495)); // Save Menu Preview BG
+	m_SaveMenuPreview = sf::RectangleShape(sf::Vector2f(260,260)); // Save Menu Preview Image
 	m_bCustBrushPreview = sf::CircleShape(80);	// Custom Brush Preview
 	m_bCustShapePreview = sf::CircleShape(70); // Custom Shape Preview
 
 	m_BrushBackGround.setFillColor(sf::Color(204, 204, 204)); // Grey
 	m_CustomBrushBG.setFillColor(sf::Color(190, 190, 190)); // Darker Grey
 	m_SaveMenuPreviewBG.setFillColor(sf::Color(190, 190, 190)); // Darker Grey
+	m_SaveMenuPreview.setFillColor(sf::Color::White);
 	m_bCustBrushPreview.setFillColor(sf::Color(209, 28, 255)); // Purple
 	m_bCustShapePreview.setFillColor(sf::Color(209, 28, 255)); // Purple
 	m_bCustShapePreview.setOutlineColor(sf::Color(209, 28, 255)); // Purple
@@ -40,6 +43,7 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	// Set Origin's to center
 	m_CustomBrushBG.setOrigin(m_CustomBrushBG.getGlobalBounds().width / 2, m_CustomBrushBG.getGlobalBounds().height / 2);
 	m_SaveMenuPreviewBG.setOrigin(m_SaveMenuPreviewBG.getGlobalBounds().width / 2, m_SaveMenuPreviewBG.getGlobalBounds().height / 2);
+	m_SaveMenuPreview.setOrigin(m_SaveMenuPreview.getGlobalBounds().width / 2, m_SaveMenuPreview.getGlobalBounds().height / 2);
 	m_bCustBrushPreview.setOrigin(m_bCustBrushPreview.getGlobalBounds().width / 2, m_bCustBrushPreview.getGlobalBounds().height / 2);
 	m_bCustShapePreview.setOrigin(m_bCustShapePreview.getGlobalBounds().width / 2, m_bCustShapePreview.getGlobalBounds().height / 2);
 
@@ -47,12 +51,15 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	m_BrushBackGround.setPosition(m_BrushBackGround.getSize().x / 30, m_BrushBackGround.getSize().y / 9);
 	m_CustomBrushBG.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.175);
 	m_SaveMenuPreviewBG.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.425);
+	m_SaveMenuPreview.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.425);
 	m_bCustBrushPreview.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.075);
 	m_bCustShapePreview.setPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.075);
 
 	// Menu Initialization
 	m_Canvas = nullptr;
 	m_Brush = nullptr;
+	m_Snip = nullptr;
+	imageTex = nullptr;
 	m_RenderWindow = _RenderWindow;
 
 	// Render Window Creation
@@ -100,10 +107,22 @@ CPopOutMenu::~CPopOutMenu()
 		/*std::cout << "PopedFront" << std::endl;*/
 	}
 
+	// CleanUp Canvas Menu Buttons
+	for (int i = 0; i < 9; i++)    
+	{
+		delete m_CanvasButtonList[i];
+		m_CanvasButtonList[i] = nullptr;
+		/*std::cout << "PopedFront" << std::endl;*/
+	}
+
 	// Object and Pointer CleanUp
+	delete imageTex;
+	delete m_Snip;
 	delete m_Canvas;
 	delete m_Brush;
 	delete m_Shape;
+	imageTex = nullptr;
+	m_Snip = nullptr;
 	m_UIWindow = nullptr;
 	m_Brush = nullptr;
 	m_Shape = nullptr;
@@ -139,10 +158,12 @@ void CPopOutMenu::Start()
 	CustomBrushButtons();
 	CustomShapeButtons();
 	CreateSaveMenuButtons();
+	CreateCanvasMenuButtons();
 
 	// Initialize Bools
 	m_bBrushMenu = false;
 	m_bSaveMenu = false;
+	m_bCanvasMenu = false;
 	m_bCustomBrush = false;
 	m_bShapeMenu = false;
 	m_bShapeFillColour = false;
@@ -155,7 +176,7 @@ void CPopOutMenu::Start()
 }
 
 /// <summary>
-/// Hover Update Check For all Input Fields. Takes in an sf::Event.
+/// Hover Update Check For all Input Fields. Takes in:			sf::Event
 /// </summary>
 /// <param name="_event"></param>
 void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
@@ -201,6 +222,7 @@ void CPopOutMenu::Update()
 				m_bBrushMenu = !m_bBrushMenu;
 				m_bShapeMenu = false;
 				m_bSaveMenu = false;
+				m_bCanvasMenu = false;
 				std::cout << "Brush Menu Pressed" << std::endl;
 			}
 			if (m_BrushButtonList[1]->bIsinBounds(m_BrushButtonList[1]->GetMousePosition()) && (m_bBrushMenu || m_bShapeMenu))
@@ -213,6 +235,7 @@ void CPopOutMenu::Update()
 				m_bShapeMenu = false;
 				m_bBrushMenu = false;
 				m_bSaveMenu = false;
+				m_bCanvasMenu = !m_bCanvasMenu;
 				std::cout << "Canvas Menu Pressed" << std::endl;
 			}
 			if (m_BrushButtonList[3]->bIsinBounds(m_BrushButtonList[3]->GetMousePosition()))
@@ -220,6 +243,7 @@ void CPopOutMenu::Update()
 				m_bShapeMenu = !m_bShapeMenu;
 				m_bBrushMenu = false;
 				m_bSaveMenu = false;
+				m_bCanvasMenu = false;
 				std::cout << "Shape Menu Pressed" << std::endl;
 				InputButtonUpdate(UIEvent, 2);
 			}
@@ -228,7 +252,10 @@ void CPopOutMenu::Update()
 				m_bSaveMenu = !m_bSaveMenu;
 				m_bShapeMenu = false;
 				m_bBrushMenu = false;
-				/*Save();*/
+				m_bCanvasMenu = false;
+
+				CreateSnip();
+				m_SaveMenuPreview.setTexture(&m_Snip->getTexture());
 				std::cout << "Save Menu Pressed" << std::endl;
 			}
 
@@ -317,6 +344,15 @@ void CPopOutMenu::Update()
 				{
 					std::cout << "Load" << std::endl;
 					Load();
+					m_bSaveMenu = false;
+				}
+			}
+
+			if (m_bCanvasMenu)
+			{
+				if (m_CanvasButtonList[0]->bIsinBounds(m_CanvasButtonList[0]->GetMousePosition()))
+				{
+					std::cout << "TEST1" << std::endl;
 				}
 			}
 		}
@@ -358,6 +394,13 @@ void CPopOutMenu::Update()
 				m_ShapeButtonList[i]->Update();
 			}
 		}
+		for (int i = 0; i < 9 ; i++)
+		{
+			if (m_CanvasButtonList[i] != nullptr)
+			{
+				m_CanvasButtonList[i]->Update();
+			}
+		}
 		InputButtonHoverUpdates(UIEvent);
 		m_SaveMenuButtonList[0]->Update();
 		m_SaveMenuButtonList[1]->Update();
@@ -393,7 +436,7 @@ void CPopOutMenu::Update()
 }
 
 /// <summary>
-/// Performs Update Checks for specified Input Button at _index. This function takes in an f::event and an index.
+/// Performs Update Checks for specified Input Button at _index. Takes in:	sf::event , int index.
 /// </summary>
 /// <param name="_event"></param>
 /// <param name="_index"></param>s
@@ -559,12 +602,27 @@ void CPopOutMenu::Render()
 		m_UIWindow->draw(m_SaveMenuPreviewBG); // Sapve Preview BG
 	}
 
+	// Canvas Menu
+	if (m_bCanvasMenu)
+	{
+		// Sub Menu BackGround
+		m_UIWindow->draw(m_BrushBackGround);
+
+	}
+
+	// Canvas Menu Buttons
+	if (m_bCanvasMenu)
+	{
+		m_CanvasButtonList[0]->RenderOnlyLabel();
+	}
+
 	// Save Menu Buttons
 	if (m_bSaveMenu)
 	{
 		m_SaveMenuButtonList[0]->Render();
 		m_SaveMenuButtonList[1]->Render();
 		m_SaveMenuButtonList[2]->RenderOnlyLabel();
+		m_UIWindow->draw(m_SaveMenuPreview);
 	}
 
 	// Shape Menu Buttons
@@ -843,6 +901,9 @@ void CPopOutMenu::CreateTabMenuButtons()
 	m_BrushButtonList[10] = Save;
 }
 
+/// <summary>
+/// Save Menu Buttons Creation And Initialization.
+/// </summary>
 void CPopOutMenu::CreateSaveMenuButtons()
 {
 	CButtons* Save = new CButtons(m_UIWindow);
@@ -857,50 +918,40 @@ void CPopOutMenu::CreateSaveMenuButtons()
 	PreviewLabel->SetLabel("Image Preview");
 	PreviewLabel->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 4);
 
+
 	m_SaveMenuButtonList[0] = Save;
 	m_SaveMenuButtonList[1] = Load;
 	m_SaveMenuButtonList[2] = PreviewLabel;
 }
 
 /// <summary>
+/// Canvas Menu Buttons Creation And Initialization.
+/// </summary>
+void CPopOutMenu::CreateCanvasMenuButtons()
+{
+	CButtons* ColorLabel = new CButtons(m_UIWindow);
+	ColorLabel->SetLabel("BG Color:");
+	ColorLabel->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
+
+	m_CanvasButtonList[0] = ColorLabel;
+}
+
+/// <summary>
 /// Saves The Current Artwork To A Specified File Location.
+/// Takes In:	std::string Adress
 /// </summary>
 void CPopOutMenu::Save(std::string& _fileName)
 {
-	sf::RenderTexture m_RenderTexture;
-	m_RenderTexture.create(m_Canvas->m_Size.x, m_Canvas->m_Size.y);
-
-	sf::View CanvasView = sf::View(sf::FloatRect(0.0f, 0.0f, m_Canvas->m_Size.x, m_Canvas->m_Size.y));
-	CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
-	m_RenderTexture.setView(CanvasView);
-
-	m_RenderTexture.draw(m_Canvas->m_Canvas);
-
-	for (sf::CircleShape& stroke : m_Shape->PaintedShapeList)
-	{
-		m_RenderTexture.draw(stroke);
-		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
-	}
-	for (sf::VertexArray& line : m_Shape->PaintedLineList)
-	{
-		m_RenderTexture.draw(line);
-		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
-		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
-	}
-	for (const sf::CircleShape& stroke : m_Brush->PaintedBrushList)
-	{
-		m_RenderTexture.draw(stroke);
-		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
-	}
-
-	m_RenderTexture.display();
-
-	if (m_RenderTexture.getTexture().copyToImage().saveToFile(_fileName))
+	CreateSnip();
+	if (m_Snip->getTexture().copyToImage().saveToFile(_fileName))
 	{
 		std::cout << _fileName << " +Saved!" << std::endl;
 	}
 }
 
+/// <summary>
+/// Load A Specified Image From File Location.
+/// </summary>
 void CPopOutMenu::Load()
 {
 	// Object and Pointer CleanUp
@@ -925,6 +976,48 @@ void CPopOutMenu::Load()
 	Update();
 }
 
+/// <summary>
+/// Assigns m_Snip a new sf::RenderTexture containing an image of the canvas.
+/// </summary>
+void CPopOutMenu::CreateSnip()
+{
+	delete m_Snip;
+	m_Snip = nullptr;
+
+	m_Snip = new sf::RenderTexture();
+	m_Snip->create(m_Canvas->m_Size.x, m_Canvas->m_Size.y);
+
+	sf::View CanvasView = sf::View(sf::FloatRect(0.0f, 0.0f, m_Canvas->m_Size.x, m_Canvas->m_Size.y));
+	CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
+	m_Snip->setView(CanvasView);
+
+	m_Snip->draw(m_Canvas->m_Canvas);
+
+	for (sf::CircleShape& stroke : m_Shape->PaintedShapeList)
+	{
+		m_Snip->draw(stroke);
+		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
+	}
+	for (sf::VertexArray& line : m_Shape->PaintedLineList)
+	{
+		m_Snip->draw(line);
+		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
+		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
+	}
+	for (const sf::CircleShape& stroke : m_Brush->PaintedBrushList)
+	{
+		m_Snip->draw(stroke);
+		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
+	}
+
+	m_Snip->display();
+}
+
+/// <summary>
+/// Opens The PopUp Open File Dialogue Window.
+/// Takes In:	sf::RectangleShape Adress (Canvas To Update With Image)
+/// </summary>
+/// <param name="_canvas"></param>
 void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 {
 	IFileOpenDialog* pFileOpen;
@@ -959,7 +1052,7 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 					if (temp == ".png")
 					{
 						std::cout << "true" << std::endl;
-						sf::Texture* imageTex;
+						
 						imageTex = new sf::Texture();
 
 						if (!imageTex->loadFromFile(W2A(pszFilePath)))
@@ -967,6 +1060,7 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 
 						imageTex->loadFromFile(W2A(pszFilePath));
 
+						_canvas = sf::RectangleShape(sf::Vector2f(imageTex->getSize().x, imageTex->getSize().y));
 						_canvas.setFillColor((sf::Color::White));
 						_canvas.setTexture(imageTex, true);
 						_canvas.setSize(sf::Vector2f(imageTex->getSize().x, imageTex->getSize().y));
@@ -984,6 +1078,9 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 	}
 }
 
+/// <summary>
+/// Opens The PopUp Save File Dialogue Window And Proceeds To Call Save() With The Input File Path.
+/// </summary>
 void CPopOutMenu::SaveFileDialogue()
 {
 	IFileSaveDialog* pFileSave;
@@ -1031,7 +1128,7 @@ void CPopOutMenu::SaveFileDialogue()
 }
 
 /// <summary>
-/// Shapes Menu Bool Button Check.
+/// Shapes Menu Bool Button Check. (m_bShapeFillColour)
 /// </summary>
 void CPopOutMenu::ShapesMenuFillCheck()
 {
