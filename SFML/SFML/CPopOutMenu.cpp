@@ -29,9 +29,11 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	m_CustomBrushBG = sf::RectangleShape(sf::Vector2f(280, 305)); // Custom Brush BG
 	m_SaveMenuPreviewBG = sf::RectangleShape(sf::Vector2f(280, 495)); // Save Menu Preview BG
 	m_SaveMenuPreview = sf::RectangleShape(sf::Vector2f(260,260)); // Save Menu Preview Image
+
 	m_bCustBrushPreview = sf::CircleShape(80);	// Custom Brush Preview
 	m_bCustShapePreview = sf::CircleShape(70); // Custom Shape Preview
 
+	// Set Colour
 	m_BrushBackGround.setFillColor(sf::Color(204, 204, 204)); // Grey
 	m_CustomBrushBG.setFillColor(sf::Color(190, 190, 190)); // Darker Grey
 	m_SaveMenuPreviewBG.setFillColor(sf::Color(190, 190, 190)); // Darker Grey
@@ -181,6 +183,7 @@ void CPopOutMenu::Start()
 /// <param name="_event"></param>
 void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
 {
+	// Bursh Menu Input Buttons
 	if (m_bBrushMenu && m_InputList[0]->bIsinBounds(m_InputList[0]->GetMousePosition()))
 	{
 		InputButtonUpdate(_event, 0);
@@ -190,6 +193,7 @@ void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
 		InputButtonUpdate(_event, 1);
 	}
 
+	// Shape Menu Input Buttons
 	if (m_bShapeMenu && m_InputList[2]->bIsinBounds(m_InputList[2]->GetMousePosition()))
 	{
 		InputButtonUpdate(_event, 2);
@@ -217,6 +221,7 @@ void CPopOutMenu::Update()
 		// Mouse Click Button Actions
 		if (UIEvent.type == sf::Event::MouseButtonPressed)
 		{
+			// Tab Buttons
 			if (m_BrushButtonList[0]->bIsinBounds(m_BrushButtonList[0]->GetMousePosition()))
 			{
 				m_bBrushMenu = !m_bBrushMenu;
@@ -261,21 +266,25 @@ void CPopOutMenu::Update()
 
 			if (m_bBrushMenu)
 			{
+				// Square Brush
 				if (m_BrushButtonList[4]->bIsinBounds(m_BrushButtonList[4]->GetMousePosition()))
 				{
 					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SQUARE;
 					m_bCustomBrush = false;
 				}
+				// Circle Brush
 				if (m_BrushButtonList[5]->bIsinBounds(m_BrushButtonList[5]->GetMousePosition()))
 				{
 					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CIRCLE;
 					m_bCustomBrush = false;
 				}
+				// Triangle Brush
 				if (m_BrushButtonList[6]->bIsinBounds(m_BrushButtonList[6]->GetMousePosition()))
 				{
 					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::TRIANGLE;
 					m_bCustomBrush = false;
 				}
+				// Custom Brush
 				if (m_BrushButtonList[7]->bIsinBounds(m_BrushButtonList[7]->GetMousePosition()))
 				{
 					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
@@ -285,6 +294,7 @@ void CPopOutMenu::Update()
 
 			if (m_bShapeMenu)
 			{
+				// Fill Bool Button 
 				if (m_ShapeButtonList[0]->bIsinBounds(m_BrushButtonList[0]->GetMousePosition()))
 				{
 					m_bShapeFillColour = !m_bShapeFillColour;
@@ -293,6 +303,7 @@ void CPopOutMenu::Update()
 
 					ShapesMenuFillCheck();
 				}
+				// Square Shape
 				if (m_ShapeButtonList[4]->bIsinBounds(m_BrushButtonList[4]->GetMousePosition()))
 				{ 
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::SQUARE;
@@ -301,12 +312,13 @@ void CPopOutMenu::Update()
 					InputButtonUpdate(UIEvent, 3);
 					m_bCustomBrush = false;
 				}
+				// Line Shape
 				if (m_ShapeButtonList[11]->bIsinBounds(m_ShapeButtonList[11]->GetMousePosition()))
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::LINE;
 					m_bCustomBrush = false;
 				}
-				
+				// Circle Shape
 				if (m_ShapeButtonList[5]->bIsinBounds(m_BrushButtonList[5]->GetMousePosition()))
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::CIRCLE;
@@ -315,6 +327,7 @@ void CPopOutMenu::Update()
 					InputButtonUpdate(UIEvent, 3);
 					m_bCustomBrush = false;
 				}
+				// Triangle Shape
 				if (m_ShapeButtonList[6]->bIsinBounds(m_BrushButtonList[6]->GetMousePosition()))
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::TRIANGLE;
@@ -323,6 +336,7 @@ void CPopOutMenu::Update()
 					InputButtonUpdate(UIEvent, 3);
 					m_bCustomBrush = false;
 				}
+				// Custom Shape
 				if (m_ShapeButtonList[7]->bIsinBounds(m_BrushButtonList[7]->GetMousePosition()))
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::CUSTOM;
@@ -336,10 +350,13 @@ void CPopOutMenu::Update()
 
 			if (m_bSaveMenu)
 			{
+				// Save Button
 				if (m_SaveMenuButtonList[0]->bIsinBounds(m_SaveMenuButtonList[0]->GetMousePosition()))
 				{
 					SaveFileDialogue();
 				}
+
+				// Load Button
 				if (m_SaveMenuButtonList[1]->bIsinBounds(m_SaveMenuButtonList[1]->GetMousePosition()))
 				{
 					std::cout << "Load" << std::endl;
@@ -364,6 +381,7 @@ void CPopOutMenu::Update()
 			m_InputList[1]->Update();
 			m_InputList[2]->Update();
 			m_InputList[3]->Update();
+
 			Render();
 		}
 
@@ -371,6 +389,7 @@ void CPopOutMenu::Update()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 		{
 			OpenColourDialogue();
+
 			std::cout << "Colour Menu ShortCut" << std::endl;
 		}
 
@@ -385,7 +404,10 @@ void CPopOutMenu::Update()
 		// Button Updates
 		for (int i = 0; i < 11; i++)
 		{
-			m_BrushButtonList[i]->Update();
+			if (m_BrushButtonList[i] != nullptr)
+			{
+				m_BrushButtonList[i]->Update();
+			}
 		}
 		for (int i = 0; i < 12; i++)
 		{
@@ -442,10 +464,9 @@ void CPopOutMenu::Update()
 /// <param name="_index"></param>s
 void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 {
-
+	// Valid Input
 	if (_event.type == sf::Event::TextEntered && m_InputList[_index]->m_Label.size() < 3 && isdigit(_event.text.unicode))
 	{
-
 		m_InputList[_index]->m_Label += _event.text.unicode;
 		if (_index == 0)
 		{
@@ -466,87 +487,104 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 			m_bCustShapePreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[_index]->m_Label));
 			m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 		}
-
 	}
+	// BackSpace
 	else if (_event.type == sf::Event::TextEntered && m_InputList[_index]->m_Label.size() > 0 && _event.text.unicode == 8)
 	{
 		m_InputList[_index]->m_Label = m_InputList[_index]->removeLastChar(m_InputList[_index]->m_Label);
+
+		// Empty Input Check
 		if (m_InputList[_index]->m_Label == "")
 		{
+			// Brush
 			if (_index == 0)
 			{
+				// Brush Size
 				m_Brush->m_BushSize = 1;
 			}
 			else if(_index == 1)
 			{
+				// Custom Brush Preview Side Count
 				m_bCustBrushPreview.setPointCount(100);
+
+				// Brush Side Count
 				m_Brush->m_SideCount = 100;
 			}
+
+			// Shapes
 			else if (_index == 2)
 			{
+				// Custom Shape Preview Outline Thickness
 				m_bCustShapePreview.setOutlineThickness(1);
+
+				// Shape Outline Thickness
 				m_Shape->m_OutlineThickness = 1;
 			}
 			else if (_index == 3)
 			{
+				// Custom Shape Preview Side Count
 				m_bCustShapePreview.setPointCount(100);
+
+				// Shape Side Count
 				m_Shape->m_SideCount = 100;
-				// set shape side count
 			}
-			
 		}
 		else
 		{
+			// Brush
 			if (_index == 0)
 			{
+				// Brush Size
 				m_Brush->m_BushSize = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 			}
 			else if (_index == 1)
 			{
+				// Custom Brush Preview Side Count
 				m_bCustBrushPreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[_index]->m_Label));
+
+				// Brush Side Count
 				m_Brush->m_SideCount = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 			}
+
+			// Shapes
 			else if (_index == 2)
 			{
-				// outline thickness
+				// Custom Shape Preview Outline Thickness
 				m_bCustShapePreview.setOutlineThickness(utils::StringUtils::parse<float>(m_InputList[_index]->m_Label));
+
+				// Shape Outline Thickness
 				m_Shape->m_OutlineThickness = utils::StringUtils::parse<float>(m_InputList[_index]->m_Label);
 			}
 			else if (_index == 3)
 			{
+				// Custom Shape Preview Side Count
 				m_bCustShapePreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[_index]->m_Label));
+
+				// Shape Side Count
 				m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 			}
-			
 		}
-		
 	}
 
+	// Invalid Input Value Re-Assignment
 	if (m_bCustBrushPreview.getPointCount() == 1 || m_bCustBrushPreview.getPointCount() == 2 || m_bCustBrushPreview.getPointCount() == 0)
 	{
 		m_bCustBrushPreview.setPointCount(100);
 		m_Brush->m_SideCount = 100;
 	}
-
 	if (m_bCustShapePreview.getPointCount() == 1 || m_bCustShapePreview.getPointCount() == 2 || m_bCustShapePreview.getPointCount() == 0)
 	{
 		m_bCustShapePreview.setPointCount(100);
 		m_Shape->m_SideCount = 100;
 	}
-
 	if (m_Brush->m_BushSize == 0)
 	{
 		m_Brush->m_BushSize = 1;
 	}
-
 	if (m_Shape->m_OutlineThickness == 0)
 	{
 		m_Shape->m_OutlineThickness = 1;
 	}
-	/*if (m_bCustShapePreview.getOutlineThickness() <= 0)
-	{
-		m_bCustShapePreview.setOutlineThickness(0.01f);
-	}*/
 }
 
 /// <summary>
@@ -696,11 +734,11 @@ void CPopOutMenu::OpenColourDialogue()
 		tempColour.r = GetRValue(cr);
 		tempColour.g = GetGValue(cr);
 		tempColour.b = GetBValue(cr);
+
 		m_Brush->SetActiveColour(tempColour);
+
 		ShapesMenuFillCheck();
 	}
-	
-	/*m_bColourIsOpen = !m_bColourIsOpen;*/
 }
 
 /// <summary>
@@ -708,17 +746,21 @@ void CPopOutMenu::OpenColourDialogue()
 /// </summary>
 void CPopOutMenu::CreateBrushButtons()
 {
+	// Brush Size Input Field
 	CInputField* BrushSize = new CInputField(m_UIWindow);
 	BrushSize->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Brush Size Input Label
 	CButtons* BrushSizeLabel = new CButtons(m_UIWindow);
 	BrushSizeLabel->SetLabel("Brush Size:");
 	BrushSizeLabel->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Colour Button
 	CButtons* Colour = new CButtons(m_UIWindow);
 	Colour->SetLabel("Colour");
 	Colour->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
 
+	// Brush Type Buttons
 	CButtons* Square = new CButtons(m_UIWindow);
 	Square->SetLabel("Square");
 	Square->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
@@ -732,6 +774,7 @@ void CPopOutMenu::CreateBrushButtons()
 	Custom->SetLabel("Custom");
 	Custom->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 2);
 
+	// Array Assignment
 	m_BrushButtonList[1] = Colour;
 
 	m_BrushButtonList[4] = Square;
@@ -749,11 +792,13 @@ void CPopOutMenu::CreateBrushButtons()
 /// </summary>
 void CPopOutMenu::CustomBrushButtons()
 {
+	// Sides Label
 	CButtons* SidesLabel = new CButtons(m_UIWindow);
 	SidesLabel->SetLabel("Number Of Sides");
 	SidesLabel->SetPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.55);
 	m_BrushButtonList[9] = SidesLabel;
 
+	// Sides Input Field
 	CInputField* SidesInput = new CInputField(m_UIWindow);
 	SidesInput->SetPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.35);
 	m_InputList[1] = SidesInput;
@@ -764,15 +809,13 @@ void CPopOutMenu::CustomBrushButtons()
 /// </summary>
 void CPopOutMenu::CustomShapeButtons()
 {
+	// Sides Label
 	CButtons* SidesLabel = new CButtons(m_UIWindow);
 	SidesLabel->SetLabel("Number Of Sides");
 	SidesLabel->SetPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.55);
 	m_ShapeButtonList[9] = SidesLabel;
 
-	CInputField* SidesInput = new CInputField(m_UIWindow);
-	SidesInput->SetPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.35);
-	m_InputList[1] = SidesInput;
-
+	// Sides Input Field
 	CInputField* SidesInputShape = new CInputField(m_UIWindow);
 	SidesInputShape->SetPosition(m_BrushBackGround.getSize().x / 2 + 10, 5 + m_BrushBackGround.getSize().y / 1.35);
 	m_InputList[3] = SidesInputShape;
@@ -783,17 +826,21 @@ void CPopOutMenu::CustomShapeButtons()
 /// </summary>
 void CPopOutMenu::CreateShapeButtons()
 {
+	// Outline Thickness Input Field
 	CInputField* OutLineThickness = new CInputField(m_UIWindow);
 	OutLineThickness->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Outline Thickness Label
 	CButtons* OutLineThicButton = new CButtons(m_UIWindow);
 	OutLineThicButton->SetLabel("OutLine Thick:");
 	OutLineThicButton->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Colour Button
 	CButtons* Colour = new CButtons(m_UIWindow);
 	Colour->SetLabel("Colour");
 	Colour->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
 
+	// Shape Type Buttons
 	CButtons* Square = new CButtons(m_UIWindow);
 	Square->SetLabel("Square");
 	Square->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
@@ -810,11 +857,13 @@ void CPopOutMenu::CreateShapeButtons()
 	Custom->SetLabel("Custom");
 	Custom->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 2);
 	
+	// Fill Shape Bool Button Label
 	CButtons* BoolLabel = new CButtons(m_UIWindow);
 	BoolLabel->SetLabel("Fill");
 	BoolLabel->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 2.4);
 	m_ShapeButtonList[10] = BoolLabel;
 
+	// Fill Shape Bool Button
 	CButtons* FillBoolButton = new CButtons(m_UIWindow);
 	sf::Texture BoolClickTex;
 	sf::Texture BoolIdleTex;
@@ -827,6 +876,7 @@ void CPopOutMenu::CreateShapeButtons()
 	FillBoolButton->SetLabel("");
 	FillBoolButton->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5 + m_UIWindow->getSize().x / 8, m_UIWindow->getSize().y / 2); // Position
 
+	// Array Assignment
 	m_ShapeButtonList[0] = FillBoolButton;
 	m_ShapeButtonList[1] = Colour;
 
@@ -848,8 +898,7 @@ void CPopOutMenu::CreateShapeButtons()
 /// </summary>
 void CPopOutMenu::CreateTabMenuButtons()
 {
-
-
+	// Brush Menu Button
 	CButtons* Brush = new CButtons(m_UIWindow);
 	sf::Texture BrushHoverTex;
 	sf::Texture BrushIdleTex;
@@ -861,6 +910,7 @@ void CPopOutMenu::CreateTabMenuButtons()
 	Brush->SetLabel("");
 	Brush->SetPosition(m_UIWindow->getSize().x/2 + 80, m_UIWindow->getSize().y / 20); // Position
 
+	// Canvas Menu Button
 	CButtons* Canvas = new CButtons(m_UIWindow);
 	sf::Texture CanvasHoverTex;
 	sf::Texture CanvasIdleTex;
@@ -872,6 +922,7 @@ void CPopOutMenu::CreateTabMenuButtons()
 	Canvas->SetLabel("");
 	Canvas->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 20); // Position
 
+	// Shape Menu Button
 	CButtons* Shape = new CButtons(m_UIWindow);
 	sf::Texture ShapeHoverTex;
 	sf::Texture ShapeIdleTex;
@@ -883,6 +934,7 @@ void CPopOutMenu::CreateTabMenuButtons()
 	Shape->SetLabel("");
 	Shape->SetPosition(m_UIWindow->getSize().x / 4, m_UIWindow->getSize().y / 20); // Position
 
+	// Save Menu Button
 	CButtons* Save = new CButtons(m_UIWindow);
 	sf::Texture SaveHoverTex;
 	sf::Texture SaveIdleTex;
@@ -894,6 +946,7 @@ void CPopOutMenu::CreateTabMenuButtons()
 	Save->SetLabel("");
 	Save->SetPosition(m_UIWindow->getSize().x / 2 + 160, m_UIWindow->getSize().y / 20); // Position
 
+	// Array Assignment
 	m_BrushButtonList[0] = Brush;
 
 	m_BrushButtonList[2] = Canvas;
@@ -906,19 +959,22 @@ void CPopOutMenu::CreateTabMenuButtons()
 /// </summary>
 void CPopOutMenu::CreateSaveMenuButtons()
 {
+	// Save Button
 	CButtons* Save = new CButtons(m_UIWindow);
 	Save->SetLabel("Save");
 	Save->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Load Button
 	CButtons* Load = new CButtons(m_UIWindow);
 	Load->SetLabel("Load");
 	Load->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Preview Image Label
 	CButtons* PreviewLabel = new CButtons(m_UIWindow);
 	PreviewLabel->SetLabel("Image Preview");
 	PreviewLabel->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 4);
 
-
+	// Array Assignment
 	m_SaveMenuButtonList[0] = Save;
 	m_SaveMenuButtonList[1] = Load;
 	m_SaveMenuButtonList[2] = PreviewLabel;
@@ -929,10 +985,12 @@ void CPopOutMenu::CreateSaveMenuButtons()
 /// </summary>
 void CPopOutMenu::CreateCanvasMenuButtons()
 {
+	// Colour Button Label
 	CButtons* ColorLabel = new CButtons(m_UIWindow);
 	ColorLabel->SetLabel("BG Color:");
 	ColorLabel->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Array Assignment
 	m_CanvasButtonList[0] = ColorLabel;
 }
 
@@ -943,6 +1001,8 @@ void CPopOutMenu::CreateCanvasMenuButtons()
 void CPopOutMenu::Save(std::string& _fileName)
 {
 	CreateSnip();
+
+	// Save Snip To File
 	if (m_Snip->getTexture().copyToImage().saveToFile(_fileName))
 	{
 		std::cout << _fileName << " +Saved!" << std::endl;
@@ -954,14 +1014,15 @@ void CPopOutMenu::Save(std::string& _fileName)
 /// </summary>
 void CPopOutMenu::Load()
 {
-	// Object and Pointer CleanUp
+	// Object CleanUp
 	delete m_Brush;
 	delete m_Shape;
 	
+	// Object Recreation
 	m_Brush = new CBrush(m_RenderWindow, m_Canvas);
 	m_Shape = new CShapes(m_RenderWindow, m_Canvas);
 
-	// Essentials Initialization
+	// Recreated Essentials Initialization
 	m_Brush->m_BrushType = m_Brush->BRUSHTYPE::DEFAULT;
 	m_Brush->m_BushSize = 1;
 	m_Brush->m_SideCount = 100;
@@ -972,7 +1033,11 @@ void CPopOutMenu::Load()
 	m_Shape->m_Rotation = 0.0f;
 
 	OpenFileDialogue(m_Canvas->m_Canvas);
+
+	// Render
 	m_Canvas->Render();
+
+	// Update
 	Update();
 }
 
@@ -981,35 +1046,44 @@ void CPopOutMenu::Load()
 /// </summary>
 void CPopOutMenu::CreateSnip()
 {
+	// Previous Snip Cleanup
 	delete m_Snip;
 	m_Snip = nullptr;
 
+	// Snip Recreation
 	m_Snip = new sf::RenderTexture();
 	m_Snip->create(m_Canvas->m_Size.x, m_Canvas->m_Size.y);
 
+	// Set Render Window To Look At Canvas
 	sf::View CanvasView = sf::View(sf::FloatRect(0.0f, 0.0f, m_Canvas->m_Size.x, m_Canvas->m_Size.y));
 	CanvasView.setCenter(m_Canvas->m_Canvas.getPosition());
 	m_Snip->setView(CanvasView);
 
+	// Draw Canvas To Snip 
 	m_Snip->draw(m_Canvas->m_Canvas);
 
+	// Draw Brush, Shapes, e.t.c to Snip
 	for (sf::CircleShape& stroke : m_Shape->PaintedShapeList)
 	{
+		// Shapes
 		m_Snip->draw(stroke);
 		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
 	}
 	for (sf::VertexArray& line : m_Shape->PaintedLineList)
 	{
+		// Lines
 		m_Snip->draw(line);
 		sf::Vector2f worldPosD = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[0].position));
 		sf::Vector2f worldPosE = m_RenderWindow->mapPixelToCoords(sf::Vector2i(line[1].position));
 	}
 	for (const sf::CircleShape& stroke : m_Brush->PaintedBrushList)
 	{
+		// Brush
 		m_Snip->draw(stroke);
 		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
 	}
 
+	// Display
 	m_Snip->display();
 }
 
@@ -1060,6 +1134,9 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 
 						imageTex->loadFromFile(W2A(pszFilePath));
 
+						//
+						// Update Canvas
+						//
 						_canvas = sf::RectangleShape(sf::Vector2f(imageTex->getSize().x, imageTex->getSize().y));
 						_canvas.setFillColor((sf::Color::White));
 						_canvas.setTexture(imageTex, true);
@@ -1112,10 +1189,12 @@ void CPopOutMenu::SaveFileDialogue()
 
 					std::cout << *temp << std::endl;
 
+					// Save To Specified File Path
 					Save(*temp);
 
 					MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
 
+					// Cleanup
 					delete temp;
 					temp = nullptr;
 					CoTaskMemFree(pszFilePath);
@@ -1135,25 +1214,28 @@ void CPopOutMenu::ShapesMenuFillCheck()
 	if (m_bShapeFillColour)
 	{
 		m_Shape->SetActiveColour(tempColour);
+
 		m_bCustShapePreview.setFillColor(m_Shape->m_Colour);
-		/*m_Shape->m_Stroke->setFillColor(m_Shape->m_Colour);*/
 		m_Shape->m_PreviewStroke.setFillColor(m_Shape->m_Colour);
 		m_Shape->m_PreviewStroke.setOutlineColor(m_Shape->m_Colour);
+
 		m_bCustShapePreview.setOutlineColor(m_Shape->m_Colour);
-		/*m_Shape->m_Stroke->setOutlineColor(m_Shape->m_Colour);*/
+
 		m_Shape->m_OutlineColour = m_Shape->m_Colour;
 	}
 	else if (m_bShapeFillColour == false)
 	{
 		m_Shape->SetActiveColour(tempColour);
+
 		m_bCustShapePreview.setFillColor(sf::Color::Transparent);
-		/*m_Shape->m_Stroke->setFillColor(sf::Color::Transparent);*/
 		m_Shape->m_PreviewStroke.setFillColor(sf::Color::Transparent);
+
 		m_bCustShapePreview.setOutlineColor(m_Shape->m_Colour);
+
 		m_Shape->m_PreviewStroke.setOutlineColor(m_Shape->m_OutlineColour);
+
 		m_Shape->m_OutlineColour = m_Shape->m_Colour;
 		m_Shape->m_Colour = sf::Color::Transparent;
-		/*m_Shape->m_Stroke->setOutlineColor(m_Shape->m_Colour);*/
 
 	}
 }
