@@ -17,9 +17,11 @@
 #pragma warning (disable : 6255) // SILENCE MINION
 #pragma warning (disable : 6387) // SILENCE MINION
 
+// Non-Local Includes
 #include <list>
 #include <math.h>
 
+// Local Includes
 #include "CCanvas.h"
 
 class CShapes
@@ -38,27 +40,31 @@ public:
 
 	SHAPETYPE m_ShapeType;
 
+	std::list<sf::CircleShape> PaintedShapeList;
+
+	std::list<sf::VertexArray> PaintedLineList;
+
+	sf::VertexArray LineVertexArray;
+
 	CShapes(sf::RenderWindow* _renderWindow, CCanvas* _canvas);
 	~CShapes();
-	std::list<sf::CircleShape> PaintedShapeList;
-	sf::VertexArray LineVertexArray;
-	std::list<sf::VertexArray> PaintedLineList;
-	
 
 	void Render();
 	void Update();
+
 	void PaintShape();
-	void SetRectangle(sf::Vector2f& startPos, sf::Vector2f& mousePos, sf::RectangleShape& rec);
-	
+	void SetRectangle(sf::Vector2f& _startPos, sf::Vector2f& _mousePos, sf::RectangleShape& _rec);
 	void LetGoOfShape();
-	void SetMousePosition(sf::Vector2f Position);
+
+	void SetMousePosition(sf::Vector2f _position);
 	sf::Vector2f GetMousePosition();
 
-	void SetActiveColour(sf::Color _Color);
+	void SetActiveColour(sf::Color _color);
 
 	void Undo();
 
 	sf::CircleShape* m_Stroke;
+
 	sf::RectangleShape m_PreviewStrokeBounds;
 	sf::CircleShape m_PreviewStroke;
 	sf::VertexArray m_PreviewLine;
@@ -77,9 +83,10 @@ public:
 
 private:
 	sf::RenderWindow* m_RenderWindow;
-	sf::Vector2f m_vMousePosition;
-	CCanvas* m_Canvas;
 
+	sf::Vector2f m_vMousePosition;
 	sf::Vector2f m_vMouseStart;
+
+	CCanvas* m_Canvas;
 };
 

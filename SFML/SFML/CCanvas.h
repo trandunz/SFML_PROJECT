@@ -14,6 +14,8 @@
 
 #pragma once
 #pragma warning (disable : 26812) // SILENCE MINION
+
+// Non-Local Includes
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -23,15 +25,17 @@ public:
 	sf::Color m_Color = sf::Color::White;
 
 	sf::Vector2f m_Size;
+
 	sf::RectangleShape m_Canvas;
-	/*sf::Image* m_CanvasImage;*/
+
 	sf::Sprite m_BackGround;
-	/*sf::Texture* m_CanvTexture;*/
+
 	sf::Texture m_BGTexture;
 	
 	CCanvas();
 	CCanvas(sf::RenderWindow* _window, sf::Vector2f _size);
 	~CCanvas();
+
 	void SetRenderWindow(sf::RenderWindow*);
 	sf::RenderWindow* GetRenderWindow();
 

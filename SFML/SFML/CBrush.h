@@ -13,9 +13,12 @@
 //
 
 #pragma once
+
+// Non-Local Includes
 #include <iostream>
 #include <list>
 
+// Local Includes
 #include "CCanvas.h"
 
 class CBrush
@@ -33,19 +36,8 @@ public:
 
 	BRUSHTYPE m_BrushType;
 
-	CBrush(sf::RenderWindow* _renderWindow, CCanvas* _canvas);
-	~CBrush();
 	std::list<sf::CircleShape> PaintedBrushList;
-	
-	void Render();
-	void Update();
-	void PaintBrush();
-	void SetMousePosition(sf::Vector2f Position);
-	sf::Vector2f GetMousePosition();
-
-	void SetActiveColour(sf::Color _Color);
-
-	void Undo();
+	std::list<sf::Sprite> PaintedImageList;
 
 	int m_BushSize;
 	int m_Rotation;
@@ -53,10 +45,29 @@ public:
 
 	sf::Color m_Colour;
 
+	CBrush(sf::RenderWindow* _renderWindow, CCanvas* _canvas);
+	~CBrush();
+	
+	void Render();
+	void Update();
+
+	void PaintBrush();
+
+	void SetMousePosition(sf::Vector2f _position);
+	sf::Vector2f GetMousePosition();
+
+	void SetActiveColour(sf::Color _color);
+
+	void Undo();
+
 private:
 	sf::RenderWindow* m_RenderWindow;
+
 	sf::Vector2f m_vMousePosition;
+
 	CCanvas* m_Canvas;
+
+	sf::Texture m_ImageBrushTexture;
 	
 };
 

@@ -27,9 +27,6 @@ namespace Utils
 {
 	int WINDOWHEIGHT = 720;
 	int WINDOWWIDTH = 1280;
-
-	int TOOLSHEIGHT = 720;
-	int TOOLDWIDTH = 320;
 };
 
 void Start();
@@ -41,32 +38,45 @@ sf::Vector2f GetMousePosition();
 sf::View SetViewToCanvas();
 
 sf::RenderWindow* m_RenderWindow;
+
 CPopOutMenu* m_PopOutMenu;
+
 sf::View CanvasView;
+
 sf::Vector2f startPos;
 
 float m_ZoomFactor;
-bool dragging = false;
-bool m_bDoOnce;
 
+bool dragging = false;
+
+bool m_bDoOnce = true;
+
+/// <summary>
+/// Main Function For Main Implementation File.
+/// </summary>
+/// <returns></returns>
 int main()
 {
+	// HWND
     HWND hwnd = GetConsoleWindow();
     ShowWindow(hwnd, SW_SHOW);
 
+	// Context Settings
     sf::ContextSettings settings;
     settings.antialiasingLevel = 10;
 
+	// Essentials Creation 
     m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "IwPaint.exe", (sf::Style::Default), settings);
 	m_PopOutMenu = new CPopOutMenu(m_RenderWindow);
 	
+	// Essentials Startup Tweak
 	m_RenderWindow->setFramerateLimit((unsigned)120);
 	m_ZoomFactor = 10;
-	m_bDoOnce = true;
 
-
+	
 	Start();
 	Update();
+
 
 	// Cleanup
 	delete m_PopOutMenu;
@@ -77,15 +87,23 @@ int main()
 	return 0;
 }
 
+/// <summary>
+/// Start Function For Main Implementation File (Intended To Be Called Before Update).
+/// </summary>
 void Start()
 {
 	m_PopOutMenu->Start();
 
+	// Set RenderWindow To Look At Canvas
 	m_RenderWindow->setView(SetViewToCanvas());
 
+	// Render
 	Render();
 }
  
+/// <summary>
+/// Update Loop For Main Implementation File.
+/// </summary>
 void Update()
 {
 	// Update Loop
@@ -94,13 +112,13 @@ void Update()
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event)) // if(RenderWindow is active window)
 		{
-			// Tab Focus
+			// Tab Gained Focus
 			if (event.type == sf::Event::GainedFocus)
 			{
 				Render();
 			}
 
-			// Tab Not Focus
+			// Tab Lost Focus
 			if (event.type == sf::Event::LostFocus)
 			{
 				Render();
@@ -109,6 +127,7 @@ void Update()
 			// Undo Brush
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
+				// Current Tool Check
 				if (m_PopOutMenu->m_bBrushMenu)
 				{
 					m_PopOutMenu->m_Brush->Undo();
@@ -118,13 +137,14 @@ void Update()
 					m_PopOutMenu->m_Shape->Undo();
 				}
 				
+				// Render
 				Render();
 			}
 
 			// Close
 			if (event.type == sf::Event::Closed)
 			{
-				m_PopOutMenu->m_UIWindow->close();
+				m_PopOutMenu->m_UIWindow->close();	// Error C6011 Is Lying
 				m_RenderWindow->close();
 				
 				break;
@@ -133,17 +153,21 @@ void Update()
 			// Resizing
 			if (event.type == sf::Event::Resized)
 			{
+				// Reset Zoom Factor
 				m_ZoomFactor = 10.0f;
+				
+				// Set View To Canvas (based on event)
 				CanvasView = sf::View((sf::FloatRect(0.0f, 0.0f, event.size.width / 2.0f, event.size.height / 2.0f)));
+				CanvasView.setCenter(m_PopOutMenu->m_Canvas->m_Canvas.getPosition());
 				sf::Vector2f worldPos = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PopOutMenu->m_Canvas->m_Canvas.getPosition()));
 				sf::Vector2f worldPosB = m_RenderWindow->mapPixelToCoords(sf::Vector2i(m_PopOutMenu->m_Canvas->m_BackGround.getPosition()));
-
-				CanvasView.setCenter(m_PopOutMenu->m_Canvas->m_Canvas.getPosition());
 				m_RenderWindow->setView(CanvasView);
 				
+				// Render
 				Render();
 			}
 
+			// Mouse Button Pressed & ShapeMenu
 			if (event.type == sf::Event::MouseButtonPressed && m_PopOutMenu->m_bShapeMenu)
 			{
 				m_PopOutMenu->m_Shape->m_bCreatePreviewShape = true;
@@ -153,11 +177,13 @@ void Update()
 			// Left Mouse
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				// Paint Brush and Render
 				if (m_PopOutMenu->m_bBrushMenu)
 				{
 					m_PopOutMenu->m_Brush->PaintBrush();
 					Render();
 				}
+				// Paint Shape and Render
 				if (m_PopOutMenu->m_bShapeMenu)
 				{
 					m_PopOutMenu->m_Shape->PaintShape();
@@ -165,48 +191,20 @@ void Update()
 				}
 			}
 
+			// Mouse Released
 			if (event.type == sf::Event::MouseButtonReleased && m_PopOutMenu->m_bShapeMenu)
 			{
+				// Create Actual Shape
 				m_PopOutMenu->m_Shape->LetGoOfShape();
 
+				// Render
 				Render();
 			}
 
-			// Middle Mouse
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
-			{
-				if (m_PopOutMenu->m_bBrushMenu)
-				{
-					if (!dragging)
-					{
-						startPos = CanvasView.getCenter();
-						dragging = true;
-
-						std::cout << startPos.x << "----"  << startPos.y << std::endl;
-					}
-					else
-					{
-						dragging = false;
-					}
-
-					if (dragging)
-					{
-						CanvasView.setCenter(GetMousePosition().x - startPos.x, GetMousePosition().y - startPos.y);
-
-						std::cout << "DRAGGING" << std::endl;
-					}
-
-					Render();
-				}
-			}
-			else
-			{
-				dragging = false;
-			}
-
-			// Canvas Zoom
+			// Mouse Wheel Scrolled
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
+				// Canvas Zooming
 				if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
 				{
 					if (event.mouseWheelScroll.delta >= 1 )
@@ -232,6 +230,7 @@ void Update()
 						std::cout << "zoom out" << std::endl;
 					}
 					
+					// Render
 					Render();
 				}
 			}
@@ -254,6 +253,9 @@ void Update()
 	}
 }
 
+/// <summary>
+/// Render Definition For Main Implementation File.
+/// </summary>
 void Render()
 {
 	m_RenderWindow->clear();
@@ -266,16 +268,27 @@ void Render()
 	m_RenderWindow->display();
 }
 
+/// <summary>
+/// Returns The Mouse Position
+/// </summary>
+/// <returns></returns>
 sf::Vector2f GetMousePosition()
 {
 	return m_PopOutMenu->m_Brush->GetMousePosition();
 }
 
+/// <summary>
+/// Fill RenderWindow Background With Background Image.
+/// </summary>
 void FillBackGround()
 {
 	m_PopOutMenu->m_Canvas->m_BackGround.setScale(m_RenderWindow->getSize().x / m_PopOutMenu->m_Canvas->m_BackGround.getScale().x, m_RenderWindow->getSize().y / m_PopOutMenu->m_Canvas->m_BackGround.getScale().y);
 }
 
+/// <summary>
+/// Assigns CanvasView to a new sf::View and center's it to the canvas origin.
+/// </summary>
+/// <returns></returns>
 sf::View SetViewToCanvas()
 {
 	CanvasView = sf::View(sf::FloatRect(0.0f , 0.0f, m_RenderWindow->getSize().x, m_RenderWindow->getSize().y));

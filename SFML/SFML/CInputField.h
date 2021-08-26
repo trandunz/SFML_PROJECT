@@ -13,6 +13,8 @@
 //
 
 #pragma once
+
+// Non-Local Includes
 #include <SFML/Graphics.hpp>
 #include <utils-master/stringutils.h>
 #include <iostream>
@@ -22,24 +24,24 @@
 class CInputField
 {
 public:
-	std::string m_Label;
+	std::string m_Label; // Button Label
 
-	CInputField(sf::RenderWindow* _RenderWindow);
+	CInputField(sf::RenderWindow* _renderWindow);
 	~CInputField();
 
 	void Update();
 	void Render();
 
-	void SetMousePosition(sf::Vector2f Position);
+	void SetMousePosition(sf::Vector2f _position);
 	sf::Vector2f GetMousePosition();
 
 	bool bIsinBounds(sf::Vector2f _vMousePosition);
 
 	void SetLabel(std::string _label);
 
-	void SetState(std::string type);
+	void SetState(std::string _type);
 
-	void SetPosition(float newX, float newY);
+	void SetPosition(float _newX, float _newY);
 
 	inline float GetHeight()
 	{
@@ -51,7 +53,7 @@ public:
 		return Sprite.getGlobalBounds().width;
 	}
 
-	std::string removeLastChar(std::string s);
+	std::string removeLastChar(std::string _string);
 
 
 private:
@@ -59,10 +61,12 @@ private:
 	bool m_bIsPressed;
 
 	sf::RenderWindow* m_RenderWindow;
+
 	sf::Text m_tLabel;
 	
 	std::string m_OnClickLabel;
 	std::string m_HoverLabel;
+
 	sf::Sprite Sprite;
 
 	sf::Texture m_IdleTexture;

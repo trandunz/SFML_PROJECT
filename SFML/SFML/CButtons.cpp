@@ -12,32 +12,44 @@
 // Mail : william.inman@mds.ac.nz
 //
 
+// Local Includes
 #include "CButtons.h"
 
-CButtons::CButtons(sf::RenderWindow* _RenderWindow)
+/// <summary>
+/// Buttons Constructor.
+/// Takes in:	sf::RenderWindow* (Intended To Be The PopOutMenu Render Window).
+/// </summary>
+CButtons::CButtons(sf::RenderWindow* _renderWindow)
 {
-	m_RenderWindow = _RenderWindow;
-
+	// Load Textures And Fonts
 	m_IdleTexture.loadFromFile("Images/ButtonIdle.png");
 	m_HoverTexture.loadFromFile("Images/ButtonHovering.png");
 	m_ClickTexture.loadFromFile("Images/ButtonClick.png");
 	m_Font.loadFromFile("Fonts/times.TTF");
 
+	// Make Them Smooth
 	m_IdleTexture.setSmooth(true);
 	m_HoverTexture.setSmooth(true);
 	m_ClickTexture.setSmooth(true);
 
+	// Set Up Font
 	m_tLabel.setFont(m_Font);
 	m_tLabel.setCharacterSize(24);
 	m_tLabel.setFillColor(sf::Color::Black);
 	
+	// Set Button Texture To Idle
 	Sprite.setTexture(m_IdleTexture, 1);
 	
+	// Set Origin's
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 	Sprite.setOrigin(sf::Vector2f(Sprite.getGlobalBounds().width / 2, Sprite.getGlobalBounds().height / 2));
 
+	// Set Label
 	SetLabel(m_Label);
 	
+	// Initialization
+	m_RenderWindow = _renderWindow;
+
 	m_bIsHovering = false;
 	m_bIsPressed = false;
 	m_bIsClicked = false;
@@ -47,40 +59,66 @@ CButtons::CButtons(sf::RenderWindow* _RenderWindow)
 	m_HoverLabel = m_Label;
 }
 
+/// <summary>
+/// Buttons Destructor
+/// </summary>
 CButtons::~CButtons()
 {
+	// Cleanup Pointer
 	m_RenderWindow = nullptr;
 }
 
+/// <summary>
+/// Start Function For Buttons (Intended To Be Called Before Update).
+/// </summary>
 void CButtons::Start()
 {
 }
 
+/// <summary>
+/// Update Definition For Buttons.
+/// </summary>
 void CButtons::Update()
 {
+	// Set m_vMousePosition To Mouse Position
 	sf::Vector2i pixelPos = sf::Mouse::getPosition((*m_RenderWindow));
 
 	SetMousePosition(m_RenderWindow->mapPixelToCoords(pixelPos));
 
+	// Checks If Mouse Is On Button
 	bIsinBounds(m_vMousePosition);
 }
 
+/// <summary>
+/// Render Definition For Buttons.
+/// </summary>
 void CButtons::Render()
 {
 	m_RenderWindow->draw(Sprite);
 	m_RenderWindow->draw(m_tLabel);
 }
 
+/// <summary>
+/// Draws Only The Label To m_RenderWindow
+/// </summary>
 void CButtons::RenderOnlyLabel()
 {
 	m_RenderWindow->draw(m_tLabel);
 }
 
-void CButtons::SetMousePosition(sf::Vector2f Position)
+/// <summary>
+/// Assigns sf::Vector2f(Position) to m_vMousePosition 
+/// </summary>
+/// <param name="Position"></param>
+void CButtons::SetMousePosition(sf::Vector2f _position)
 {
-	m_vMousePosition = Position;
+	m_vMousePosition = _position;
 }
 
+/// <summary>
+/// Returns m_vMousePosition (sf::Vector2f)
+/// </summary>
+/// <returns></returns>
 sf::Vector2f CButtons::GetMousePosition()
 {
 	/*std::cout << m_vMousePosition.x << std::endl;
@@ -89,17 +127,29 @@ sf::Vector2f CButtons::GetMousePosition()
 	return m_vMousePosition;
 }
 
-void CButtons::SetPosition(float newX, float newY)
+/// <summary>
+/// Set The Position Of The Button To float (newX), float (newY).
+/// </summary>
+/// <param name="newX"></param>
+/// <param name="newY"></param>
+void CButtons::SetPosition(float _newX, float _newY)
 {
-	Sprite.setPosition(sf::Vector2f(newX, newY));
-	m_tLabel.setPosition(sf::Vector2f(newX, newY));
+	Sprite.setPosition(sf::Vector2f(_newX, _newY));
+	m_tLabel.setPosition(sf::Vector2f(_newX, _newY));
 }
 
+/// <summary>
+/// Sets The Label Of The Button To Specified Parameter.
+/// Takes In: std::string (_newLabel)
+/// </summary>
+/// <param name="_newLabel"></param>
 void CButtons::SetLabel(std::string _newLabel)
 {
+	// Temp Creation
 	std::string oldLabel = m_Label;
 	std::string oldClickLabel = m_OnClickLabel;
 
+	// Checks
 	if (_newLabel != m_OnClickLabel && _newLabel != m_HoverLabel)
 	{
 		m_Label = _newLabel;
@@ -113,34 +163,49 @@ void CButtons::SetLabel(std::string _newLabel)
 		m_HoverLabel = _newLabel;
 	}
 
+	// Update Label
 	m_tLabel.setString(_newLabel);
 	m_tLabel.setCharacterSize(20);
 
+	// Set Origin
 	m_tLabel.setOrigin(sf::Vector2f(m_tLabel.getGlobalBounds().width / 2, m_tLabel.getGlobalBounds().height / 2));
 }
 
-void CButtons::SetState(std::string type)
+/// <summary>
+/// Sets The State Of The Button To Sepecified Parameter.
+/// Takes In: std::string (type).
+/// </summary>
+/// <param name="type"></param>
+void CButtons::SetState(std::string _type)
 {
-	if (type == "Idle") 
+	if (_type == "Idle")
 	{
 		Sprite.setTexture(m_IdleTexture, 1);
 	}
-	else if (type == "Hover")
+	else if (_type == "Hover")
 	{
 		Sprite.setTexture(m_HoverTexture, 1);
 	}
-	else if (type == "Click")
+	else if (_type == "Click")
 	{
 		Sprite.setTexture(m_ClickTexture, 1);
 	}
 }
 
+/// <summary>
+/// Checks If The sf::Vector2f (_vMousePosition) Is Inside Of The Buttons GlobalBounds.
+/// Takes In: sf::Vector2f (_vMousePosition)
+/// </summary>
+/// <param name="_vMousePosition"></param>
+/// <returns></returns>
 bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 {
+	// If Mouse Is In Sprite
 	if (Sprite.getGlobalBounds().contains(sf::Vector2f(_vMousePosition.x, _vMousePosition.y)))
 	{
 		m_bIsHovering = true;
 
+		// Checks For Pressed
 		if (m_bIsPressed == false) 
 		{
 			Sprite.setTexture(m_HoverTexture, 1);
@@ -162,10 +227,12 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 
 		return true;
 	}
+	// Mouse Is Not In Sprite
 	else
 	{
 		m_bIsHovering = false;
 
+		// Check For Pressed
 		if (m_bIsPressed) 
 		{
 			SetLabel(m_Label);
@@ -183,28 +250,53 @@ bool CButtons::bIsinBounds(sf::Vector2f _vMousePosition)
 		
 		return false;
 	}
+	
+	return false;
 }
 
+/// <summary>
+/// Assigns m_HoverTexture to Specified Parameter.
+/// Takes In: sf::Texture (_newTexture)
+/// </summary>
+/// <param name="_newTexture"></param>
 void CButtons::SetHoverTex(sf::Texture _newTexture)
 {
 	m_HoverTexture = _newTexture;
 }
 
+/// <summary>
+/// Assigns m_IdleTexture to Specified Parameter.
+/// Takes In: sf::Texture (_newTexture)
+/// </summary>
+/// <param name="_newTexture"></param>
 void CButtons::SetIdleTex(sf::Texture _newTexture)
 {
 	m_IdleTexture = _newTexture;
 }
 
+/// <summary>
+/// Assigns m_ClickTexture to Specified Parameter.
+/// Takes In: sf::Texture (_newTexture)
+/// </summary>
+/// <param name="_newTexture"></param>
 void CButtons::SetClickTex(sf::Texture _newTexture)
 {
 	m_ClickTexture = _newTexture;
 }
 
+/// <summary>
+/// Returns The Height Of The Buttons Sprite.
+/// </summary>
+/// <returns></returns>
 int CButtons::GetHeight()
 {
 	return Sprite.getGlobalBounds().height;
 }
 
+/// <summary>
+/// Returns The Width Of The Buttons Sprite.
+/// </summary>
+/// <returns></returns>
 int CButtons::GetWidth()
 {
 	return Sprite.getGlobalBounds().width;

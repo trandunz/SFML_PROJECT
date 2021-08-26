@@ -13,12 +13,13 @@
 //
 
 #pragma once
+
+// Non-Local Includes
 #include <SFML/Graphics.hpp>
 
 class CButtons
 {
 public:
-
 	enum STATE
 	{
 		Idle,
@@ -29,13 +30,16 @@ public:
 	bool m_bIsHovering;
 	bool m_bIsPressed;
 	bool m_bIsClicked;
+
 	std::string m_Label;
 	std::string m_OnClickLabel;
 	std::string m_HoverLabel;
+
 	sf::Sprite Sprite;
+
 	sf::Text m_tLabel;
 
-	CButtons(sf::RenderWindow* _RenderWindow);
+	CButtons(sf::RenderWindow* _renderWindow);
 	~CButtons();
 
 	void Start();
@@ -44,10 +48,10 @@ public:
 
 	void RenderOnlyLabel();
 
-	void SetMousePosition(sf::Vector2f Position);
+	void SetMousePosition(sf::Vector2f _position);
 	sf::Vector2f GetMousePosition();
 
-	void SetPosition(float newX, float newY);
+	void SetPosition(float _newX, float _newY);
 
 	void SetLabel(std::string x);
 
@@ -60,11 +64,11 @@ public:
 	void SetIdleTex(sf::Texture _newTexture);
 	void SetClickTex(sf::Texture _newTexture);
 
-	sf::Texture GetHoverText()
+	inline sf::Texture GetHoverText()
 	{
 		return m_HoverTexture;
 	}
-	sf::Texture GetClickText()
+	inline sf::Texture GetClickText()
 	{
 		return m_ClickTexture;
 	}
@@ -78,14 +82,9 @@ private:
 	sf::Texture m_IdleTexture;
 	sf::Texture m_HoverTexture;
 	sf::Texture m_ClickTexture;
+
 	sf::Font m_Font;
 
 	sf::Vector2f m_vMousePosition;
-
-	float X = 0.0f;
-	float X2 = 0;
-	float Y = 0;
-	float Y2 = 0;
-
 };
 

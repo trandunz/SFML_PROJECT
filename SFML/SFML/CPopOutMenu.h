@@ -14,6 +14,8 @@
 
 #pragma once
 #pragma warning (disable : 26812) // SILENCE MINION
+
+// Non-Local Includes
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <Windows.h>
@@ -22,6 +24,7 @@
 #include <Shlwapi.h>
 #include <atlbase.h>
 
+// Local Includes
 #include "CButtons.h"
 #include "CBrush.h"
 #include "CShapes.h"
@@ -30,7 +33,7 @@
 class CPopOutMenu
 {
 public:
-	CPopOutMenu(sf::RenderWindow* _RenderWindow);
+	CPopOutMenu(sf::RenderWindow* _renderWindow);
 	~CPopOutMenu();
 
 	void Start();
@@ -43,11 +46,10 @@ public:
 	void InitColourDialogue();
 	void OpenColourDialogue();
 
-	void CreateBrushButtons();
-
 	void CustomBrushButtons();
 	void CustomShapeButtons();
 
+	void CreateBrushButtons();
 	void CreateShapeButtons();
 	void CreateTabMenuButtons();
 	void CreateSaveMenuButtons();
@@ -63,15 +65,18 @@ public:
 
 	void ShapesMenuFillCheck();
 
-	CButtons* m_BrushButtonList[11] = {};
+	CButtons* m_BrushButtonList[12] = {};
 	CButtons* m_ShapeButtonList[12] = {};
 	CButtons* m_CanvasButtonList[9] = {};
 	CButtons* m_SaveMenuButtonList[3] = {};
 	CInputField* m_InputList[6];
+
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
 	CShapes* m_Shape;
+
 	sf::RenderWindow* m_UIWindow;
+
 	sf::Color tempColour;
 	
 	bool m_bColourIsOpen = false;
@@ -85,28 +90,30 @@ public:
 private:
 	sf::RenderWindow* m_RenderWindow;
 
+	//
 	CHOOSECOLOR cc;                 // common dialog box structure 
 	COLORREF acrCustClr[16]; // array of custom colors 
 	HWND hwnd;                      // owner window
 	HBRUSH hbrush;                  // brush handle
 	DWORD rgbCurrent;        // initial color selection
-	COLORREF cr;
+	COLORREF cr;	// Color Refrence
 
 	OPENFILENAME ofn;       // common dialog box structure
 	char szFile[260];       // buffer for file name
 	HWND hwndFile;              // owner window
 	HANDLE hf;              // file handle
-	HRESULT hr;
-	sf::Texture* imageTex;
-
+	HRESULT hr;	// result of dialogue
+	sf::Texture* imageTex; // texture of opened file
+	//
 
 	sf::RectangleShape m_BackGround;
 	sf::RectangleShape m_BrushBackGround;
 	sf::RectangleShape m_CustomBrushBG;
+
 	sf::CircleShape m_bCustBrushPreview;
 	sf::CircleShape m_bCustShapePreview;
-	sf::RectangleShape m_SaveMenuPreviewBG;
 
+	sf::RectangleShape m_SaveMenuPreviewBG;
 	sf::RectangleShape m_SaveMenuPreview;
 
 	sf::RenderTexture* m_Snip;

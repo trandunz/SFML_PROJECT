@@ -21,7 +21,7 @@
 /// PopOutMenu Constructor.
 /// Takes in:	sf::RenderWindow* (Intended To Be The Main Render Window With Canvas e.t.c).
 /// </summary>
-CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
+CPopOutMenu::CPopOutMenu(sf::RenderWindow* _renderWindow)
 {
 	// UI Essentials Creation
 	m_BackGround = sf::RectangleShape(sf::Vector2f(320, 720));
@@ -62,7 +62,7 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 	m_Brush = nullptr;
 	m_Snip = nullptr;
 	imageTex = nullptr;
-	m_RenderWindow = _RenderWindow;
+	m_RenderWindow = _renderWindow;
 
 	// Render Window Creation
 	m_UIWindow = new sf::RenderWindow(sf::VideoMode(320, 720), "Tools", (sf::Style::Titlebar));
@@ -78,7 +78,7 @@ CPopOutMenu::CPopOutMenu(sf::RenderWindow* _RenderWindow)
 CPopOutMenu::~CPopOutMenu()
 {
 	// CleanUp Brush Buttons
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < 12; i++)
 	{
 		delete m_BrushButtonList[i];
 		m_BrushButtonList[i] = nullptr;
@@ -178,7 +178,7 @@ void CPopOutMenu::Start()
 }
 
 /// <summary>
-/// Hover Update Check For all Input Fields. Takes in:			sf::Event
+/// Hover Update Check For all Input Fields. Takes in: sf::Event (_event)
 /// </summary>
 /// <param name="_event"></param>
 void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
@@ -273,6 +273,7 @@ void CPopOutMenu::Update()
 				std::cout << "Save Menu Pressed" << std::endl;
 			}
 
+			// Menu Check
 			if (m_bBrushMenu)
 			{
 				// Square Brush
@@ -298,6 +299,12 @@ void CPopOutMenu::Update()
 				{
 					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::CUSTOM;
 					m_bCustomBrush = !m_bCustomBrush;
+				}
+				// Image Stamp Brush
+				if (m_BrushButtonList[11]->bIsinBounds(m_BrushButtonList[11]->GetMousePosition()))
+				{
+					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::SPRITE;
+					m_bCustomBrush = false;
 				}
 			}
 
@@ -429,7 +436,7 @@ void CPopOutMenu::Update()
 		}
 
 		// Button Updates
-		for (int i = 0; i < 11; i++)
+		for (int i = 0; i < 12; i++)
 		{
 			if (m_BrushButtonList[i] != nullptr)
 			{
@@ -767,8 +774,6 @@ void CPopOutMenu::Render()
 	// Brush Menu Buttons
 	if (m_bBrushMenu)
 	{
-
-
 		m_BrushButtonList[1]->Render();  // colour button
 		for (int i = 3; i < 8; i++)
 		{
@@ -778,6 +783,7 @@ void CPopOutMenu::Render()
 		m_InputList[0]->Render(); // Brush Size Input Field
 
 		m_BrushButtonList[8]->RenderOnlyLabel();	// Brush Size Text Indicator
+		m_BrushButtonList[11]->Render(); // Sprite Button
 	}
 
 	// Tab Menu Buttons
@@ -860,6 +866,9 @@ void CPopOutMenu::CreateBrushButtons()
 	CButtons* Custom = new CButtons(m_UIWindow);
 	Custom->SetLabel("Custom");
 	Custom->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 2);
+	CButtons* Sprite = new CButtons(m_UIWindow);
+	Sprite->SetLabel("Image");
+	Sprite->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 3);
 
 	// Array Assignment
 	m_BrushButtonList[1] = Colour;
@@ -868,6 +877,7 @@ void CPopOutMenu::CreateBrushButtons()
 	m_BrushButtonList[5] = Circle;
 	m_BrushButtonList[6] = Triangle;
 	m_BrushButtonList[7] = Custom;
+	m_BrushButtonList[11] = Sprite;
 
 	m_BrushButtonList[8] = BrushSizeLabel;
 
@@ -1207,6 +1217,12 @@ void CPopOutMenu::CreateSnip()
 	for (const sf::CircleShape& stroke : m_Brush->PaintedBrushList)
 	{
 		// Brush
+		m_Snip->draw(stroke);
+		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
+	}
+	for (const sf::Sprite& stroke : m_Brush->PaintedImageList)
+	{
+		// Brush (Image Stamp)
 		m_Snip->draw(stroke);
 		sf::Vector2f worldPosC = m_RenderWindow->mapPixelToCoords(sf::Vector2i(stroke.getPosition()));
 	}
