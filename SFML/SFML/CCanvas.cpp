@@ -33,7 +33,7 @@ CCanvas::CCanvas(sf::RenderWindow* _window, sf::Vector2f _size)
 	m_Canvas = sf::RectangleShape(_size);
 	m_Canvas.setOrigin(m_Canvas.getGlobalBounds().width / 2, m_Canvas.getGlobalBounds().height / 2);
 	m_Canvas.setPosition(0.0f, 0.0f);
-	m_Canvas.setFillColor(sf::Color::White);
+	m_Canvas.setFillColor(m_Color);
 }
 
 CCanvas::~CCanvas()

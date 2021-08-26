@@ -67,7 +67,7 @@ public:
 	CButtons* m_ShapeButtonList[12] = {};
 	CButtons* m_CanvasButtonList[9] = {};
 	CButtons* m_SaveMenuButtonList[3] = {};
-	CInputField* m_InputList[4];
+	CInputField* m_InputList[6];
 	CCanvas* m_Canvas;
 	CBrush* m_Brush;
 	CShapes* m_Shape;

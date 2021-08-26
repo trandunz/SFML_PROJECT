@@ -94,7 +94,7 @@ CPopOutMenu::~CPopOutMenu()
 	}
 
 	// CleanUp InputLists
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		delete m_InputList[i];
 		m_InputList[i] = nullptr;
@@ -138,7 +138,7 @@ CPopOutMenu::~CPopOutMenu()
 void CPopOutMenu::Start()
 {
 	// Essentials Creation
-	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(1000.0f, 1000.0f));
+	m_Canvas = new CCanvas(m_RenderWindow, sf::Vector2f(10.0f, 10.0f));
 	m_Brush = new CBrush(m_RenderWindow, m_Canvas);
 	m_Shape = new CShapes(m_RenderWindow, m_Canvas);
 
@@ -202,6 +202,16 @@ void CPopOutMenu::InputButtonHoverUpdates(sf::Event _event)
 	{
 		InputButtonUpdate(_event, 3);
 	}
+
+	// Canvas Menu Input Buttons
+	if (m_bCanvasMenu && m_InputList[4]->bIsinBounds(m_InputList[4]->GetMousePosition()))
+	{
+		InputButtonUpdate(_event, 4);
+	}
+	if (m_bCanvasMenu && m_InputList[5]->bIsinBounds(m_InputList[5]->GetMousePosition()))
+	{
+		InputButtonUpdate(_event, 5);
+	}
 }
 
 /// <summary>
@@ -233,7 +243,6 @@ void CPopOutMenu::Update()
 			if (m_BrushButtonList[1]->bIsinBounds(m_BrushButtonList[1]->GetMousePosition()) && (m_bBrushMenu || m_bShapeMenu))
 			{
 				OpenColourDialogue();
-				
 			}
 			if (m_BrushButtonList[2]->bIsinBounds(m_BrushButtonList[2]->GetMousePosition()))
 			{
@@ -341,8 +350,8 @@ void CPopOutMenu::Update()
 				{
 					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::CUSTOM;
 					m_Shape->m_Rotation = 0;
-					m_bCustShapePreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[3]->m_Label));
-					m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[3]->m_Label);
+					/*m_bCustShapePreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[3]->m_Label));
+					m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[3]->m_Label);*/
 					InputButtonUpdate(UIEvent, 3);
 					m_bCustomBrush = !m_bCustomBrush;
 				}
@@ -367,22 +376,40 @@ void CPopOutMenu::Update()
 
 			if (m_bCanvasMenu)
 			{
-				if (m_CanvasButtonList[0]->bIsinBounds(m_CanvasButtonList[0]->GetMousePosition()))
+				if (m_CanvasButtonList[1]->bIsinBounds(m_CanvasButtonList[1]->GetMousePosition()))
 				{
-					std::cout << "TEST1" << std::endl;
+					OpenColourDialogue();
+				}
+				if (m_CanvasButtonList[4]->bIsinBounds(m_CanvasButtonList[4]->GetMousePosition()))
+				{
+					// Object CleanUp
+					delete m_Brush;
+					delete m_Shape;
+
+					// Object Recreation
+					m_Brush = new CBrush(m_RenderWindow, m_Canvas);
+					m_Shape = new CShapes(m_RenderWindow, m_Canvas);
+
+					// Recreated Essentials Initialization
+					m_Brush->m_BrushType = m_Brush->BRUSHTYPE::DEFAULT;
+					m_Brush->m_BushSize = 1;
+					m_Brush->m_SideCount = 100;
+					m_Brush->m_Rotation = 0.0f;
+
+					m_Shape->m_ShapeType = m_Shape->SHAPETYPE::DEFAULT;
+					m_Shape->m_SideCount = 100;
+					m_Shape->m_Rotation = 0.0f;
+
+					m_Canvas->m_Canvas = sf::RectangleShape(sf::Vector2f(m_Canvas->m_Size.x, m_Canvas->m_Size.y));
+					m_Canvas->m_Canvas.setFillColor(m_Canvas->m_Color);
+					m_Canvas->m_Canvas.setSize(sf::Vector2f(m_Canvas->m_Size.x, m_Canvas->m_Size.y));
+					m_Canvas->m_Canvas.setOrigin(m_Canvas->m_Canvas.getGlobalBounds().width / 2, m_Canvas->m_Canvas.getGlobalBounds().height / 2);
+					m_Canvas->m_Canvas.setPosition(0.0f, 0.0f);
+
+					// Render
+					m_Canvas->Render();
 				}
 			}
-		}
-
-		// Input List Updates On Key Press
-		if ((UIEvent.type == sf::Event::KeyPressed))
-		{
-			m_InputList[0]->Update();
-			m_InputList[1]->Update();
-			m_InputList[2]->Update();
-			m_InputList[3]->Update();
-
-			Render();
 		}
 
 		// Colour Menu Hotkey
@@ -428,13 +455,19 @@ void CPopOutMenu::Update()
 		m_SaveMenuButtonList[1]->Update();
 		m_SaveMenuButtonList[2]->Update();
 
-		//
-		//m_InputList[0]->Update();
-		//m_InputList[1]->Update();
-		//m_InputList[2]->Update();
-		//m_InputList[3]->Update();
-		//
+		// Input List Updates On Key Press
+		if ((UIEvent.type == sf::Event::KeyPressed))
+		{
+			m_InputList[0]->Update();
+			m_InputList[1]->Update();
+			m_InputList[2]->Update();
+			m_InputList[3]->Update();
+			m_InputList[4]->Update();
+			m_InputList[5]->Update();
 
+			Render();
+		}
+		
 		// Check For Fill Colour For Shapes
 		m_bCustBrushPreview.setFillColor(m_Brush->m_Colour);
 		if (m_bShapeFillColour)
@@ -487,6 +520,16 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 			m_bCustShapePreview.setPointCount(utils::StringUtils::parse<int>(m_InputList[_index]->m_Label));
 			m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 		}
+		else if (_index == 4)
+		{
+			// X Size
+			m_Canvas->m_Size.x = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
+		}
+		else if (_index == 5)
+		{
+			// Y Size
+			m_Canvas->m_Size.y = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
+		}
 	}
 	// BackSpace
 	else if (_event.type == sf::Event::TextEntered && m_InputList[_index]->m_Label.size() > 0 && _event.text.unicode == 8)
@@ -528,6 +571,18 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 				// Shape Side Count
 				m_Shape->m_SideCount = 100;
 			}
+
+			// Canvas
+			else if (_index == 4)
+			{
+				// X Size
+				m_Canvas->m_Size.x = 10.0f;
+			}
+			else if (_index == 5)
+			{
+				// Y Size
+				m_Canvas->m_Size.y = 10.0f;
+			}
 		}
 		else
 		{
@@ -563,6 +618,18 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 				// Shape Side Count
 				m_Shape->m_SideCount = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
 			}
+
+			// Canvas
+			else if (_index == 4)
+			{
+				// X Size
+				m_Canvas->m_Size.x = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
+			}
+			else if (_index == 5)
+			{
+				// Y Size
+				m_Canvas->m_Size.y = utils::StringUtils::parse<int>(m_InputList[_index]->m_Label);
+			}
 		}
 	}
 
@@ -584,6 +651,14 @@ void CPopOutMenu::InputButtonUpdate (sf::Event _event, int _index)
 	if (m_Shape->m_OutlineThickness == 0)
 	{
 		m_Shape->m_OutlineThickness = 1;
+	}
+	if (m_Canvas->m_Size.x <= 0)
+	{
+		m_Canvas->m_Size.x = 10.0f;
+	}
+	if (m_Canvas->m_Size.y <= 0)
+	{
+		m_Canvas->m_Size.y = 10.0f;
 	}
 }
 
@@ -651,9 +726,16 @@ void CPopOutMenu::Render()
 	// Canvas Menu Buttons
 	if (m_bCanvasMenu)
 	{
-		m_CanvasButtonList[0]->RenderOnlyLabel();
-	}
+		m_CanvasButtonList[0]->RenderOnlyLabel(); // Colour Label
+		m_CanvasButtonList[1]->Render(); // Colour Button
+		m_CanvasButtonList[2]->RenderOnlyLabel(); // SizeX Label
+		m_CanvasButtonList[3]->RenderOnlyLabel(); // SizeY Label
+		m_CanvasButtonList[4]->Render(); // CreateNewCanvas Button
+		m_CanvasButtonList[5]->RenderOnlyLabel();
 
+		m_InputList[4]->Render(); // X Size Input Field
+		m_InputList[5]->Render(); // Y Size Input Field
+	}
 	// Save Menu Buttons
 	if (m_bSaveMenu)
 	{
@@ -736,6 +818,11 @@ void CPopOutMenu::OpenColourDialogue()
 		tempColour.b = GetBValue(cr);
 
 		m_Brush->SetActiveColour(tempColour);
+
+		if (m_bCanvasMenu)
+		{
+			m_Canvas->m_Color = tempColour;
+		}
 
 		ShapesMenuFillCheck();
 	}
@@ -990,8 +1077,49 @@ void CPopOutMenu::CreateCanvasMenuButtons()
 	ColorLabel->SetLabel("BG Color:");
 	ColorLabel->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
 
+	// Colour Button
+	CButtons* Colour = new CButtons(m_UIWindow);
+	Colour->SetLabel("Colour");
+	Colour->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 6);
+
+	// X Size Button Label
+	CButtons* SizeX = new CButtons(m_UIWindow);
+	SizeX->SetLabel("Size X:");
+	SizeX->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
+
+	// X Size Input Field
+	CInputField* SizeXInput = new CInputField(m_UIWindow);
+	SizeXInput->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 4);
+
+	// Y Size Button Label
+	CButtons* SizeY = new CButtons(m_UIWindow);
+	SizeY->SetLabel("Size Y:");
+	SizeY->SetPosition(m_UIWindow->getSize().x / 2 - m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 3);
+
+	// Y Size Input Field
+	CInputField* SizeYInput = new CInputField(m_UIWindow);
+	SizeYInput->SetPosition(m_UIWindow->getSize().x / 2 + m_UIWindow->getSize().x / 4.5, m_UIWindow->getSize().y / 3);
+
+	// "Create" Button
+	CButtons* CreateCanvas = new CButtons(m_UIWindow);
+	CreateCanvas->SetLabel("Create New");
+	CreateCanvas->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 2);
+
+	// CreateCanvas Info
+	CButtons* CreateCanvasLabel = new CButtons(m_UIWindow);
+	CreateCanvasLabel->SetLabel("Creating A New Canvas Will \n Revert All Current Changes");
+	CreateCanvasLabel->SetPosition(m_UIWindow->getSize().x / 2, m_UIWindow->getSize().y / 1.7);
+
 	// Array Assignment
 	m_CanvasButtonList[0] = ColorLabel;
+	m_CanvasButtonList[1] = Colour;
+	m_CanvasButtonList[2] = SizeX;
+	m_CanvasButtonList[3] = SizeY;
+	m_CanvasButtonList[4] = CreateCanvas;
+	m_CanvasButtonList[5] = CreateCanvasLabel;
+
+	m_InputList[4] = SizeXInput;
+	m_InputList[5] = SizeYInput;
 }
 
 /// <summary>
@@ -1094,7 +1222,10 @@ void CPopOutMenu::CreateSnip()
 /// <param name="_canvas"></param>
 void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 {
+	// Window Declaration
 	IFileOpenDialog* pFileOpen;
+
+	// Create PopUp Window Object And Bind It To hr
 	hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
 
 	if (SUCCEEDED(hr))
@@ -1105,33 +1236,47 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 		// Get the file name from the dialog box.
 		if (SUCCEEDED(hr))
 		{
+			// Shell Declaration
 			IShellItem* pItem;
+
 			hr = pFileOpen->GetResult(&pItem);
+
 			if (SUCCEEDED(hr))
 			{
+				// FilePath Declaration
 				PWSTR pszFilePath;
+
+				// Setting Result to FilePath
 				hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
 
 				// Display the file name to the user.
 				if (SUCCEEDED(hr))
 				{
+					// Enables Us To Use W2A
 					USES_CONVERSION;
 
+					// Path String Declaration
 					std::string temp;
 
+					// Assign Temp The Path
 					temp = PathFindExtensionA(W2A(pszFilePath));
 
+					// Debug
 					std::cout << temp << std::endl;
 
+					// Check If PNG
 					if (temp == ".png")
 					{
 						std::cout << "true" << std::endl;
 						
+						// Create New Texture
 						imageTex = new sf::Texture();
 
+						// Error Check
 						if (!imageTex->loadFromFile(W2A(pszFilePath)))
 							std::cout << "error" << std::endl;
 
+						// Load imageTex with specified file
 						imageTex->loadFromFile(W2A(pszFilePath));
 
 						//
@@ -1145,12 +1290,17 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 						_canvas.setPosition(0.0f, 0.0f);
 					}
 
+					// Debug
 					MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+
+					// Cleanup
 					CoTaskMemFree(pszFilePath);
 				}
+				// ^
 				pItem->Release();
 			}
 		}
+		// ^
 		pFileOpen->Release();
 	}
 }
@@ -1160,7 +1310,10 @@ void CPopOutMenu::OpenFileDialogue(sf::RectangleShape& _canvas)
 /// </summary>
 void CPopOutMenu::SaveFileDialogue()
 {
+	// Window Declaration
 	IFileSaveDialog* pFileSave;
+
+	// Create PopUp Window Object And Bind It To hr
 	hr = CoCreateInstance(CLSID_FileSaveDialog, NULL, CLSCTX_ALL, IID_IFileSaveDialog, reinterpret_cast<void**>(&pFileSave));
 
 	if (SUCCEEDED(hr))
@@ -1171,20 +1324,29 @@ void CPopOutMenu::SaveFileDialogue()
 		// Get the file name from the dialog box.
 		if (SUCCEEDED(hr))
 		{
+			// Shell Declaration
 			IShellItem* pItem;
+
 			hr = pFileSave->GetResult(&pItem);
+
 			if (SUCCEEDED(hr))
 			{
+				// FilePath Declaration
 				PWSTR pszFilePath;
+
+				// Setting Result to FilePath
 				hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
 
 				// Display the file name to the user.
 				if (SUCCEEDED(hr))
 				{
+					// Enables Us To Use W2A
 					USES_CONVERSION;
 
+					// Declare and Create a new temp string
 					std::string* temp = new std::string();
 
+					// Set temp to FindPath
 					*temp = PathFindFileNameA(W2A(pszFilePath));
 
 					std::cout << *temp << std::endl;
@@ -1192,6 +1354,7 @@ void CPopOutMenu::SaveFileDialogue()
 					// Save To Specified File Path
 					Save(*temp);
 
+					// Degub
 					MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
 
 					// Cleanup
@@ -1199,9 +1362,11 @@ void CPopOutMenu::SaveFileDialogue()
 					temp = nullptr;
 					CoTaskMemFree(pszFilePath);
 				}
+				// ^
 				pItem->Release();
 			}
 		}
+		// ^
 		pFileSave->Release();
 	}
 }

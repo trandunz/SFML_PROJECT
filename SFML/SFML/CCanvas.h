@@ -20,6 +20,8 @@
 class CCanvas
 {
 public:
+	sf::Color m_Color = sf::Color::White;
+
 	sf::Vector2f m_Size;
 	sf::RectangleShape m_Canvas;
 	/*sf::Image* m_CanvasImage;*/

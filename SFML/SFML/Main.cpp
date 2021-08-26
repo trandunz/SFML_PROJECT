@@ -94,6 +94,18 @@ void Update()
 		sf::Event event;
 		while (m_RenderWindow->pollEvent(event)) // if(RenderWindow is active window)
 		{
+			// Tab Focus
+			if (event.type == sf::Event::GainedFocus)
+			{
+				Render();
+			}
+
+			// Tab Not Focus
+			if (event.type == sf::Event::LostFocus)
+			{
+				Render();
+			}
+
 			// Undo Brush
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
@@ -158,7 +170,6 @@ void Update()
 				m_PopOutMenu->m_Shape->LetGoOfShape();
 
 				Render();
-				Update();
 			}
 
 			// Middle Mouse

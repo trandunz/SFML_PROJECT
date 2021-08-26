@@ -207,7 +207,6 @@ void CShapes::LetGoOfShape()
 		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 
 		m_Rotation = 0;
-
 		m_Stroke->setRotation(m_Rotation);
 		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
@@ -225,8 +224,8 @@ void CShapes::LetGoOfShape()
 		m_Stroke->setPosition(m_vMouseStart);
 		m_Stroke->setPointCount(3);
 		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
-		m_Rotation = 0;
 
+		m_Rotation = 0;
 		m_Stroke->setRotation(m_Rotation);
 		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
@@ -244,11 +243,10 @@ void CShapes::LetGoOfShape()
 		m_Stroke->setPosition(m_vMouseStart);
 		m_Stroke->setPointCount(4);
 		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
-		
 
-		/*m_Rotation = 45;
+		m_Rotation = 45;
+		m_Stroke->setRotation(m_Rotation);
 
-		m_Stroke->rotate(m_Rotation);*/
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);
@@ -264,11 +262,10 @@ void CShapes::LetGoOfShape()
 		m_Stroke->setPosition(m_vMouseStart);
 		m_Stroke->setPointCount(m_SideCount);
 		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
-		
 
 		m_Rotation = 0;
-
 		m_Stroke->setRotation(m_Rotation);
+
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
 		m_Stroke->setOutlineColor(m_OutlineColour);
 		PaintedShapeList.push_back(*m_Stroke);
@@ -290,7 +287,6 @@ void CShapes::LetGoOfShape()
 		m_Stroke->setScale(m_PreviewStrokeBounds.getSize().x / 4, m_PreviewStrokeBounds.getSize().y / 4);
 
 		m_Rotation = 0;
-
 		m_Stroke->setRotation(m_Rotation);
 		
 		m_Stroke->setOutlineThickness(m_OutlineThickness);
