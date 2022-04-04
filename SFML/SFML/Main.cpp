@@ -11,10 +11,12 @@ void Start();
 void Update();
 void Render();
 
-sf::RenderWindow* m_RenderWindow;
+sf::RenderWindow* RenderWindow;
 
-sf::CircleShape circle(100.f); // circle
-sf::RectangleShape square(sf::Vector2f(100, 100)); // square
+sf::Event Event;
+
+sf::CircleShape Circle(100.f); // circle
+sf::RectangleShape Square(sf::Vector2f(100, 100)); // square
 
 int main()
 {
@@ -27,22 +29,20 @@ int main()
     settings.antialiasingLevel = 8;
 
 	//OBJECT CREATION
-	m_RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
-    
-    
+	RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
 
-    circle.setFillColor(sf::Color::Green);
-    circle.setPointCount(100);
-    square.setPosition(250, 250);
-    circle.setPosition(50, 50);
+    Circle.setFillColor(sf::Color::Green);
+    Circle.setPointCount(100);
+    Square.setPosition(250, 250);
+    Circle.setPosition(50, 50);
 
 	//MAIN STUFF
 	Start();
 	Update();
 
 	//CLEAN UP
-	delete m_RenderWindow;
-	m_RenderWindow = nullptr;
+	delete RenderWindow;
+	RenderWindow = nullptr;
 
 	//RETURN NULL FOR MAIN
     return 0;
@@ -56,29 +56,27 @@ void Start()
 void Update()
 {
 	//MAIN GAME LOOP
-	while (m_RenderWindow->isOpen())
+	while (RenderWindow->isOpen())
 	{
-		sf::Event event;
-		while (m_RenderWindow->pollEvent(event))
+		while (RenderWindow->pollEvent(Event))
 		{
-			if (event.type == sf::Event::Closed)
-				m_RenderWindow->close();
+			if (Event.type == sf::Event::Closed)
+				RenderWindow->close();
 		}
 		// Object Updates
 
 		//Render
 		Render();
-		
 	}
 }
  
 void Render()
 {
-	m_RenderWindow->clear();
+	RenderWindow->clear();
 
 	// Draw Objects
-	m_RenderWindow->draw(circle);
-	m_RenderWindow->draw(square);
+	RenderWindow->draw(Circle);
+	RenderWindow->draw(Square);
 
-	m_RenderWindow->display();
+	RenderWindow->display();
 }
