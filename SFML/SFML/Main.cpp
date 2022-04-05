@@ -1,56 +1,67 @@
-#include <SFML/Graphics.hpp>
-#include <Windows.h>
+#include "Agent.h"
 
-namespace Utils
-{
-    int WINDOWHEIGHT = 400;
-    int WINDOWWIDTH = 400;
-}
-
+void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
 void Start();
+void GrabEventInput();
 void Update();
 void Render();
+int Cleanup();
 
-sf::RenderWindow* RenderWindow;
+void CalculateDeltaTime();
+void HandleEventAction();
+
+sf::ContextSettings RenderWindowSettings;
 
 sf::Event Event;
 
-sf::CircleShape Circle(100.f); // circle
-sf::RectangleShape Square(sf::Vector2f(100, 100)); // square
+std::vector<Agent*> Agents;
 
 int main()
 {
-	//WINDOW HANDLE
-    HWND hwnd = GetConsoleWindow();
-    ShowWindow(hwnd, SW_SHOW);
-
-	//SETTINGS
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-
-	//OBJECT CREATION
-	RenderWindow = new sf::RenderWindow(sf::VideoMode(Utils::WINDOWWIDTH, Utils::WINDOWHEIGHT), "SFML works!", sf::Style::Default, settings);
-
-    Circle.setFillColor(sf::Color::Green);
-    Circle.setPointCount(100);
-    Square.setPosition(250, 250);
-    Circle.setPosition(50, 50);
-
-	//MAIN STUFF
 	Start();
 	Update();
 
-	//CLEAN UP
-	delete RenderWindow;
-	RenderWindow = nullptr;
-
-	//RETURN NULL FOR MAIN
-    return 0;
+    return Cleanup();
 }
 
-void Start() 
+void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings)
 {
+	if (RenderWindow)
+	{
+		RenderWindow->create(sf::VideoMode(_size.x, _size.y), _title.data(), _style, _settings);
+	}
+	else
+	{
+		RenderWindow = new sf::RenderWindow(sf::VideoMode(_size.x, _size.y), _title.data(), _style, _settings);
+	}
+}
 
+void Start()
+{
+	RenderWindowSettings.antialiasingLevel = 8;
+	InitWindow(std::move(WindowSize), "Steering Behaviors", sf::Style::Default, std::move(RenderWindowSettings));
+	RenderWindow->setKeyRepeatEnabled(false);
+
+	// Create Agents
+	Agents.emplace_back(new Agent{});
+}
+
+void GrabEventInput()
+{
+	if (RenderWindow->pollEvent(Event))
+	{
+		if (Event.type == sf::Event::Closed)
+			ExitProgram = true;
+
+		if (Event.type == sf::Event::KeyPressed)
+		{
+			KeyMap.insert_or_assign(Event.key.code, true);
+		}
+		if (Event.type == sf::Event::KeyReleased)
+		{
+			KeyMap.insert_or_assign(Event.key.code, false);
+		}
+	}
 }
 
 void Update()
@@ -58,15 +69,25 @@ void Update()
 	//MAIN GAME LOOP
 	while (RenderWindow->isOpen())
 	{
-		while (RenderWindow->pollEvent(Event))
-		{
-			if (Event.type == sf::Event::Closed)
-				RenderWindow->close();
-		}
+		CalculateDeltaTime();
+		GrabEventInput();
+
 		// Object Updates
+		HandleEventAction();
+
+		for (auto& agent : Agents)
+		{
+			agent->Update();
+		}
 
 		//Render
 		Render();
+
+		// Check For Program Close
+		if (ExitProgram)
+		{
+			RenderWindow->close();
+		}
 	}
 }
  
@@ -74,9 +95,62 @@ void Render()
 {
 	RenderWindow->clear();
 
-	// Draw Objects
-	RenderWindow->draw(Circle);
-	RenderWindow->draw(Square);
+	for (auto& item : Agents)
+	{
+		RenderWindow->draw(*item);
+	}
 
 	RenderWindow->display();
+}
+
+int Cleanup()
+{
+	for (auto& agent : Agents)
+	{
+		if (agent)
+			delete agent;
+		agent = nullptr;
+	}
+	Agents.clear();
+
+	if (RenderWindow)
+		delete RenderWindow;
+	RenderWindow = nullptr;
+
+	return EXIT_SUCCESS;
+}
+
+void CalculateDeltaTime()
+{
+	float elapsedTimeSinceProgramStart = MainClock.getElapsedTime().asSeconds();
+	SetDeltaTime(elapsedTimeSinceProgramStart - CurrentTime);
+	CurrentTime = elapsedTimeSinceProgramStart;
+}
+
+void HandleEventAction()
+{
+	for (auto& key : KeyMap)
+	{
+		if (key.second)
+		{
+			switch (key.first)
+			{
+			case sf::Keyboard::Escape:
+			{
+				ExitProgram = true;
+
+				// Singular Press Please
+				key.second = false;
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
+
+	for (auto& agent : Agents)
+	{
+		agent->HandleInput();
+	}
 }
