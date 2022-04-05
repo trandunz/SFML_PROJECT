@@ -1,5 +1,13 @@
 #include "Agent.h"
 
+static sf::Vector2i WindowSize{ 1000, 1000 };
+static float DeltaTime;
+static float CurrentTime;
+static sf::Clock MainClock{};
+static bool ExitProgram;
+static std::map<sf::Keyboard::Key, bool> KeyMap;
+static sf::RenderWindow* RenderWindow;
+
 void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
 void Start();
 void GrabEventInput();
@@ -11,9 +19,7 @@ void CalculateDeltaTime();
 void HandleEventAction();
 
 sf::ContextSettings RenderWindowSettings;
-
 sf::Event Event;
-
 std::vector<Agent*> Agents;
 
 int main()
@@ -43,7 +49,7 @@ void Start()
 	RenderWindow->setKeyRepeatEnabled(false);
 
 	// Create Agents
-	Agents.emplace_back(new Agent{});
+	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow});
 }
 
 void GrabEventInput()
@@ -123,7 +129,7 @@ int Cleanup()
 void CalculateDeltaTime()
 {
 	float elapsedTimeSinceProgramStart = MainClock.getElapsedTime().asSeconds();
-	SetDeltaTime(elapsedTimeSinceProgramStart - CurrentTime);
+	DeltaTime = (elapsedTimeSinceProgramStart - CurrentTime);
 	CurrentTime = elapsedTimeSinceProgramStart;
 }
 

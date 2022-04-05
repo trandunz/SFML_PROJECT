@@ -1,12 +1,15 @@
 #include "Agent.h"
 
-Agent::Agent()
+Agent::Agent(float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow)
 {
 	Start();
 }
 
 Agent::~Agent()
 {
+	m_WindowSize = nullptr;
+	m_DeltaTime = nullptr;
+	m_RenderWindow = nullptr;
 }
 
 void Agent::Start()
@@ -15,14 +18,16 @@ void Agent::Start()
 
 	m_Sprite.setTexture(m_SpriteTexture, true);
 	m_Sprite.setOrigin(m_Sprite.getGlobalBounds().width / 2, m_Sprite.getGlobalBounds().height / 2);
-	m_Sprite.setPosition((float)WindowSize.x / 2, (float)WindowSize.y / 2);
+	m_Sprite.setPosition((float)m_WindowSize->x / 2, (float)m_WindowSize->y / 2);
 	m_Sprite.setScale({ 0.2f, 0.2f });
+
+	m_Velocity = {0, -m_MaxSpeed};
 }
 
 void Agent::Update()
 {
-	Print(std::move(DeltaTime));
-	Translate({ 0, m_MaxSpeed * DeltaTime });
+	Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+	Translate(m_Velocity * (*m_DeltaTime));
 }
 
 void Agent::HandleInput()
@@ -48,4 +53,17 @@ void Agent::Translate(sf::Vector2f&& _translation)
 void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 {
 	_target.draw(m_Sprite, _states);
+}
+
+void Agent::Seek(sf::Vector2f _targetPos)
+{
+	sf::Vector2f desiredVelocity = Normalize(_targetPos - m_Sprite.getPosition()) * m_MaxSpeed;
+	sf::Vector2f steeringForce = desiredVelocity - m_Velocity;
+	Truncate(steeringForce, m_MaxForce);
+	if (Mag(steeringForce) >= 0.001f)
+	{
+		m_Velocity += steeringForce * *m_DeltaTime;
+		Truncate(m_Velocity, m_MaxSpeed);
+		m_Sprite.setRotation(90.0f + atan2(m_Velocity.y, m_Velocity.x) * (180.0f / (float)PI));
+	}
 }

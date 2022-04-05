@@ -3,13 +3,7 @@
 #include <string>
 #include <iostream>
 
-static sf::Vector2i WindowSize{ 1000, 1000 };
-static float DeltaTime;
-static float CurrentTime;
-static sf::Clock MainClock{};
-static bool ExitProgram;
-static std::map<sf::Keyboard::Key, bool> KeyMap;
-static sf::RenderWindow* RenderWindow;
+#define PI 3.14159265358979323846264338
 
 static void Print(std::string_view&& _message)
 {
@@ -27,9 +21,33 @@ static void Print(char&& _character)
 {
 	std::cout << _character << std::endl;
 }
-
-static void SetDeltaTime(float&& _newValue)
+static void Print(sf::Vector2f&& _vector)
 {
-	DeltaTime = _newValue;
+	std::cout << "X: " << _vector.x << "Y: " << _vector.y << std::endl;
+}
+static float Mag(sf::Vector2f& _vector)
+{
+	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
+}
+static sf::Vector2f Normalize(sf::Vector2f&& _vector)
+{
+	return _vector / Mag(_vector);
+}
+static void Truncate(sf::Vector2f& _vector, float _upperBound)
+{
+	float sqrLen = sqrt(Mag(_vector));
+	if (sqrLen > _upperBound * _upperBound)
+	{
+		float mult = _upperBound / sqrt(sqrLen);
+		_vector.x *= mult; 
+		_vector.y *= mult;
+	}
+}
+static float Dot(sf::Vector2f& _v1, sf::Vector2f& _v2)
+{
+	float product = 0.0f;
+	product += _v1.x * _v2.x;
+	product += _v1.y * _v2.y;
+	return product;
 }
 
