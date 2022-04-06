@@ -28,6 +28,7 @@ void Agent::Update()
 {
 	Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
 	Translate(m_Velocity * (*m_DeltaTime));
+	LookAt(std::move(m_Velocity));
 }
 
 void Agent::HandleInput()
@@ -55,6 +56,11 @@ void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 	_target.draw(m_Sprite, _states);
 }
 
+void Agent::LookAt(sf::Vector2f&& _direction)
+{
+	m_Sprite.setRotation(90.0f + atan2(_direction.y, _direction.x) * (180.0f / (float)PI));
+}
+
 void Agent::Seek(sf::Vector2f _targetPos)
 {
 	sf::Vector2f desiredVelocity = Normalize(_targetPos - m_Sprite.getPosition()) * m_MaxSpeed;
@@ -64,6 +70,17 @@ void Agent::Seek(sf::Vector2f _targetPos)
 	{
 		m_Velocity += steeringForce * *m_DeltaTime;
 		Truncate(m_Velocity, m_MaxSpeed);
-		m_Sprite.setRotation(90.0f + atan2(m_Velocity.y, m_Velocity.x) * (180.0f / (float)PI));
+	}
+}
+
+void Agent::Flee(sf::Vector2f _targetPos)
+{
+	sf::Vector2f desiredVelocity = Normalize(m_Sprite.getPosition() - _targetPos) * m_MaxSpeed;
+	sf::Vector2f steeringForce = desiredVelocity - m_Velocity;
+	Truncate(steeringForce, m_MaxForce);
+	if (Mag(steeringForce) >= 0.001f)
+	{
+		m_Velocity += steeringForce * *m_DeltaTime;
+		Truncate(m_Velocity, m_MaxSpeed);
 	}
 }

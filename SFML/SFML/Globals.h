@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+#include < cmath >
 
 #define PI 3.14159265358979323846264338
 
@@ -35,13 +36,9 @@ static sf::Vector2f Normalize(sf::Vector2f&& _vector)
 }
 static void Truncate(sf::Vector2f& _vector, float _upperBound)
 {
-	float sqrLen = sqrt(Mag(_vector));
-	if (sqrLen > _upperBound * _upperBound)
-	{
-		float mult = _upperBound / sqrt(sqrLen);
-		_vector.x *= mult; 
-		_vector.y *= mult;
-	}
+	float i = _upperBound / Mag(_vector);
+	i = i < 1 ? i : 1;
+	_vector *= i;
 }
 static float Dot(sf::Vector2f& _v1, sf::Vector2f& _v2)
 {
