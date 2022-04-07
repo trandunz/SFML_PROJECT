@@ -21,6 +21,7 @@ void HandleEventAction();
 sf::ContextSettings RenderWindowSettings;
 sf::Event Event;
 std::vector<Agent*> Agents;
+std::vector<Obstacle*> Obstacles;
 
 int main()
 {
@@ -49,7 +50,8 @@ void Start()
 	RenderWindow->setKeyRepeatEnabled(false);
 
 	// Create Agents
-	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow});
+	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow, Obstacles});
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x /  2,(float)WindowSize.y / 2 }, {0.5f, 0.5f}));
 }
 
 void GrabEventInput()
@@ -81,9 +83,15 @@ void Update()
 		// Object Updates
 		HandleEventAction();
 
+		for (auto& obstacle : Obstacles)
+		{
+			obstacle->Update();
+		}
+
 		for (auto& agent : Agents)
 		{
 			agent->Update();
+			
 		}
 
 		//Render
@@ -100,6 +108,11 @@ void Update()
 void Render()
 {
 	RenderWindow->clear();
+
+	for (auto& item : Obstacles)
+	{
+		RenderWindow->draw(*item);
+	}
 
 	for (auto& item : Agents)
 	{
@@ -118,6 +131,14 @@ int Cleanup()
 		agent = nullptr;
 	}
 	Agents.clear();
+
+	for (auto& obstacle : Obstacles)
+	{
+		if (obstacle)
+			delete obstacle;
+		obstacle = nullptr;
+	}
+	Obstacles.clear();
 
 	if (RenderWindow)
 		delete RenderWindow;

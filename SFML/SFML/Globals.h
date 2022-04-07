@@ -26,11 +26,19 @@ static void Print(sf::Vector2f&& _vector)
 {
 	std::cout << "X: " << _vector.x << "Y: " << _vector.y << std::endl;
 }
-static float Mag(sf::Vector2f& _vector)
+static float Mag(sf::Vector2f&& _vector)
+{
+	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
+}
+static float Mag(const sf::Vector2f& _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }
 static sf::Vector2f Normalize(sf::Vector2f&& _vector)
+{
+	return _vector / Mag(_vector);
+}
+static sf::Vector2f Normalize(const sf::Vector2f& _vector)
 {
 	return _vector / Mag(_vector);
 }
@@ -40,11 +48,31 @@ static void Truncate(sf::Vector2f& _vector, float _upperBound)
 	i = i < 1 ? i : 1;
 	_vector *= i;
 }
-static float Dot(sf::Vector2f& _v1, sf::Vector2f& _v2)
+static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
 {
 	float product = 0.0f;
 	product += _v1.x * _v2.x;
 	product += _v1.y * _v2.y;
 	return product;
+}
+static float ToDegrees(float _radians)
+{
+	return _radians * (180.0f / (float)PI);
+}
+static float ToRadians(float _degrees)
+{
+	return ((float)PI * _degrees) / 180.0f;
+}
+static sf::Vector2f CWPerp(sf::Vector2f _originalVector)
+{
+	return { _originalVector.y, -_originalVector.x };
+}
+static sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
+{
+	return { -_originalVector.y, _originalVector.x };
+}
+static float AngleDir(sf::Vector2f _A, sf::Vector2f _B)
+{
+	return -_A.x * _B.y + _A.y * _B.x;
 }
 

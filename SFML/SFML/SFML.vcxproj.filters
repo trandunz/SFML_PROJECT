@@ -21,12 +21,18 @@
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
