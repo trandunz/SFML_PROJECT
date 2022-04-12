@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+#include <functional>
 #include < cmath >
 
 #define PI 3.14159265358979323846264338

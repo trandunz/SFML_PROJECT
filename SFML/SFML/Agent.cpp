@@ -32,9 +32,11 @@ void Agent::Start()
 void Agent::Update()
 {
 	m_SteeringForce = {};
-	Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
-	//Wander(100, 20);
+	
+	Flee((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
 	Avoidence();
+	//Wander(100, 20);
+	
 	ApplySteeringForce();
 	Translate(m_Velocity * (*m_DeltaTime));
 	LookAt(std::move(m_Velocity));
@@ -94,10 +96,6 @@ void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 	steeringForce[1].position = m_Sprite.getPosition() + m_Velocity + m_SteeringForce;
 	steeringForce[1].color = sf::Color::Red;
 	_target.draw(steeringForce, _states);
-
-
-
-
 }
 
 void Agent::LoopWithScreen()
@@ -137,7 +135,6 @@ void Agent::Seek(sf::Vector2f _targetPos)
 {
 	sf::Vector2f desiredVelocity = Normalize(_targetPos - GetPosition()) * m_MaxSpeed;
 	m_SteeringForce += desiredVelocity - m_Velocity;
-
 }
 
 void Agent::Flee(sf::Vector2f _targetPos)

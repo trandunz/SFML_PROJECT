@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include "DebugMenu.h"
 
 static sf::Vector2i WindowSize{ 1000, 1000 };
 static float DeltaTime;
@@ -6,7 +7,9 @@ static float CurrentTime;
 static sf::Clock MainClock{};
 static bool ExitProgram;
 static std::map<sf::Keyboard::Key, bool> KeyMap;
+static DebugMenu DebugControls;
 static sf::RenderWindow* RenderWindow;
+static sf::Font m_ArialFont;
 
 void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
 void Start();
@@ -49,9 +52,12 @@ void Start()
 	InitWindow(std::move(WindowSize), "Steering Behaviors", sf::Style::Default, std::move(RenderWindowSettings));
 	RenderWindow->setKeyRepeatEnabled(false);
 
+	m_ArialFont.loadFromFile("Resources/Fonts/ARIAL.TTF");
+
 	// Create Agents
 	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow, Obstacles});
 	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x /  2,(float)WindowSize.y / 2 }, {0.5f, 0.5f}));
+	
 }
 
 void GrabEventInput()
@@ -69,6 +75,8 @@ void GrabEventInput()
 		{
 			KeyMap.insert_or_assign(Event.key.code, false);
 		}
+
+
 	}
 }
 
@@ -78,6 +86,7 @@ void Update()
 	while (RenderWindow->isOpen())
 	{
 		CalculateDeltaTime();
+		DebugControls.Update();
 		GrabEventInput();
 
 		// Object Updates
@@ -91,7 +100,6 @@ void Update()
 		for (auto& agent : Agents)
 		{
 			agent->Update();
-			
 		}
 
 		//Render
@@ -120,6 +128,8 @@ void Render()
 	}
 
 	RenderWindow->display();
+
+	DebugControls.Render();
 }
 
 int Cleanup()
