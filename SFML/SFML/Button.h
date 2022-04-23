@@ -12,6 +12,8 @@ public:
 private:
 	virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override;
 
+	void ShrinkTextToFit();
+
 	sf::Texture m_SpriteTexture;
 	sf::Sprite m_Sprite;
 	sf::Text m_Text;

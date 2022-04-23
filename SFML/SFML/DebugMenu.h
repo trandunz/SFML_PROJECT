@@ -1,11 +1,12 @@
 #pragma once
 #include "Globals.h"
 #include "Button.h"
+#include "Agent.h"
 
 class DebugMenu
 {
 public:
-	DebugMenu();
+	DebugMenu(std::vector<Agent*>& _agents, sf::Font& _globalFont);
 	~DebugMenu();
 
 	void Start();
@@ -14,8 +15,9 @@ public:
 
 private:
 	void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
-	std::vector<Button*> UIButtons;
-	sf::Font m_ArialFont;
+	std::vector<Button*> m_UIButtons;
+	std::vector<Agent*>* m_Agents;
+	sf::Font m_Font;
 	sf::Vector2i m_WindowSize;
 
 	sf::Event m_Event;

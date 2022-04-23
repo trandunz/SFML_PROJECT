@@ -14,6 +14,8 @@ Button::Button(sf::RenderWindow* _renderWindow, std::string_view _label, sf::Fon
 	m_Sprite.setTexture(m_SpriteTexture, true);
 	m_Sprite.setOrigin(m_Sprite.getGlobalBounds().width / 2, m_Sprite.getGlobalBounds().height / 2);
 	m_Sprite.setPosition(_position);
+
+	ShrinkTextToFit();
 }
 
 Button::~Button()
@@ -57,4 +59,11 @@ void Button::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 {
 	_target.draw(m_Sprite, _states);
 	_target.draw(m_Text, _states);
+}
+
+void Button::ShrinkTextToFit()
+{
+	float i = (m_Sprite.getGlobalBounds().width - 20) / m_Text.getGlobalBounds().width;
+	i = i < 1 ? i : 1;
+	m_Text.setScale({ i , 1});
 }

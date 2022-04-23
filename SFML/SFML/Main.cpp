@@ -7,7 +7,7 @@ static float CurrentTime;
 static sf::Clock MainClock{};
 static bool ExitProgram;
 static std::map<sf::Keyboard::Key, bool> KeyMap;
-static DebugMenu DebugControls;
+
 static sf::RenderWindow* RenderWindow;
 static sf::Font m_ArialFont;
 
@@ -23,6 +23,7 @@ void HandleEventAction();
 
 sf::ContextSettings RenderWindowSettings;
 sf::Event Event;
+DebugMenu* DebugControls = nullptr;
 std::vector<Agent*> Agents;
 std::vector<Obstacle*> Obstacles;
 
@@ -55,9 +56,12 @@ void Start()
 	m_ArialFont.loadFromFile("Resources/Fonts/ARIAL.TTF");
 
 	// Create Agents
-	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow, Obstacles});
+	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow, Obstacles, Agents});
+	Agents.emplace_back(new Agent{ DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+	Agents.emplace_back(new Agent{ DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
 	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x /  2,(float)WindowSize.y / 2 }, {0.5f, 0.5f}));
 	
+	DebugControls = new DebugMenu(Agents, m_ArialFont);
 }
 
 void GrabEventInput()
@@ -86,7 +90,7 @@ void Update()
 	while (RenderWindow->isOpen())
 	{
 		CalculateDeltaTime();
-		DebugControls.Update();
+		DebugControls->Update();
 		GrabEventInput();
 
 		// Object Updates
@@ -129,11 +133,15 @@ void Render()
 
 	RenderWindow->display();
 
-	DebugControls.Render();
+	DebugControls->Render();
 }
 
 int Cleanup()
 {
+	if (DebugControls)
+		delete DebugControls;
+	DebugControls = nullptr;
+
 	for (auto& agent : Agents)
 	{
 		if (agent)

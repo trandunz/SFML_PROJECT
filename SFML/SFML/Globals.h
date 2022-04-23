@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <functional>
-#include < cmath >
+#include <cmath>
 
 #define PI 3.14159265358979323846264338
 
@@ -47,6 +47,12 @@ static void Truncate(sf::Vector2f& _vector, float _upperBound)
 {
 	float i = _upperBound / Mag(_vector);
 	i = i < 1 ? i : 1;
+	_vector *= i;
+}
+static void Limit(sf::Vector2f& _vector, float _value)
+{
+	float i = _value / Mag(_vector);
+	i = i <= 1 ? 1 : i;
 	_vector *= i;
 }
 static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)

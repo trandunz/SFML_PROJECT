@@ -1,6 +1,6 @@
 #include "Agent.h"
 
-Agent::Agent(float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow), m_Obsticles(&_obstacleList)
+Agent::Agent(float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow), m_Obsticles(&_obstacleList), m_OtherAgents(&_otherAgents)
 {
 	Start();
 }
@@ -11,6 +11,7 @@ Agent::~Agent()
 	m_DeltaTime = nullptr;
 	m_RenderWindow = nullptr;
 	m_Obsticles = nullptr;
+	m_OtherAgents = nullptr;
 }
 
 void Agent::Start()
@@ -27,15 +28,54 @@ void Agent::Start()
 	m_CollisionRect.setOutlineColor(sf::Color::Cyan);
 	m_CollisionRect.setOutlineThickness(1);
 	m_CollisionRect.setOrigin({ m_Sprite.getLocalBounds().width * 0.1f, 0 });
+
+	m_NeighborCircle.setFillColor(sf::Color::Transparent);
+	m_NeighborCircle.setOutlineColor(sf::Color::Green);
+	m_NeighborCircle.setOutlineThickness(1);
+	m_NeighborCircle.setOrigin({ m_NeighborCircle.getGlobalBounds().width/2, m_NeighborCircle.getGlobalBounds().height / 2});
 }
 
 void Agent::Update()
 {
 	m_SteeringForce = {};
 	
-	Flee((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
-	Avoidence();
-	//Wander(100, 20);
+	if (m_IsFleeing)
+	{
+		Flee((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+	}
+	if (m_IsWander)
+	{
+		Wander(100, 20);
+	}
+	if (m_IsEvade)
+	{ 
+		Agent* nearestAgent = GetNearestAgent();
+		if (nearestAgent->GetPosition() == GetPosition())
+			Wander(100, 20);
+		else
+			Evade(*nearestAgent);
+	}
+	if (m_IsPursuit)
+	{
+		Agent* nearestAgent = GetNearestAgent();
+		if (nearestAgent->GetPosition() == GetPosition())
+			Wander(100, 20);
+		else
+			Pursuit(*nearestAgent);
+	}
+	if (m_IsSeeking)
+	{
+		Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+	}
+	if (m_IsSeperation)
+	{
+		if (Seperation() == 0)
+			Wander(100, 20);
+	}
+	if (m_IsAvoidence)
+	{
+		Avoidence();
+	}
 	
 	ApplySteeringForce();
 	Translate(m_Velocity * (*m_DeltaTime));
@@ -45,6 +85,11 @@ void Agent::Update()
 	m_CollisionRect.setSize({ m_Sprite.getLocalBounds().width * 0.2f, -Mag(m_Velocity) * 1.5f });
 	m_CollisionRect.setPosition(GetPosition());
 	m_CollisionRect.setRotation(m_Sprite.getRotation());
+
+	m_NeighborCircle.setPointCount(360);
+	m_NeighborCircle.setRadius(m_NeighborhoodRadius);
+	m_NeighborCircle.setOrigin({ m_NeighborCircle.getGlobalBounds().width / 2, m_NeighborCircle.getGlobalBounds().height / 2 });
+	m_NeighborCircle.setPosition(GetPosition());
 }
 
 void Agent::HandleInput()
@@ -77,9 +122,61 @@ void Agent::Translate(sf::Vector2f&& _translation)
 	m_Sprite.setPosition(m_Sprite.getPosition().x + _translation.x, m_Sprite.getPosition().y + _translation.y);
 }
 
+void Agent::SetState(char&& _state)
+{
+	m_IsFleeing = false;
+	m_IsSeeking = false;
+	m_IsPursuit = false;
+	m_IsEvade = false;
+	m_IsWander = false;
+	m_IsSeperation = false;
+	switch (std::move(_state))
+	{
+	case 'f':
+	{
+		m_IsFleeing = true;
+		break;
+	}
+	case 's':
+	{
+		m_IsSeeking = true;
+		break;
+	}
+	case 'p':
+	{
+		m_IsPursuit = true;
+		break;
+	}
+	case 'e':
+	{
+		m_IsEvade = true;
+		break;
+	}
+	case 'w':
+	{
+		m_IsWander = true;
+		break;
+	}
+	case 'n':
+	{
+		m_IsSeperation = true;
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void Agent::ToggleAvoidence()
+{
+	m_IsAvoidence = !m_IsAvoidence;
+}
+
 void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 {
 	_target.draw(m_Sprite, _states);
+
+	_target.draw(m_NeighborCircle, _states);
 
 	_target.draw(m_CollisionRect, _states);
 
@@ -178,6 +275,31 @@ void Agent::Wander(float _wanderDistance, float _wanderRadius)
 	}
 }
 
+int Agent::Seperation()
+{
+	sf::Vector2f differenceAverage{0.0f, 0.0f};
+	float numberOfAgents = 0;
+	for(auto& agent : *m_OtherAgents)
+	{
+		if (m_NeighborCircle.getGlobalBounds().contains(agent->GetPosition())
+			&& agent->GetPosition() != GetPosition())
+		{
+			sf::Vector2f diff = Normalize(GetPosition() - agent->GetPosition());
+			diff /= Mag(agent->GetPosition() - GetPosition());
+			differenceAverage += diff;
+			numberOfAgents++;
+		}
+	}
+	if (numberOfAgents != 0)
+	{
+		differenceAverage /= numberOfAgents;
+		differenceAverage = Normalize(differenceAverage);
+		Limit(differenceAverage, m_MaxSpeed);
+		m_SteeringForce += (differenceAverage - m_Velocity);
+	}
+	return numberOfAgents;
+}
+
 void Agent::Avoidence()
 {
 	float playerWidth = m_Sprite.getGlobalBounds().width / 2;
@@ -195,15 +317,31 @@ void Agent::Avoidence()
 				if (direction >= 0)
 				{
 					Print("On Right");
-					m_SteeringForce += CWPerp(m_Velocity);
+					m_SteeringForce = CWPerp(m_Velocity);
 				}
 				// Obstacle On Left
 				else
 				{
 					Print("On Left");
-					m_SteeringForce += CCWPerp(m_Velocity);
+					m_SteeringForce = CCWPerp(m_Velocity);
 				}
 			}
 		}
 	}
+}
+
+Agent* Agent::GetNearestAgent()
+{
+	Agent* nearestAgent = (* m_OtherAgents)[0];
+	for (auto& agent : *m_OtherAgents)
+	{
+		if(nearestAgent->GetPosition() != GetPosition()
+			&& Mag(agent->GetPosition() - GetPosition())
+			<= Mag(nearestAgent->GetPosition() - GetPosition()))
+		{
+		
+			nearestAgent = agent;
+		}
+	}
+	return nearestAgent;
 }
