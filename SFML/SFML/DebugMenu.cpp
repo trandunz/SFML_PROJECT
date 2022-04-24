@@ -37,6 +37,9 @@ void DebugMenu::Start()
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Persuit", m_Font, { 55,  230 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('p'); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Wander", m_Font, { 55,  280 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('w'); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Seperation", m_Font, { 55,  330 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('n'); }}));
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Alignment", m_Font, { 55,  380 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('a'); }}));
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Cohesion", m_Font, { 55,  430 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('c'); }}));
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Flocking", m_Font, { 55,  480 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('g'); }}));
 }
 
 void DebugMenu::Update()

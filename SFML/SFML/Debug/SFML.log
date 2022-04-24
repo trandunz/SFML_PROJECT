@@ -1,3 +1,2 @@
 ﻿  Agent.cpp
-C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\SFML\Agent.cpp(300,9): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
   SFML.vcxproj -> C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\Debug\SFML.exe

@@ -30,9 +30,12 @@ private:
 	void Evade(Agent& _otherAgent);
 	void Wander(float _wanderDistance, float _wanderRadius);
 	int Seperation();
+	int Alignment();
+	int Cohesion();
 	void Avoidence();
 
 	Agent* GetNearestAgent();
+	void WeightedTruncatedSum(bool& _finished, float& _runningTotal, float& _surplus);
 
 	sf::Sprite m_Sprite;
 	sf::Texture m_SpriteTexture;
@@ -62,6 +65,8 @@ private:
 	bool m_IsWander = false;
 	bool m_IsSeperation = false;
 	bool m_IsAvoidence = false;
-	
+	bool m_IsAlignment = false;
+	bool m_IsCohesion = false;
+	bool m_IsFlocking = false;
 };
 

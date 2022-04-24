@@ -72,6 +72,26 @@ void Agent::Update()
 		if (Seperation() == 0)
 			Wander(100, 20);
 	}
+	if (m_IsAlignment)
+	{
+		if (Alignment() == 0)
+			Wander(100, 20);
+	}
+	if (m_IsCohesion)
+	{
+		if (Cohesion() == 0)
+			Wander(100, 20);
+	}
+	if (m_IsFlocking)
+	{
+		bool finishedCombination = false;
+		float runningTotal = 0.0f;
+		float surplus = 0.0f;
+		
+		Seperation();
+		Alignment();
+		Cohesion();
+	}
 	if (m_IsAvoidence)
 	{
 		Avoidence();
@@ -93,7 +113,7 @@ void Agent::Update()
 }
 
 void Agent::HandleInput()
-{
+{s
 	/*for (auto& key : KeyMap)
 	{
 		if (key.second)
@@ -130,6 +150,9 @@ void Agent::SetState(char&& _state)
 	m_IsEvade = false;
 	m_IsWander = false;
 	m_IsSeperation = false;
+	m_IsAlignment = false;
+	m_IsCohesion = false;
+	m_IsFlocking = false;
 	switch (std::move(_state))
 	{
 	case 'f':
@@ -160,6 +183,21 @@ void Agent::SetState(char&& _state)
 	case 'n':
 	{
 		m_IsSeperation = true;
+		break;
+	}
+	case 'a':
+	{
+		m_IsAlignment = true;
+		break;
+	}
+	case 'c':
+	{
+		m_IsCohesion = true;
+		break;
+	}
+	case 'g':
+	{
+		m_IsFlocking = true;
 		break;
 	}
 	default:
@@ -297,7 +335,51 @@ int Agent::Seperation()
 		Limit(differenceAverage, m_MaxSpeed);
 		m_SteeringForce += (differenceAverage - m_Velocity);
 	}
-	return numberOfAgents;
+	return (int)numberOfAgents;
+}
+
+int Agent::Alignment()
+{
+	sf::Vector2f averageVelocity{ 0.0f, 0.0f };
+	float numberOfAgents = 0;
+	for (auto& agent : *m_OtherAgents)
+	{
+		if (m_NeighborCircle.getGlobalBounds().contains(agent->GetPosition())
+			&& agent->GetPosition() != GetPosition())
+		{
+			averageVelocity += agent->GetVelocity();
+			numberOfAgents++;
+		}
+	}
+	if (numberOfAgents != 0)
+	{
+		averageVelocity /= numberOfAgents;
+		sf::Vector2f desiredVelocity = averageVelocity;
+		desiredVelocity = Normalize(desiredVelocity) * m_MaxSpeed;
+		m_SteeringForce = desiredVelocity - m_Velocity;
+	}
+	return (int)numberOfAgents;
+}
+
+int Agent::Cohesion()
+{
+	sf::Vector2f centreOfMass{ 0.0f, 0.0f };
+	float numberOfAgents = 0;
+	for (auto& agent : *m_OtherAgents)
+	{
+		if (m_NeighborCircle.getGlobalBounds().contains(agent->GetPosition())
+			&& agent->GetPosition() != GetPosition())
+		{
+			centreOfMass += agent->GetPosition();
+			numberOfAgents++;
+		}
+	}
+	if (numberOfAgents != 0)
+	{
+		centreOfMass /= numberOfAgents;
+		Seek(centreOfMass);
+	}
+	return (int)numberOfAgents;
 }
 
 void Agent::Avoidence()
@@ -344,4 +426,22 @@ Agent* Agent::GetNearestAgent()
 		}
 	}
 	return nearestAgent;
+}
+
+void Agent::WeightedTruncatedSum(bool& _finished, float& _runningTotal, float& _surplus)
+{
+	_surplus = m_MaxForce - _runningTotal;
+	if (_surplus > Mag(m_SteeringForce))
+	{
+		_runningTotal += Mag(m_SteeringForce);
+	}
+	else if (_surplus < Mag(m_SteeringForce)) 
+	{
+		Truncate(m_SteeringForce, _surplus);
+		_runningTotal += Mag(m_SteeringForce);
+	}
+	else
+	{
+		_finished = true;
+	}
 }
