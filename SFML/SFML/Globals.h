@@ -49,10 +49,17 @@ static void Truncate(sf::Vector2f& _vector, float _upperBound)
 	i = i < 1 ? i : 1;
 	_vector *= i;
 }
+static sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
+{
+	sf::Vector2f truncated = _vector;
+	float i = _upperBound / Mag(truncated);
+	i = i < 1 ? i : 1;
+	truncated *= i;
+	return truncated;
+}
 static void Limit(sf::Vector2f& _vector, float _value)
 {
 	float i = _value / Mag(_vector);
-	i = i <= 1 ? 1 : i;
 	_vector *= i;
 }
 static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
@@ -61,6 +68,14 @@ static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
 	product += _v1.x * _v2.x;
 	product += _v1.y * _v2.y;
 	return product;
+}
+static void SetOriginToCentre(sf::Shape& _object)
+{
+	_object.setOrigin(_object.getGlobalBounds().width / 2, _object.getGlobalBounds().height / 2);
+}
+static void SetOriginToCentre(sf::Sprite& _sprite)
+{
+	_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
 }
 static float ToDegrees(float _radians)
 {

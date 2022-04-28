@@ -15,9 +15,10 @@ Obstacle::~Obstacle()
 void Obstacle::Start()
 {
 	m_Sprite.setTexture(m_SpriteTexture, true);
+	
+	m_Sprite.setScale(m_Scale);
 	m_Sprite.setOrigin(m_Sprite.getGlobalBounds().width / 2, m_Sprite.getGlobalBounds().height / 2);
 	m_Sprite.setPosition(m_Position);
-	m_Sprite.setScale(m_Scale);
 }
 
 void Obstacle::Update()

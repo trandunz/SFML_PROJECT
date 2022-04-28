@@ -30,6 +30,8 @@ void DebugMenu::Start()
 	m_ContextSettings.antialiasingLevel = 8;
 	InitWindow({ 300, 900 }, "Control's", sf::Style::Titlebar, std::move(m_ContextSettings));
 
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "DebugLines", m_Font, { 300 - 55,  30 }, [this]() {for (auto& agent : *m_Agents) { agent->ToggleDebugLines(); }}));
+
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Avoidence", m_Font, { 55,  30 }, [this]() {for (auto& agent : *m_Agents) { agent->ToggleAvoidence(); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Seek", m_Font, { 55,  80 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('s'); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Flee", m_Font, { 55,  130 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('f'); }}));
@@ -40,6 +42,8 @@ void DebugMenu::Start()
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Alignment", m_Font, { 55,  380 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('a'); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Cohesion", m_Font, { 55,  430 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('c'); }}));
 	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Flocking", m_Font, { 55,  480 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('g'); }}));
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Arrive", m_Font, { 55,  530 }, [this]() {for (auto& agent : *m_Agents) { agent->SetState('r'); }}));
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "L-Following", m_Font, { 55,  580 }, [this]() {for (auto& agent : *m_Agents) {agent->SetState('l'); (*m_Agents)[0]->ToggleLeader();}}));
 }
 
 void DebugMenu::Update()

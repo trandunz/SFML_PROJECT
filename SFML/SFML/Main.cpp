@@ -9,7 +9,9 @@ static bool ExitProgram;
 static std::map<sf::Keyboard::Key, bool> KeyMap;
 
 static sf::RenderWindow* RenderWindow;
-static sf::Font m_ArialFont;
+static sf::Font ArialFont;
+static sf::Sprite BackgroundSprite;
+static sf::Texture BackgroundTexture;
 
 void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
 void Start();
@@ -53,15 +55,24 @@ void Start()
 	InitWindow(std::move(WindowSize), "Steering Behaviors", sf::Style::Default, std::move(RenderWindowSettings));
 	RenderWindow->setKeyRepeatEnabled(false);
 
-	m_ArialFont.loadFromFile("Resources/Fonts/ARIAL.TTF");
+	ArialFont.loadFromFile("Resources/Fonts/ARIAL.TTF");
+
+	BackgroundTexture.loadFromFile("Resources/Textures/Water.jpg");
+	BackgroundTexture.setRepeated(true);
+	BackgroundSprite.setTexture(BackgroundTexture, true);
+	BackgroundSprite.setScale(0.5f, 0.5f);
+	BackgroundSprite.setTextureRect(sf::IntRect(0.0f, 0.0f, 2 * WindowSize.x, 2 * WindowSize.y));
 
 	// Create Agents
-	Agents.emplace_back(new Agent{DeltaTime, WindowSize, RenderWindow, Obstacles, Agents});
-	Agents.emplace_back(new Agent{ DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
-	Agents.emplace_back(new Agent{ DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x /  2,(float)WindowSize.y / 2 }, {0.5f, 0.5f}));
-	
-	DebugControls = new DebugMenu(Agents, m_ArialFont);
+	for (int i = 0; i < 50; i++)
+	{
+		Agents.emplace_back(new Agent{ {rand() % WindowSize.x, rand() % WindowSize.y},DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+		Agents.back()->SetID(i);
+	}
+
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.5f, 0.5f }));
+
+	DebugControls = new DebugMenu(Agents, ArialFont);
 }
 
 void GrabEventInput()
@@ -79,8 +90,6 @@ void GrabEventInput()
 		{
 			KeyMap.insert_or_assign(Event.key.code, false);
 		}
-
-
 	}
 }
 
@@ -120,15 +129,19 @@ void Update()
 void Render()
 {
 	RenderWindow->clear();
+	sf::RenderStates st;
+	st.shader = NULL;
+
+	RenderWindow->draw(BackgroundSprite, st);
 
 	for (auto& item : Obstacles)
 	{
-		RenderWindow->draw(*item);
+		RenderWindow->draw(*item, st);
 	}
 
 	for (auto& item : Agents)
 	{
-		RenderWindow->draw(*item);
+		RenderWindow->draw(*item, st);
 	}
 
 	RenderWindow->display();
