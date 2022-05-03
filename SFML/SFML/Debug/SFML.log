@@ -1,2 +1,17 @@
 ﻿  Agent.cpp
+  Button.cpp
+  DebugMenu.cpp
+  Main.cpp
+C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\SFML\Main.cpp(64,52): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\SFML\Main.cpp(64,46): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+  Obstacle.cpp
+  Generating Code...
   SFML.vcxproj -> C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\Debug\SFML.exe

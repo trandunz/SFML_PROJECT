@@ -5,7 +5,7 @@
 class Agent : public sf::Drawable
 {
 public:
-	Agent(sf::Vector2i&& _initialPosition, float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents);
+	Agent(sf::Vector2i _initialPosition, float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents);
 	~Agent();
 	void Start();
 	void Update();
@@ -17,14 +17,20 @@ public:
 	sf::Vector2f GetPosition();
 	sf::Vector2f GetVelocity();
 	sf::Vector2f GetInverseVelocity();
+	sf::RectangleShape GetCollisionRect();
 	int GetID();
 	void SetID(int _newID);
 	void Translate(sf::Vector2f&& _translation);
 	void SetState(char&& _state);
+	char GetState();
 	void ToggleAvoidence();
+	void SetAvoidence(bool _isAvoidence);
+	bool IsAvoiding();
 	bool IsLeader();
 	void ToggleLeader();
 	void SetLeader(bool&& _isLeader);
+
+	bool IsWandering();
 private:
 	virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override;
 
@@ -70,8 +76,8 @@ private:
 	bool m_IsLeader = false;
 
 	float m_NeighborhoodRadius = 100.0f;
-	float m_LeaderFollowOffset = 10.0f;
-	float m_SlowingRadius = m_NeighborhoodRadius;
+	float m_LeaderFollowOffset = 100.0f;
+	float m_SlowingRadius = m_NeighborhoodRadius * 2;
 
 	bool m_IsSeeking = false;
 	bool m_IsFleeing = false;

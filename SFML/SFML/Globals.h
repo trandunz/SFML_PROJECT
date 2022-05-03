@@ -37,17 +37,25 @@ static float Mag(const sf::Vector2f& _vector)
 }
 static sf::Vector2f Normalize(sf::Vector2f&& _vector)
 {
+	if (Mag(_vector) <= 0)
+		return { 0.0f,0.0f };
+
 	return _vector / Mag(_vector);
 }
 static sf::Vector2f Normalize(const sf::Vector2f& _vector)
 {
+	if (Mag(_vector) <= 0)
+		return { 0.0f,0.0f };
 	return _vector / Mag(_vector);
 }
 static void Truncate(sf::Vector2f& _vector, float _upperBound)
 {
-	float i = _upperBound / Mag(_vector);
-	i = i < 1 ? i : 1;
-	_vector *= i;
+	if (Mag(_vector) > 0)
+	{
+		float i = _upperBound / Mag(_vector);
+		i = i < 1 ? i : 1;
+		_vector *= i;
+	}
 }
 static sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
 {

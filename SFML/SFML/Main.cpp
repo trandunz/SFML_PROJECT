@@ -67,7 +67,7 @@ void Start()
 	for (int i = 0; i < 50; i++)
 	{
 		Agents.emplace_back(new Agent{ {rand() % WindowSize.x, rand() % WindowSize.y},DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
-		Agents.back()->SetID(i);
+		Agents.back()->SetID(Agents.size());
 	}
 
 	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.5f, 0.5f }));
@@ -89,6 +89,35 @@ void GrabEventInput()
 		if (Event.type == sf::Event::KeyReleased)
 		{
 			KeyMap.insert_or_assign(Event.key.code, false);
+		}
+
+		if (Event.type == sf::Event::MouseButtonPressed)
+		{
+			if (Event.mouseButton.button == sf::Mouse::Left)
+			{
+				sf::Vector2i mousePos = sf::Mouse::getPosition(*RenderWindow);
+				if (Agents[0]->IsAvoiding())
+				{
+					auto& agent = Agents.emplace_back(new Agent{ mousePos ,DeltaTime, WindowSize, RenderWindow, Obstacles, Agents});
+					agent->SetID(Agents.size());
+					agent->SetState(Agents[0]->GetState());
+					agent->SetAvoidence(Agents[0]->IsAvoiding());
+				}
+				else if (Agents[0]->GetState() == 'w')
+				{
+					auto& agent = Agents.emplace_back(new Agent{ mousePos,DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+					agent->SetID(Agents.size());
+					agent->SetState(Agents[0]->GetState());
+					agent->SetAvoidence(Agents[0]->IsAvoiding());
+				}
+				else if (Agents[0]->GetState() == 'g')
+				{
+					auto& agent = Agents.emplace_back(new Agent{ mousePos,DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+					agent->SetID(Agents.size());
+					agent->SetState(Agents[0]->GetState());
+					agent->SetAvoidence(Agents[0]->IsAvoiding());
+				}
+			}
 		}
 	}
 }
@@ -207,8 +236,5 @@ void HandleEventAction()
 		}
 	}
 
-	for (auto& agent : Agents)
-	{
-		agent->HandleInput();
-	}
+	
 }

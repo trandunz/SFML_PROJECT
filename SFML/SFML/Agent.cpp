@@ -1,6 +1,6 @@
 #include "Agent.h"
 
-Agent::Agent(sf::Vector2i&& _initialPosition, float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow), m_Obsticles(&_obstacleList), m_OtherAgents(&_otherAgents)
+Agent::Agent(sf::Vector2i _initialPosition, float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow), m_Obsticles(&_obstacleList), m_OtherAgents(&_otherAgents)
 {
 	Start();
 	m_Sprite.setPosition((sf::Vector2f)_initialPosition);
@@ -30,15 +30,24 @@ void Agent::Start()
 	m_NeighborCircle.setOutlineThickness(1);
 	m_NeighborCircle.setPointCount(360);
 	m_NeighborCircle.setRadius(m_NeighborhoodRadius);
+
 	SetOriginToCentre(m_NeighborCircle);
 }
 
 void Agent::Update()
 {
+	if (m_Sprite.getPosition().x > m_WindowSize->x + 10 || 
+		m_Sprite.getPosition().x < -10 ||
+		m_Sprite.getPosition().y > m_WindowSize->y + 10 ||
+		m_Sprite.getPosition().y < -10)
+	{
+		m_Sprite.setPosition((float)m_WindowSize->x / 2, (float)m_WindowSize->y / 2);
+	}
+	sf::Vector2f mousepos = (sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow);
 	sf::Vector2f steeringForce{ 0.0f,0.0f };
 	if (m_IsFleeing)
 	{
-		steeringForce += Flee((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+		steeringForce += Flee(mousepos);
 	}
 	if (m_IsWander)
 	{
@@ -62,11 +71,11 @@ void Agent::Update()
 	}
 	if (m_IsSeeking)
 	{
-		steeringForce += Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+		steeringForce += Seek(mousepos);
 	}
 	if (m_IsArriving)
 	{
-		steeringForce += Arrive((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+		steeringForce += Arrive(mousepos);
 	}
 	if (m_IsSeperation)
 	{
@@ -153,6 +162,11 @@ sf::Vector2f Agent::GetVelocity()
 sf::Vector2f Agent::GetInverseVelocity()
 {
 	return -m_Velocity;
+}
+
+sf::RectangleShape Agent::GetCollisionRect()
+{
+	return m_CollisionRect;
 }
 
 int Agent::GetID()
@@ -246,9 +260,68 @@ void Agent::SetState(char&& _state)
 	}
 }
 
+char Agent::GetState()
+{
+	if (m_IsSeeking)
+	{
+		return 's';
+	}
+	else if (m_IsFleeing)
+	{
+		return 'f';
+	}
+	else if (m_IsPursuit)
+	{
+		return 'p';
+	}
+	else if (m_IsEvade)
+	{
+		return 'e';
+	}
+	else if (m_IsWander)
+	{
+		return 'w';
+	}
+	else if (m_IsSeperation)
+	{
+		return 'n';
+	}
+	else if (m_IsAlignment)
+	{
+		return 'a';
+	}
+	else if (m_IsCohesion)
+	{
+		return 'c';
+	}
+	else if (m_IsFlocking)
+	{
+		return 'g';
+	}
+	else if (m_IsArriving)
+	{
+		return 'r';
+	}
+	else if (m_LeaderFollowing)
+	{
+		return 'l';
+	}
+	return '!';
+}
+
 void Agent::ToggleAvoidence()
 {
 	m_IsAvoidence = !m_IsAvoidence;
+}
+
+void Agent::SetAvoidence(bool _isAvoidence)
+{
+	m_IsAvoidence = _isAvoidence;
+}
+
+bool Agent::IsAvoiding()
+{
+	return m_IsAvoidence;
 }
 
 bool Agent::IsLeader()
@@ -268,6 +341,11 @@ void Agent::ToggleLeader()
 void Agent::SetLeader(bool&& _isLeader)
 {
 	m_IsLeader = _isLeader;
+}
+
+bool Agent::IsWandering()
+{
+	return m_IsWander;
 }
 
 void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
@@ -474,14 +552,12 @@ sf::Vector2f Agent::Avoidence()
 				// Obstacle On Right
 				if (direction >= 0)
 				{
-					Print("On Right");
 					steeringForce = CWPerp(m_Velocity);
 					
 				}
 				// Obstacle On Left
 				else
 				{
-					Print("On Left");
 					steeringForce = CCWPerp(m_Velocity);
 				}
 			}
@@ -493,7 +569,6 @@ sf::Vector2f Agent::Avoidence()
 
 sf::Vector2f Agent::LeaderFollowing()
 {
-	
 	sf::Vector2f desiredPoint{ 0.0f, 0.0f };
 	sf::Vector2f steeringForce{ 0.0f, 0.0f };
 	for (auto& agent : *m_OtherAgents)
@@ -505,21 +580,27 @@ sf::Vector2f Agent::LeaderFollowing()
 			break;
 		}
 	}
-	steeringForce += Seperation();
 
-	steeringForce += Arrive(desiredPoint);
+	
+
+	steeringForce += Seperation();
 
 	for (auto& agent : *m_OtherAgents)
 	{
-		float distance = Mag(agent->GetPosition() - GetPosition());
-		if (distance > 0)
+		if (agent->IsLeader())
 		{
-			if (m_CollisionRect.getGlobalBounds().intersects(agent->GetGlobalBounds()))
+			if (Dot(Normalize(GetPosition() - agent->GetPosition()), Normalize(std::move(agent->GetVelocity()))) > 0
+				&& Mag(agent->GetPosition() - GetPosition()) < m_NeighborhoodRadius * 2)
 			{
-				steeringForce += Evade(*agent);
+				steeringForce += Evade(*agent) * 2.0f;
+				return steeringForce;
 			}
 		}
 	}
+
+	steeringForce += Arrive(desiredPoint);
+
+	
 
 	return steeringForce;
 }
@@ -534,7 +615,6 @@ sf::Vector2f Agent::Arrive(sf::Vector2f _location)
 	float clippedSpeed = fmin(rampedSpeed, m_MaxSpeed);
 	desiredVelocity = (clippedSpeed / distance) * target_offset;
 	steeringForce = desiredVelocity - m_Velocity;
-	Truncate(steeringForce, m_MaxForce);
 
 	return steeringForce;
 }
