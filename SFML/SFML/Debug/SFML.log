@@ -1,4 +1,9 @@
 ﻿  Agent.cpp
+C:\Users\trand\Documents\GitHub\SFML_PROJECT\SFML\SFML\Agent.cpp(460,18): warning C4244: 'argument': conversion from 'T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
   Button.cpp
   DebugMenu.cpp
   Main.cpp

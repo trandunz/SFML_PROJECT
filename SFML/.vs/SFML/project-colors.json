@@ -5,6 +5,11 @@
       "ProjectGuid": "5e8b3b01-d5b7-4d9e-8e34-c3aa05372442",
       "DisplayName": "SFML",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1

@@ -1,3 +1,14 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Globals.h 
+// Description : Globals Functions, Includes
+//					And Pre-Proccessor Values
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -7,48 +18,93 @@
 
 #define PI 3.14159265358979323846264338
 
-static void Print(std::string_view&& _message)
+/// <summary>
+/// Prints specified message
+/// </summary>
+/// <param name="_message"></param>
+void Print(std::string_view&& _message)
 {
 	std::cout << _message << std::endl;
 }
-static void Print(int&& _int)
+/// <summary>
+/// Prints specified int
+/// </summary>
+/// <param name="_int"></param>
+void Print(int&& _int)
 {
 	std::cout << _int << std::endl;
 }
-static void Print(float&& _float)
+/// <summary>
+/// Prints specified float
+/// </summary>
+/// <param name="_float"></param>
+void Print(float&& _float)
 {
 	std::cout << _float << std::endl;
 }
-static void Print(char&& _character)
+/// <summary>
+/// Prints specified character
+/// </summary>
+/// <param name="_character"></param>
+void Print(char&& _character)
 {
 	std::cout << _character << std::endl;
 }
-static void Print(sf::Vector2f&& _vector)
+/// <summary>
+/// Prints specified vector
+/// </summary>
+/// <param name="_vector"></param>
+void Print(sf::Vector2f&& _vector)
 {
 	std::cout << "X: " << _vector.x << "Y: " << _vector.y << std::endl;
 }
-static float Mag(sf::Vector2f&& _vector)
+/// <summary>
+/// Returns the magnitude of the vector
+/// </summary>
+/// <param name="_vector"></param>
+/// <returns></returns>
+float Mag(sf::Vector2f&& _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }
-static float Mag(const sf::Vector2f& _vector)
+/// <summary>
+/// Returns the magnituse of the vector
+/// </summary>
+/// <param name="_vector"></param>
+/// <returns></returns>
+float Mag(const sf::Vector2f& _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }
-static sf::Vector2f Normalize(sf::Vector2f&& _vector)
+/// <summary>
+/// returns the vector normalized
+/// </summary>
+/// <param name="_vector"></param>
+/// <returns></returns>
+sf::Vector2f Normalize(sf::Vector2f&& _vector)
 {
 	if (Mag(_vector) <= 0)
 		return { 0.0f,0.0f };
 
 	return _vector / Mag(_vector);
 }
-static sf::Vector2f Normalize(const sf::Vector2f& _vector)
+/// <summary>
+/// Returns the vector normalized
+/// </summary>
+/// <param name="_vector"></param>
+/// <returns></returns>
+sf::Vector2f Normalize(const sf::Vector2f& _vector)
 {
 	if (Mag(_vector) <= 0)
 		return { 0.0f,0.0f };
 	return _vector / Mag(_vector);
 }
-static void Truncate(sf::Vector2f& _vector, float _upperBound)
+/// <summary>
+/// Truncates the specified vector to the specified upperbound
+/// </summary>
+/// <param name="_vector"></param>
+/// <param name="_upperBound"></param>
+void Truncate(sf::Vector2f& _vector, float _upperBound)
 {
 	if (Mag(_vector) > 0)
 	{
@@ -57,7 +113,13 @@ static void Truncate(sf::Vector2f& _vector, float _upperBound)
 		_vector *= i;
 	}
 }
-static sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
+/// <summary>
+/// Returns the truncated value value of the specified vector
+/// </summary>
+/// <param name="_vector"></param>
+/// <param name="_upperBound"></param>
+/// <returns></returns>
+sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
 {
 	sf::Vector2f truncated = _vector;
 	float i = _upperBound / Mag(truncated);
@@ -65,44 +127,97 @@ static sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
 	truncated *= i;
 	return truncated;
 }
-static void Limit(sf::Vector2f& _vector, float _value)
+/// <summary>
+/// Sets the specified vectors magnitude to the value
+/// </summary>
+/// <param name="_vector"></param>
+/// <param name="_value"></param>
+void Limit(sf::Vector2f& _vector, float _value)
 {
 	float i = _value / Mag(_vector);
 	_vector *= i;
 }
-static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
+/// <summary>
+/// Returns the dot product between the two vectors
+/// </summary>
+/// <param name="_v1"></param>
+/// <param name="_v2"></param>
+/// <returns></returns>
+float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
 {
 	float product = 0.0f;
 	product += _v1.x * _v2.x;
 	product += _v1.y * _v2.y;
 	return product;
 }
-static void SetOriginToCentre(sf::Shape& _object)
+/// <summary>
+/// Sets the origin of the shape to its centre.
+/// </summary>
+/// <param name="_object"></param>
+void SetOriginToCentre(sf::Shape& _object)
 {
 	_object.setOrigin(_object.getGlobalBounds().width / 2, _object.getGlobalBounds().height / 2);
 }
-static void SetOriginToCentre(sf::Sprite& _sprite)
+/// <summary>
+/// Sets the origin of the sprite to its centre
+/// </summary>
+/// <param name="_sprite"></param>
+void SetOriginToCentre(sf::Sprite& _sprite)
 {
 	_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
 }
-static float ToDegrees(float _radians)
+/// <summary>
+/// Sets the origin of the text to its centre
+/// </summary>
+/// <param name="_text"></param>
+void SetOriginToCentre(sf::Text& _text)
+{
+	_text.setOrigin(_text.getGlobalBounds().width / 2, _text.getGlobalBounds().height / 2);
+}
+/// <summary>
+/// Returns the specified radians value in degrees
+/// </summary>
+/// <param name="_radians"></param>
+/// <returns></returns>
+float ToDegrees(float _radians)
 {
 	return _radians * (180.0f / (float)PI);
 }
-static float ToRadians(float _degrees)
+/// <summary>
+/// Returns the specified degrees value in radians
+/// </summary>
+/// <param name="_degrees"></param>
+/// <returns></returns>
+float ToRadians(float _degrees)
 {
 	return ((float)PI * _degrees) / 180.0f;
 }
-static sf::Vector2f CWPerp(sf::Vector2f _originalVector)
+/// <summary>
+/// Gets the Clock-wise perpandicular vector
+/// </summary>
+/// <param name="_originalVector"></param>
+/// <returns></returns>
+sf::Vector2f CWPerp(sf::Vector2f _originalVector)
 {
 	return { _originalVector.y, -_originalVector.x };
 }
-static sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
+/// <summary>
+/// Gets the counter-Clockwise perpandicular vector
+/// </summary>
+/// <param name="_originalVector"></param>
+/// <returns></returns>
+sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
 {
 	return { -_originalVector.y, _originalVector.x };
 }
-static float AngleDir(sf::Vector2f _A, sf::Vector2f _B)
+/// <summary>
+/// returns the angle direction between vector a and vector b
+/// </summary>
+/// <param name="_A"></param>
+/// <param name="_B"></param>
+/// <returns></returns>
+float AngleDir(sf::Vector2f _a, sf::Vector2f _b)
 {
-	return -_A.x * _B.y + _A.y * _B.x;
+	return -_a.x * _b.y + _a.y * _b.x;
 }
 

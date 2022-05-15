@@ -1,3 +1,13 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Button.cpp 
+// Description : UIButton Implementation File
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 #include "Button.h"
 Button::Button(sf::RenderWindow* _renderWindow, std::string_view _label, sf::Font& _font, sf::Vector2f _position, std::function<void()> _onPressFunction)
 {

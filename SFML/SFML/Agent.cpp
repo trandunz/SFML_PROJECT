@@ -1,9 +1,20 @@
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Agent.cpp 
+// Description : Agent Implementation File
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 #include "Agent.h"
 
 Agent::Agent(sf::Vector2i _initialPosition, float& _deltaTime, sf::Vector2i& _windowSize, sf::RenderWindow* _renderWindow, std::vector<Obstacle*>& _obstacleList, std::vector<Agent*>& _otherAgents) : m_DeltaTime(&_deltaTime), m_WindowSize(&_windowSize), m_RenderWindow(_renderWindow), m_Obsticles(&_obstacleList), m_OtherAgents(&_otherAgents)
 {
 	Start();
 	m_Sprite.setPosition((sf::Vector2f)_initialPosition);
+	
 }
 
 Agent::~Agent()
@@ -20,10 +31,11 @@ void Agent::Start()
 	SetOriginToCentre(m_Sprite);
 
 	m_Velocity = {0, -m_MaxSpeed};
+	m_CollisionRect.setOrigin({ m_Sprite.getLocalBounds().width / 2, 0 });
 	m_CollisionRect.setFillColor(sf::Color::Transparent);
 	m_CollisionRect.setOutlineColor(sf::Color::Cyan);
 	m_CollisionRect.setOutlineThickness(1);
-	m_CollisionRect.setOrigin({ m_Sprite.getLocalBounds().width/2, 0});
+	
 
 	m_NeighborCircle.setFillColor(sf::Color::Transparent);
 	m_NeighborCircle.setOutlineColor(sf::Color::Green);
@@ -36,6 +48,7 @@ void Agent::Start()
 
 void Agent::Update()
 {
+
 	if (m_Sprite.getPosition().x > m_WindowSize->x + 10 || 
 		m_Sprite.getPosition().x < -10 ||
 		m_Sprite.getPosition().y > m_WindowSize->y + 10 ||
@@ -76,6 +89,7 @@ void Agent::Update()
 	if (m_IsArriving)
 	{
 		steeringForce += Arrive(mousepos);
+		m_Velocity = Truncate(m_Velocity + steeringForce, m_MaxSpeed);
 	}
 	if (m_IsSeperation)
 	{
@@ -102,9 +116,13 @@ void Agent::Update()
 		else
 			steeringForce += LeaderFollowing();
 	}
+	if (Mag(steeringForce) <= 0)
+	{
+		steeringForce += Wander(100, 20);
+	}
 	if (m_IsAvoidence)
 	{
-		steeringForce += Avoidence() * 2.0f;
+		steeringForce += Avoidence() * 5.0f;
 	}
 
 	ApplyForce(steeringForce);
@@ -124,24 +142,19 @@ void Agent::Update()
 		m_NeighborCircle.setPosition(GetPosition());
 }
 
-void Agent::HandleInput()
-{
-	/*for (auto& key : KeyMap)
-	{
-		if (key.second)
-		{
-			switch (key.first)
-			{
-			default:
-				break;
-			}
-		}
-	}*/
-}
-
 void Agent::ToggleDebugLines()
 {
 	m_DebugLines = !m_DebugLines;
+}
+
+void Agent::SetDebugLines(bool _isDebug)
+{
+	m_DebugLines = _isDebug;
+}
+
+bool Agent::IsDebug()
+{
+	return m_DebugLines;
 }
 
 sf::FloatRect Agent::GetGlobalBounds()
@@ -343,11 +356,6 @@ void Agent::SetLeader(bool&& _isLeader)
 	m_IsLeader = _isLeader;
 }
 
-bool Agent::IsWandering()
-{
-	return m_IsWander;
-}
-
 void Agent::draw(sf::RenderTarget& _target, sf::RenderStates _states) const
 {
 	_target.draw(m_Sprite, _states);
@@ -433,8 +441,11 @@ sf::Vector2f Agent::Evade(Agent& _otherAgent)
 
 sf::Vector2f Agent::Wander(float _wanderDistance, float _wanderRadius)
 {
+	
 	float x = (Normalize(std::move(m_Velocity)).x * _wanderDistance) + cosf(ToRadians(m_WanderAngle)) * _wanderRadius;
 	float y = (Normalize(std::move(m_Velocity)).y * _wanderDistance) + sinf(ToRadians(m_WanderAngle)) * _wanderRadius;
+
+	srand(m_Velocity.x);
 
 	sf::Vector2f steeringForce = Seek(sf::Vector2f{ x,y } + GetPosition());
 
@@ -581,26 +592,22 @@ sf::Vector2f Agent::LeaderFollowing()
 		}
 	}
 
-	
-
-	steeringForce += Seperation();
-
 	for (auto& agent : *m_OtherAgents)
 	{
 		if (agent->IsLeader())
 		{
 			if (Dot(Normalize(GetPosition() - agent->GetPosition()), Normalize(std::move(agent->GetVelocity()))) > 0
-				&& Mag(agent->GetPosition() - GetPosition()) < m_NeighborhoodRadius * 2)
+				&& Mag(agent->GetPosition() - GetPosition()) < m_NeighborhoodRadius)
 			{
-				steeringForce += Evade(*agent) * 2.0f;
+				steeringForce += Evade(*agent) * 5.0f;
 				return steeringForce;
 			}
 		}
 	}
 
-	steeringForce += Arrive(desiredPoint);
+	steeringForce += Seperation();
 
-	
+	steeringForce += Arrive(desiredPoint);
 
 	return steeringForce;
 }

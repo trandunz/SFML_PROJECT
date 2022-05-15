@@ -1,4 +1,13 @@
-#include "Agent.h"
+// Bachelor of Software Engineering 
+// Media Design School 
+// Auckland 
+// New Zealand 
+// (c) Media Design School
+// File Name : Main.cpp 
+// Description : Main Program Implementation File
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+
 #include "DebugMenu.h"
 
 static sf::Vector2i WindowSize{ 1000, 1000 };
@@ -70,7 +79,12 @@ void Start()
 		Agents.back()->SetID(Agents.size());
 	}
 
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.5f, 0.5f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.67f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.67f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 4.27f,(float)WindowSize.y / 4.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2.27f,(float)WindowSize.y / 2.67f }, { 0.25f, 0.25f }));
 
 	DebugControls = new DebugMenu(Agents, ArialFont);
 }
@@ -102,6 +116,7 @@ void GrabEventInput()
 					agent->SetID(Agents.size());
 					agent->SetState(Agents[0]->GetState());
 					agent->SetAvoidence(Agents[0]->IsAvoiding());
+					agent->SetDebugLines(Agents[0]->IsDebug());
 				}
 				else if (Agents[0]->GetState() == 'w')
 				{
@@ -109,6 +124,7 @@ void GrabEventInput()
 					agent->SetID(Agents.size());
 					agent->SetState(Agents[0]->GetState());
 					agent->SetAvoidence(Agents[0]->IsAvoiding());
+					agent->SetDebugLines(Agents[0]->IsDebug());
 				}
 				else if (Agents[0]->GetState() == 'g')
 				{
@@ -116,6 +132,7 @@ void GrabEventInput()
 					agent->SetID(Agents.size());
 					agent->SetState(Agents[0]->GetState());
 					agent->SetAvoidence(Agents[0]->IsAvoiding());
+					agent->SetDebugLines(Agents[0]->IsDebug());
 				}
 			}
 		}
