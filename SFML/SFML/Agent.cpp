@@ -124,9 +124,9 @@ void Agent::Update()
 	}
 	if (m_IsFlocking)
 	{
-		steeringForce += Alignment();
-		steeringForce += Cohesion();
-		steeringForce += Seperation() * 1.5f;
+		steeringForce += Alignment() * 0.9f;
+		steeringForce += Cohesion() * 0.9f;
+		steeringForce += Seperation() * 2.0f;
 	}
 	if (m_LeaderFollowing)
 	{
