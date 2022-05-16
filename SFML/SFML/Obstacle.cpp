@@ -30,6 +30,7 @@ void Obstacle::Start()
 	m_Sprite.setTexture(m_SpriteTexture, true);
 	m_Sprite.setScale(m_Scale);
 	m_Sprite.setPosition(m_Position);
+	SetOriginToCentre(m_Sprite);
 }
 
 sf::Vector2f Obstacle::GetPosition()

@@ -22,7 +22,7 @@
 /// Prints specified message
 /// </summary>
 /// <param name="_message"></param>
-void Print(std::string_view&& _message)
+static void Print(std::string_view&& _message)
 {
 	std::cout << _message << std::endl;
 }
@@ -30,7 +30,7 @@ void Print(std::string_view&& _message)
 /// Prints specified int
 /// </summary>
 /// <param name="_int"></param>
-void Print(int&& _int)
+static void Print(int&& _int)
 {
 	std::cout << _int << std::endl;
 }
@@ -38,7 +38,7 @@ void Print(int&& _int)
 /// Prints specified float
 /// </summary>
 /// <param name="_float"></param>
-void Print(float&& _float)
+static void Print(float&& _float)
 {
 	std::cout << _float << std::endl;
 }
@@ -46,7 +46,7 @@ void Print(float&& _float)
 /// Prints specified character
 /// </summary>
 /// <param name="_character"></param>
-void Print(char&& _character)
+static void Print(char&& _character)
 {
 	std::cout << _character << std::endl;
 }
@@ -54,7 +54,7 @@ void Print(char&& _character)
 /// Prints specified vector
 /// </summary>
 /// <param name="_vector"></param>
-void Print(sf::Vector2f&& _vector)
+static void Print(sf::Vector2f&& _vector)
 {
 	std::cout << "X: " << _vector.x << "Y: " << _vector.y << std::endl;
 }
@@ -63,7 +63,7 @@ void Print(sf::Vector2f&& _vector)
 /// </summary>
 /// <param name="_vector"></param>
 /// <returns></returns>
-float Mag(sf::Vector2f&& _vector)
+static float Mag(sf::Vector2f&& _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }
@@ -72,7 +72,7 @@ float Mag(sf::Vector2f&& _vector)
 /// </summary>
 /// <param name="_vector"></param>
 /// <returns></returns>
-float Mag(const sf::Vector2f& _vector)
+static float Mag(const sf::Vector2f& _vector)
 {
 	return sqrtf((_vector.x * _vector.x) + (_vector.y * _vector.y));
 }
@@ -81,7 +81,7 @@ float Mag(const sf::Vector2f& _vector)
 /// </summary>
 /// <param name="_vector"></param>
 /// <returns></returns>
-sf::Vector2f Normalize(sf::Vector2f&& _vector)
+static sf::Vector2f Normalize(sf::Vector2f&& _vector)
 {
 	if (Mag(_vector) <= 0)
 		return { 0.0f,0.0f };
@@ -93,7 +93,7 @@ sf::Vector2f Normalize(sf::Vector2f&& _vector)
 /// </summary>
 /// <param name="_vector"></param>
 /// <returns></returns>
-sf::Vector2f Normalize(const sf::Vector2f& _vector)
+static sf::Vector2f Normalize(const sf::Vector2f& _vector)
 {
 	if (Mag(_vector) <= 0)
 		return { 0.0f,0.0f };
@@ -104,7 +104,7 @@ sf::Vector2f Normalize(const sf::Vector2f& _vector)
 /// </summary>
 /// <param name="_vector"></param>
 /// <param name="_upperBound"></param>
-void Truncate(sf::Vector2f& _vector, float _upperBound)
+static void Truncate(sf::Vector2f& _vector, float _upperBound)
 {
 	if (Mag(_vector) > 0)
 	{
@@ -119,7 +119,7 @@ void Truncate(sf::Vector2f& _vector, float _upperBound)
 /// <param name="_vector"></param>
 /// <param name="_upperBound"></param>
 /// <returns></returns>
-sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
+static sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
 {
 	sf::Vector2f truncated = _vector;
 	float i = _upperBound / Mag(truncated);
@@ -132,7 +132,7 @@ sf::Vector2f Truncate(sf::Vector2f&& _vector, float _upperBound)
 /// </summary>
 /// <param name="_vector"></param>
 /// <param name="_value"></param>
-void Limit(sf::Vector2f& _vector, float _value)
+static void Limit(sf::Vector2f& _vector, float _value)
 {
 	float i = _value / Mag(_vector);
 	_vector *= i;
@@ -143,7 +143,7 @@ void Limit(sf::Vector2f& _vector, float _value)
 /// <param name="_v1"></param>
 /// <param name="_v2"></param>
 /// <returns></returns>
-float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
+static float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
 {
 	float product = 0.0f;
 	product += _v1.x * _v2.x;
@@ -154,7 +154,7 @@ float Dot(sf::Vector2f&& _v1, sf::Vector2f&& _v2)
 /// Sets the origin of the shape to its centre.
 /// </summary>
 /// <param name="_object"></param>
-void SetOriginToCentre(sf::Shape& _object)
+static void SetOriginToCentre(sf::Shape& _object)
 {
 	_object.setOrigin(_object.getGlobalBounds().width / 2, _object.getGlobalBounds().height / 2);
 }
@@ -162,7 +162,7 @@ void SetOriginToCentre(sf::Shape& _object)
 /// Sets the origin of the sprite to its centre
 /// </summary>
 /// <param name="_sprite"></param>
-void SetOriginToCentre(sf::Sprite& _sprite)
+static void SetOriginToCentre(sf::Sprite& _sprite)
 {
 	_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, _sprite.getGlobalBounds().height / 2);
 }
@@ -170,7 +170,7 @@ void SetOriginToCentre(sf::Sprite& _sprite)
 /// Sets the origin of the text to its centre
 /// </summary>
 /// <param name="_text"></param>
-void SetOriginToCentre(sf::Text& _text)
+static void SetOriginToCentre(sf::Text& _text)
 {
 	_text.setOrigin(_text.getGlobalBounds().width / 2, _text.getGlobalBounds().height / 2);
 }
@@ -179,7 +179,7 @@ void SetOriginToCentre(sf::Text& _text)
 /// </summary>
 /// <param name="_radians"></param>
 /// <returns></returns>
-float ToDegrees(float _radians)
+static float ToDegrees(float _radians)
 {
 	return _radians * (180.0f / (float)PI);
 }
@@ -188,7 +188,7 @@ float ToDegrees(float _radians)
 /// </summary>
 /// <param name="_degrees"></param>
 /// <returns></returns>
-float ToRadians(float _degrees)
+static float ToRadians(float _degrees)
 {
 	return ((float)PI * _degrees) / 180.0f;
 }
@@ -197,7 +197,7 @@ float ToRadians(float _degrees)
 /// </summary>
 /// <param name="_originalVector"></param>
 /// <returns></returns>
-sf::Vector2f CWPerp(sf::Vector2f _originalVector)
+static sf::Vector2f CWPerp(sf::Vector2f _originalVector)
 {
 	return { _originalVector.y, -_originalVector.x };
 }
@@ -206,7 +206,7 @@ sf::Vector2f CWPerp(sf::Vector2f _originalVector)
 /// </summary>
 /// <param name="_originalVector"></param>
 /// <returns></returns>
-sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
+static sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
 {
 	return { -_originalVector.y, _originalVector.x };
 }
@@ -216,7 +216,7 @@ sf::Vector2f CCWPerp(sf::Vector2f _originalVector)
 /// <param name="_A"></param>
 /// <param name="_B"></param>
 /// <returns></returns>
-float AngleDir(sf::Vector2f _a, sf::Vector2f _b)
+static float AngleDir(sf::Vector2f _a, sf::Vector2f _b)
 {
 	return -_a.x * _b.y + _a.y * _b.x;
 }

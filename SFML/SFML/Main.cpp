@@ -22,14 +22,54 @@ static sf::Font ArialFont;
 static sf::Sprite BackgroundSprite;
 static sf::Texture BackgroundTexture;
 
+/// <summary>
+/// Intializes the RenderWindow.
+/// Creates one if non existance or recreates if present.
+/// </summary>
+/// <param name="_size"></param>
+/// <param name="_title"></param>
+/// <param name="_style"></param>
+/// <param name="_settings"></param>
 void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
+
+/// <summary>
+/// Main Start function.
+/// Gets called at begining of program
+/// </summary>
 void Start();
+
+/// <summary>
+/// Grabs inputs and stores them in keymap
+/// </summary>
 void GrabEventInput();
+
+/// <summary>
+/// Main Update Function.
+/// Gets called every frame
+/// </summary>
 void Update();
+
+/// <summary>
+/// Main draw function.
+/// Gets at the end of every frame.
+/// </summary>
 void Render();
+
+/// <summary>
+/// Cleans up all pointers and objects such as renderWindow and agents
+/// </summary>
+/// <returns></returns>
 int Cleanup();
 
+/// <summary>
+/// Calculates change in time between frames.
+/// Used to scale movement values.
+/// </summary>
 void CalculateDeltaTime();
+
+/// <summary>
+/// Handles event actions.
+/// </summary>
 void HandleEventAction();
 
 sf::ContextSettings RenderWindowSettings;
@@ -48,6 +88,7 @@ int main()
 
 void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings)
 {
+	// If render window already exists, recreate it else make a new one
 	if (RenderWindow)
 	{
 		RenderWindow->create(sf::VideoMode(_size.x, _size.y), _title.data(), _style, _settings);
@@ -60,33 +101,42 @@ void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _s
 
 void Start()
 {
+	// Create window and give it anti-aliasing
 	RenderWindowSettings.antialiasingLevel = 8;
 	InitWindow(std::move(WindowSize), "Steering Behaviors", sf::Style::Default, std::move(RenderWindowSettings));
+	// Make sure no repeating on-press events
 	RenderWindow->setKeyRepeatEnabled(false);
 
+	// Load in arial font
 	ArialFont.loadFromFile("Resources/Fonts/ARIAL.TTF");
 
+	// Create background water, scale it and repeat it to fit screen
 	BackgroundTexture.loadFromFile("Resources/Textures/Water.jpg");
 	BackgroundTexture.setRepeated(true);
 	BackgroundSprite.setTexture(BackgroundTexture, true);
 	BackgroundSprite.setScale(0.5f, 0.5f);
 	BackgroundSprite.setTextureRect(sf::IntRect(0.0f, 0.0f, 2 * WindowSize.x, 2 * WindowSize.y));
 
-	// Create Agents
-	for (int i = 0; i < 50; i++)
-	{
-		Agents.emplace_back(new Agent{ {rand() % WindowSize.x, rand() % WindowSize.y},DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
-		Agents.back()->SetID(Agents.size());
-	}
+	// Create An Agent
+	Agents.emplace_back(new Agent{ {rand() % WindowSize.x, rand() % WindowSize.y},DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+	Agents.back()->SetID(Agents.size());
 
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.25f, 0.25f }));
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.67f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.67f }, { 0.25f, 0.25f }));
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 4.27f,(float)WindowSize.y / 4.27f }, { 0.25f, 0.25f }));
-	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", { (float)WindowSize.x / 2.27f,(float)WindowSize.y / 2.67f }, { 0.25f, 0.25f }));
+	// Create some obsticles with rock texture
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 2,(float)WindowSize.y / 2 }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 1.67f,(float)WindowSize.y / 1.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 1.27f,(float)WindowSize.y / 1.67f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 4.27f,(float)WindowSize.y / 4.27f }, { 0.25f, 0.25f }));
+	Obstacles.emplace_back(new Obstacle("Resources/Textures/Rock.png", 
+		{ (float)WindowSize.x / 2.27f,(float)WindowSize.y / 2.67f }, { 0.25f, 0.25f }));
 
-	DebugControls = new DebugMenu(Agents, ArialFont);
+	// Create debug controls
+	DebugControls = new DebugMenu(Agents, ArialFont, DeltaTime, Obstacles, RenderWindow, WindowSize);
 }
 
 void GrabEventInput()
@@ -107,6 +157,7 @@ void GrabEventInput()
 
 		if (Event.type == sf::Event::MouseButtonPressed)
 		{
+			// Spawn agents on mouse whenever group behaviors and or avoidence
 			if (Event.mouseButton.button == sf::Mouse::Left)
 			{
 				sf::Vector2i mousePos = sf::Mouse::getPosition(*RenderWindow);
@@ -134,6 +185,14 @@ void GrabEventInput()
 					agent->SetAvoidence(Agents[0]->IsAvoiding());
 					agent->SetDebugLines(Agents[0]->IsDebug());
 				}
+				else if (Agents[0]->GetState() == 'l')
+				{
+					auto& agent = Agents.emplace_back(new Agent{ mousePos,DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });
+					agent->SetID(Agents.size());
+					agent->SetState(Agents[0]->GetState());
+					agent->SetAvoidence(Agents[0]->IsAvoiding());
+					agent->SetDebugLines(Agents[0]->IsDebug());
+				}
 			}
 		}
 	}
@@ -148,14 +207,9 @@ void Update()
 		DebugControls->Update();
 		GrabEventInput();
 
-		// Object Updates
 		HandleEventAction();
 
-		for (auto& obstacle : Obstacles)
-		{
-			obstacle->Update();
-		}
-
+		// Agent updates
 		for (auto& agent : Agents)
 		{
 			agent->Update();
@@ -175,6 +229,7 @@ void Update()
 void Render()
 {
 	RenderWindow->clear();
+
 	sf::RenderStates st;
 	st.shader = NULL;
 
@@ -192,6 +247,7 @@ void Render()
 
 	RenderWindow->display();
 
+	// Do debugcontrols render
 	DebugControls->Render();
 }
 

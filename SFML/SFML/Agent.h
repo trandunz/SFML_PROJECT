@@ -274,7 +274,6 @@ private:
 
 	float m_MaxSpeed = 200.0f;
 	float m_MaxForce = 100.0f;
-	float m_MaxAvoidenceForce = 100.0f;
 
 	float m_WanderAngle = 0;
 	bool m_WanderingLeft = true;
@@ -295,7 +294,6 @@ private:
 	bool m_IsAlignment = false;
 	bool m_IsCohesion = false;
 	bool m_IsFlocking = false;
-	bool m_IsArriving = false;
 	bool m_LeaderFollowing = false;
 };
 

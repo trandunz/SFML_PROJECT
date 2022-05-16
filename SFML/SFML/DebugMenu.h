@@ -21,7 +21,7 @@ public:
 	/// </summary>
 	/// <param name="_agents"></param>
 	/// <param name="_globalFont"></param>
-	DebugMenu(std::vector<Agent*>& _agents, sf::Font& _globalFont);
+	DebugMenu(std::vector<Agent*>& _agents, sf::Font& _globalFont, float& _deltaTime, std::vector<Obstacle*>& _obstacles, sf::RenderWindow* _renderWindow, sf::Vector2i& _renderWindowSize);
 		
 	/// <summary>
 	/// Debug Menu Destructor
@@ -54,11 +54,25 @@ private:
 	/// <param name="_settings"></param>
 	void InitWindow(sf::Vector2i&& _size, std::string_view&& _title, sf::Uint32&& _style, sf::ContextSettings&& _settings);
 	
+	/// <summary>
+	/// Creates a new agent at a random location
+	/// </summary>
+	void CreateAgent();
+
+	/// <summary>
+	/// Cleans up agent vector
+	/// </summary>
+	void CleanupAgents();
+
 	std::vector<Button*> m_UIButtons;
 	std::vector<sf::Text> m_UIText;
-	std::vector<Agent*>* m_Agents;
+	std::vector<Agent*>* m_Agents{ nullptr };
+	std::vector<Obstacle*>* m_Obstacles{ nullptr };
+	sf::RenderWindow* m_MainRenderWindow{ nullptr };
 	sf::Font m_Font;
-	sf::Vector2i m_WindowSize;
+	sf::Vector2i* m_WindowSize{nullptr};
+
+	float* m_DeltaTime{ nullptr };
 
 	sf::Event m_Event;
 	sf::RenderWindow* m_RenderWindow = nullptr;
