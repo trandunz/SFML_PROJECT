@@ -294,6 +294,7 @@ private:
 	bool m_IsAlignment = false;
 	bool m_IsCohesion = false;
 	bool m_IsFlocking = false;
+	bool m_IsArrival = false;
 	bool m_LeaderFollowing = false;
 };
 

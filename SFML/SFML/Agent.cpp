@@ -136,6 +136,11 @@ void Agent::Update()
 		else
 			steeringForce += LeaderFollowing();
 	}
+	if (m_IsArrival)
+	{
+		// arrive at mouse position
+		steeringForce += Arrive(mousepos) * 4.f;
+	}
 	// if steering forces are not present, wander
 	if (Mag(steeringForce) <= 0)
 	{
@@ -241,6 +246,7 @@ void Agent::SetState(char&& _state)
 	m_IsCohesion = false;
 	m_IsFlocking = false;
 	m_LeaderFollowing = false;
+	m_IsArrival = false;
 
 	// Set new state
 	switch (_state)
@@ -288,6 +294,11 @@ void Agent::SetState(char&& _state)
 	case 'g':
 	{
 		m_IsFlocking = true;
+		break;
+	}
+	case 'r':
+	{
+		m_IsArrival = true;
 		break;
 	}
 	case 'l':
@@ -339,6 +350,10 @@ char Agent::GetState()
 	else if (m_IsFlocking)
 	{
 		return 'g';
+	}
+	else if (m_IsArrival)
+	{
+		return 'r';
 	}
 	else if (m_LeaderFollowing)
 	{

@@ -12,12 +12,13 @@ FLEE (1 agent min.) - Flees mouse position
 WANDER (1 agent min.) - Wanders around the scene
 PURSUIT (2 agents min.) - Leader agent (red) seeks mouse wealst Other Agents (white) pursuit leader
 EVADE (2 agents min.) - Leader agent (red) seeks mouse wealst Other Agents (white) evade leader
+ARRIVAL (1 agent min.) - Arrives at mouse position
 
 Group Behaviors:
 FLOCKING (50 agents min.) - Creates flocks of agents that travel around
 L-FOLLOWING (15 agents min.) - Red boid is leader, other agents follow.
 
-Debug Controls Show:
+Debug Controls Legend:
 Steering Force (red Line)
 Velocity (white line)
 Collision Detection boundary (Blue box)

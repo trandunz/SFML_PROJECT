@@ -154,6 +154,13 @@ void DebugMenu::Start()
 			}
 			for (auto& agent : *m_Agents) {agent->SetState('l'); (*m_Agents)[0]->ToggleLeader();}
 		}));
+	// Insert Arrival Button and specify on click functionality
+	m_UIButtons.emplace_back(new Button(m_RenderWindow, "Arrival", m_Font, { 55,  580 }, [this]()
+		{
+			CleanupAgents();
+			CreateAgent();
+			for (auto& agent : *m_Agents) { agent->SetState('r');}
+		}));
 
 	// Insert "number of agents" text witth font size 15
 	m_UIText.emplace_back(sf::Text("Number Of Agents: ", m_Font, 15));
