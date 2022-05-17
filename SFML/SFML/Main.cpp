@@ -115,7 +115,7 @@ void Start()
 	BackgroundTexture.setRepeated(true);
 	BackgroundSprite.setTexture(BackgroundTexture, true);
 	BackgroundSprite.setScale(0.5f, 0.5f);
-	BackgroundSprite.setTextureRect(sf::IntRect(0.0f, 0.0f, 2 * WindowSize.x, 2 * WindowSize.y));
+	BackgroundSprite.setTextureRect(sf::IntRect(0, 0, 2 * WindowSize.x, 2 * WindowSize.y));
 
 	// Create An Agent
 	Agents.emplace_back(new Agent{ {rand() % WindowSize.x, rand() % WindowSize.y},DeltaTime, WindowSize, RenderWindow, Obstacles, Agents });

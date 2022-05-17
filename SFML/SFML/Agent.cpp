@@ -64,14 +64,14 @@ void Agent::Update()
 	}
 	if (m_IsWander)
 	{
-		steeringForce += Wander(100, 20);
+		steeringForce += Wander(10, 20);
 	}
 	if (m_IsEvade)
 	{ 
 		if (m_IsLeader)
 		{
 			// Seek if the agent is leader
-			steeringForce += Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+			steeringForce += Seek(mousepos);
 		}
 		else
 		{
@@ -91,7 +91,7 @@ void Agent::Update()
 		if (m_IsLeader)
 		{
 			// Seek if agent is leader
-			steeringForce += Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+			steeringForce += Seek(mousepos);
 		}
 		else
 		{
@@ -132,14 +132,14 @@ void Agent::Update()
 	{
 		// Seek if is leader else follow leader
 		if (m_IsLeader)
-			steeringForce += Seek((sf::Vector2f)sf::Mouse::getPosition(*m_RenderWindow));
+			steeringForce += Seek(mousepos);
 		else
 			steeringForce += LeaderFollowing();
 	}
 	// if steering forces are not present, wander
 	if (Mag(steeringForce) <= 0)
 	{
-		steeringForce += Wander(100, 20);
+		steeringForce += Wander(10, 20);
 	}
 	// Avoid obsticles
 	if (m_IsAvoidence)
@@ -493,6 +493,12 @@ sf::Vector2f Agent::Evade(Agent& _otherAgent)
 
 sf::Vector2f Agent::Wander(float _wanderDistance, float _wanderRadius)
 {
+	// Initalize wander so its not same start for all agents
+	if (m_WanderAngle == 0.0f)
+	{
+		m_WanderAngle = -180.0f + (float)(rand() % 360);
+	}
+
 	// Get position on semi circle based on wander radius
 	float x = (Normalize(std::move(m_Velocity)).x * _wanderDistance) + cosf(ToRadians(m_WanderAngle)) * _wanderRadius;
 	float y = (Normalize(std::move(m_Velocity)).y * _wanderDistance) + sinf(ToRadians(m_WanderAngle)) * _wanderRadius;
@@ -501,11 +507,11 @@ sf::Vector2f Agent::Wander(float _wanderDistance, float _wanderRadius)
 	sf::Vector2f steeringForce = Seek(sf::Vector2f{ x,y } + GetPosition());
 
 	// Update semicircle position with random swaying speed
-	if (m_WanderAngle < -90)
+	if (m_WanderAngle <= -90)
 	{
 		m_WanderingLeft = false;
 	}
-	if (m_WanderAngle > 90)
+	if (m_WanderAngle >= 90)
 	{
 		m_WanderingLeft = true;
 	}
